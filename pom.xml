@@ -13,7 +13,12 @@
         <url>http://itquasar.com</url>
     </organization>
     <inceptionYear>2016</inceptionYear>
-
+    <licenses>
+        <license>
+            <name>GNU GENERAL PUBLIC LICENSE - Version 3</name>
+            <url>http://www.gnu.org/licenses/gpl-3.0.en.html</url>
+        </license>
+    </licenses>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
