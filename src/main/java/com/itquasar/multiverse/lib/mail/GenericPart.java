@@ -66,7 +66,7 @@ public class GenericPart<T> implements Part<T> {
 
     @Override
     public String toString() {
-        return "GenericPart{" + "contentId=" + contentId + ", disposition=" + disposition + ", name=" + name + ", mimeType=" + mimeType + ", content=" + content + '}';
+        return "GenericPart{" + "contentId=" + contentId + ", disposition=" + disposition + ", name=" + name + ", mimeType=" + mimeType + ", content=" + content.getClass().getCanonicalName() + '}';
     }
 
 }
