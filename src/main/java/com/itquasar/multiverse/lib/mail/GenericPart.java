@@ -16,9 +16,9 @@ public class GenericPart<T> implements Part<T> {
     private final T content;
 
     public GenericPart(String contentId, Disposition disposition, String name, String mimeType, T content) {
-        this.contentId = contentId;
+        this.contentId = contentId == null ? "" : contentId;
         this.disposition = disposition;
-        this.name = name;
+        this.name = name == null ? "" : name;
         this.mimeType = mimeType.toLowerCase();
         this.content = content;
     }
