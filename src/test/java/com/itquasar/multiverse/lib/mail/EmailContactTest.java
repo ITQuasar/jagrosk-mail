@@ -17,6 +17,16 @@ import org.junit.Test;
  */
 public class EmailContactTest {
 
+    private static final EmailContact[] contacts = new EmailContact[]{
+        Constants.NO_ONE,
+        new EmailContact("a@b.c"),
+        new EmailContact("A B C", "a@b.c"),
+        new EmailContact(null),
+        new EmailContact(null, null)
+    };
+
+    private static final String ALL_CONTACTS = "<a@b.c>,A B C<a@b.c>";
+
     /**
      * Test of toRFC822 method, of class EmailContact.
      *
@@ -25,18 +35,19 @@ public class EmailContactTest {
     @Test
     public void testToRFC822() throws AddressException {
         System.out.println("toRFC822 - test if always works parse with InternetAddress");
-        EmailContact[] contacts = new EmailContact[]{
-            Constants.NO_ONE,
-            new EmailContact("a@b.c"),
-            new EmailContact("A B C", "a@b.c"),
-            new EmailContact(null),
-            new EmailContact(null, null)
-        };
+
         for (EmailContact contact : contacts) {
             Assert.assertNotNull(
                     InternetAddress.parse(contact.toRFC822())
             );
         }
+    }
+
+    @Test
+    public void testListToRFC822String() {
+        System.out.println("listToRFC822String");
+        String result = EmailContact.listToRFC822String(contacts);
+        Assert.assertEquals(ALL_CONTACTS, result);
     }
 
 }

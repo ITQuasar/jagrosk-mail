@@ -3,6 +3,7 @@ package com.itquasar.multiverse.lib.mail;
 import static com.itquasar.multiverse.lib.mail.util.Constants.EMPTY_STRING;
 import static com.itquasar.multiverse.lib.mail.util.Constants.RFC822_ADDRESS_SEPARATOR;
 import static com.itquasar.multiverse.lib.mail.util.Utils.emptyOnNull;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -11,12 +12,18 @@ import java.util.List;
  */
 public class EmailContact {
 
-    public static String toRFC822String(List<EmailContact> contacts) {
+    public static String listToRFC822String(EmailContact... contacts) {
+        return listToRFC822String(Arrays.asList(contacts));
+    }
+
+    public static String listToRFC822String(List<EmailContact> contacts) {
         StringBuilder builder = new StringBuilder();
         contacts.stream()
+                .map((contact) -> contact.toRFC822())
+                .filter((rfc822Str) -> !rfc822Str.isEmpty())
                 .forEach(
-                        (contact)
-                        -> builder.append(contact.toRFC822()).append(RFC822_ADDRESS_SEPARATOR)
+                        (rfc822Str)
+                        -> builder.append(rfc822Str).append(RFC822_ADDRESS_SEPARATOR)
                 );
         return builder.deleteCharAt(builder.length() - 1).toString();
     }
