@@ -42,7 +42,9 @@ public class EmailContact {
     }
 
     public String toRFC822() {
-        return name + "<" + email + ">";
+        return email.isEmpty()
+                ? EMPTY_STRING
+                : name + "<" + email + ">";
     }
 
     @Override
