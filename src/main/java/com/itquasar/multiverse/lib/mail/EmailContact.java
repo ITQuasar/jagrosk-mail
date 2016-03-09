@@ -2,9 +2,13 @@ package com.itquasar.multiverse.lib.mail;
 
 import static com.itquasar.multiverse.lib.mail.util.Constants.EMPTY_STRING;
 import static com.itquasar.multiverse.lib.mail.util.Constants.RFC822_ADDRESS_SEPARATOR;
+import com.itquasar.multiverse.lib.mail.util.Utils;
 import static com.itquasar.multiverse.lib.mail.util.Utils.emptyOnNull;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import javax.mail.internet.InternetAddress;
 
 /**
  *
@@ -26,6 +30,21 @@ public class EmailContact {
                         -> builder.append(rfc822Str).append(RFC822_ADDRESS_SEPARATOR)
                 );
         return builder.deleteCharAt(builder.length() - 1).toString();
+    }
+
+    public static EmailContact fromInternetAddress(InternetAddress address) {
+        Utils.checkNullArgument(address, "internetAddress");
+        return new EmailContact(address.getPersonal(), address.getAddress());
+    }
+
+    public static List<EmailContact> fromInternetAddresses(InternetAddress... addresses) {
+        List<EmailContact> contacts = new LinkedList<>();
+        if (addresses != null) {
+            for (InternetAddress address : addresses) {
+                contacts.add(fromInternetAddress(address));
+            }
+        }
+        return contacts;
     }
 
     private final String name;

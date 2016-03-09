@@ -22,14 +22,14 @@ public class EmailContactTest {
     private static final Map<EmailContact, String> contacts = new HashMap<EmailContact, String>() {
         {
             put(Constants.NO_ONE, "");
-            put(new EmailContact("a@b.c"), "<a@b.c>");
+            put(new EmailContact("a&@b.c"), "<a&@b.c>");
             put(new EmailContact("A B C", "a@b.c"), "\"A B C\" <a@b.c>");
             put(new EmailContact(null), "");
             put(new EmailContact(null, null), "");
         }
     };
 
-    private static final String ALL_CONTACTS = "\"A B C\" <a@b.c>,<a@b.c>";
+    private static final String ALL_CONTACTS = "\"A B C\" <a@b.c>,<a&@b.c>";
 
     /**
      * Test of toRFC822 method, of class EmailContact.
@@ -41,17 +41,24 @@ public class EmailContactTest {
         System.out.println("toRFC822 - test if always works parse with InternetAddress");
 
         for (EmailContact contact : contacts.keySet()) {
-            Assert.assertNotNull(
-                    InternetAddress.parse(contact.toRFC822())
-            );
+            InternetAddress[] addresses = InternetAddress.parse(contact.toRFC822());
+            Assert.assertNotNull(addresses);
+            for (InternetAddress address : addresses) {
+                System.out.println(address);
+            }
             Assert.assertEquals(contacts.get(contact), contact.toRFC822());
         }
     }
 
     @Test
-    public void testListToRFC822String() {
+    public void testListToRFC822String() throws AddressException {
         System.out.println("listToRFC822String");
         String result = EmailContact.listToRFC822String(contacts.keySet());
+        InternetAddress[] addresses = InternetAddress.parse(result);
+        Assert.assertNotNull(addresses);
+        for (InternetAddress address : addresses) {
+            System.out.println(address);
+        }
         Assert.assertEquals(ALL_CONTACTS, result);
     }
 
