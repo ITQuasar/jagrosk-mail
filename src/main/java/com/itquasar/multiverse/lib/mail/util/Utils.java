@@ -1,6 +1,9 @@
 package com.itquasar.multiverse.lib.mail.util;
 
 import com.itquasar.multiverse.lib.mail.exception.NullArgumentException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -22,6 +25,14 @@ public class Utils {
     public static void checkNullArgument(Object argument, String argumentName) {
         if (argument == null) {
             throw new NullArgumentException(argumentName);
+        }
+    }
+
+    public static <T> List<T> safeArrayToList(T[] array) {
+        if (array == null || array.length == 0) {
+            return Collections.emptyList();
+        } else {
+            return Arrays.asList(array);
         }
     }
 
