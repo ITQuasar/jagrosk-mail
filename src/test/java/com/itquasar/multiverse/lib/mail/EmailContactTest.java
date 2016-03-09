@@ -6,6 +6,8 @@
 package com.itquasar.multiverse.lib.mail;
 
 import com.itquasar.multiverse.lib.mail.util.Constants;
+import java.util.HashMap;
+import java.util.Map;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import org.junit.Assert;
@@ -17,15 +19,17 @@ import org.junit.Test;
  */
 public class EmailContactTest {
 
-    private static final EmailContact[] contacts = new EmailContact[]{
-        Constants.NO_ONE,
-        new EmailContact("a@b.c"),
-        new EmailContact("A B C", "a@b.c"),
-        new EmailContact(null),
-        new EmailContact(null, null)
+    private static final Map<EmailContact, String> contacts = new HashMap<EmailContact, String>() {
+        {
+            put(Constants.NO_ONE, "");
+            put(new EmailContact("a@b.c"), "<a@b.c>");
+            put(new EmailContact("A B C", "a@b.c"), "\"A B C\" <a@b.c>");
+            put(new EmailContact(null), "");
+            put(new EmailContact(null, null), "");
+        }
     };
 
-    private static final String ALL_CONTACTS = "<a@b.c>,A B C<a@b.c>";
+    private static final String ALL_CONTACTS = "\"A B C\" <a@b.c>,<a@b.c>";
 
     /**
      * Test of toRFC822 method, of class EmailContact.
@@ -36,17 +40,18 @@ public class EmailContactTest {
     public void testToRFC822() throws AddressException {
         System.out.println("toRFC822 - test if always works parse with InternetAddress");
 
-        for (EmailContact contact : contacts) {
+        for (EmailContact contact : contacts.keySet()) {
             Assert.assertNotNull(
                     InternetAddress.parse(contact.toRFC822())
             );
+            Assert.assertEquals(contacts.get(contact), contact.toRFC822());
         }
     }
 
     @Test
     public void testListToRFC822String() {
         System.out.println("listToRFC822String");
-        String result = EmailContact.listToRFC822String(contacts);
+        String result = EmailContact.listToRFC822String(contacts.keySet());
         Assert.assertEquals(ALL_CONTACTS, result);
     }
 
