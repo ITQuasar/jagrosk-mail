@@ -1,7 +1,10 @@
 package com.itquasar.multiverse.lib.mail;
 
+import com.itquasar.multiverse.lib.mail.part.Attachment;
+import com.itquasar.multiverse.lib.mail.part.Inline;
 import com.itquasar.multiverse.lib.mail.util.Constants;
 import com.itquasar.multiverse.lib.mail.util.Utils;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,7 +28,7 @@ public class EmailBuilder {
     private String subject = Constants.EMPTY_STRING;
     private String textContent = Constants.EMPTY_STRING;
     private String htmlContent = Constants.EMPTY_STRING;
-    private List<Attachment> htmlImages = Constants.NO_ATTACHMENTS;
+    private List<Inline> htmlImages = Collections.emptyList();
 
     private List<Attachment> attachments = new LinkedList<>();
 
@@ -91,7 +94,7 @@ public class EmailBuilder {
 
     public EmailBuilder htmlMessage(String content, List<Attachment> images) {
         this.htmlMessage(content);
-        this.htmlImages = Utils.defaultOnNull(htmlImages, Constants.NO_ATTACHMENTS);
+        this.htmlImages = Utils.defaultOnNull(htmlImages, new LinkedList<Inline>());
         return this;
     }
 

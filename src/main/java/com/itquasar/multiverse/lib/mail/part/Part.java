@@ -1,4 +1,6 @@
-package com.itquasar.multiverse.lib.mail;
+package com.itquasar.multiverse.lib.mail.part;
+
+import java.util.List;
 
 /**
  *
@@ -8,13 +10,13 @@ public interface Part<T> {
 
     enum Disposition {
 
-        INLINE, ATTACHMENT, FLOWED, NONE;
+        INLINE, ATTACHMENT, NONE;
 
         public static Disposition evaluate(String disposition) {
             if (disposition != null) {
                 return Disposition.valueOf(disposition.toUpperCase());
             }
-            return FLOWED;
+            return NONE;
         }
 
         public String value() {
@@ -31,5 +33,9 @@ public interface Part<T> {
     T getContent();
 
     Disposition getDisposition();
+
+    boolean hasContent();
+
+    List<Part> getParts();
 
 }
