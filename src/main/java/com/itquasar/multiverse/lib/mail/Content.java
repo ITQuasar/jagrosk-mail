@@ -88,11 +88,35 @@ public class Content {
         return subject;
     }
 
-    public Part<String> getTextContent() {
+    /**
+     *
+     * @return The content from the first text/plain part
+     */
+    public String getTextContent() {
+        return textContent.getContent();
+    }
+
+    /**
+     *
+     * @return The first text/plain part
+     */
+    public Part<String> getTextPart() {
         return textContent;
     }
 
-    public Part<String> getHtmlContent() {
+    /**
+     *
+     * @return The content from the first text/html part
+     */
+    public String getHtmlContent() {
+        return htmlContent.getContent();
+    }
+
+    /**
+     *
+     * @return The first text/html part
+     */
+    public Part<String> getHtmlPart() {
         return htmlContent;
     }
 
