@@ -4,7 +4,6 @@ import com.itquasar.multiverse.lib.mail.Content;
 import com.itquasar.multiverse.lib.mail.Envelope;
 import com.itquasar.multiverse.lib.mail.exception.EmailException;
 import com.itquasar.multiverse.lib.mail.part.Attachment;
-import com.itquasar.multiverse.lib.mail.part.GenericPart;
 import com.itquasar.multiverse.lib.mail.part.Inline;
 import com.itquasar.multiverse.lib.mail.part.Multipart;
 import com.itquasar.multiverse.lib.mail.part.Part;
@@ -82,17 +81,30 @@ public class Parser {
             tab += "    ";
         }
         System.out.println(tab + "- " + part.getContentType());
-        if (part.isMimeType(Part.Mime.TEXT_PLAIN.getMimeType())) {
-            return new SinglePart(
-                    part.getContentType(),
-                    String.class.cast(part.getContent())
-            );
-        } else if (part.isMimeType(Part.Mime.TEXT_HTML.getMimeType())) {
-            return new SinglePart(
-                    part.getContentType(),
-                    String.class.cast(part.getContent())
-            );
-        } else if (part.isMimeType(Part.Mime.IMAGE.getMimeType()) && Part.Disposition.evaluate(part.getDisposition()) == Part.Disposition.INLINE) {
+
+        String contentId = Constants.EMPTY_STRING;
+        if (MimePart.class.isInstance(part)) {
+            MimePart mp = MimePart.class.cast(part);
+            contentId = mp.getContentID();
+        }
+
+        if (part.getContentType().toLowerCase().contains("format=flowed")) {
+            if (part.isMimeType(Part.Mime.TEXT_PLAIN.getMimeType())) {
+                return new SinglePart(
+                        contentId,
+                        Part.Disposition.evaluate(part.getDisposition()),
+                        part.getContentType(),
+                        String.class.cast(part.getContent())
+                );
+            } else if (part.isMimeType(Part.Mime.TEXT_HTML.getMimeType())) {
+                return new SinglePart(
+                        contentId,
+                        Part.Disposition.evaluate(part.getDisposition()),
+                        part.getContentType(),
+                        String.class.cast(part.getContent())
+                );
+            }
+        } else if (part.isMimeType(Part.Mime.IMAGE.getMimeType()) && Part.Disposition.evaluate(part.getDisposition()) != Part.Disposition.ATTACHMENT) {
             MimePart mp = (MimePart) part;
             return new Inline(mp.getContentID(), mp.getFileName(), mp.getContentType(), mp.getContent());
         } else if (part.isMimeType(Part.Mime.MULTIPART.getMimeType())) {
@@ -108,19 +120,13 @@ public class Parser {
             }
             return new Multipart(part.getContentType(), subParts);
         }
-        String contentId = Constants.EMPTY_STRING;
-        if (MimePart.class.isInstance(part)) {
-            MimePart mp = MimePart.class.cast(part);
-            contentId = mp.getContentID();
-        }
 
         switch (Part.Disposition.evaluate(part.getDescription())) {
-            case ATTACHMENT:
-                return new Attachment(contentId, part.getFileName(), part.getContentType(), part.getContent());
             case INLINE:
                 return new Inline(contentId, part.getFileName(), part.getContentType(), part.getContent());
+            case ATTACHMENT:
             default:
-                return new GenericPart(contentId, Part.Disposition.NONE, part.getFileName(), part.getContentType(), part.getContent());
+                return new Attachment(contentId, part.getFileName(), part.getContentType(), part.getContent());
         }
     }
 

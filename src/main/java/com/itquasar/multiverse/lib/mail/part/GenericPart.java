@@ -73,7 +73,7 @@ public class GenericPart<T> implements Part<T> {
     public String toString() {
         return this.getClass().getSimpleName()
                 + "#" + getContentId()
-                + "[" + (getDisposition() != Disposition.NONE ? getDisposition() : "") + "]"
+                + "[" + getDisposition() + "]"
                 + ":" + getName() + ":" + getMimeType()
                 + "=" + (content != null ? content.getClass().getCanonicalName() : "<<null>>");
     }

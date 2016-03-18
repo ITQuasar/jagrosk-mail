@@ -18,8 +18,8 @@ public interface Constants {
     EmailContact NO_ONE = new EmailContact(EMPTY_STRING, EMPTY_STRING);
 
     Part<Object> EMPTY_PART = new GenericPart<>(EMPTY_STRING, Part.Disposition.NONE, EMPTY_STRING, null);
-    Part<String> EMPTY_TEXT_PART = new GenericPart<>("text/plain", EMPTY_STRING);
-    Part<String> EMPTY_HTML_PART = new GenericPart<>("text/html", EMPTY_STRING);
+    Part<String> EMPTY_TEXT_PART = new GenericPart<>("text/plain", Part.Disposition.NONE, EMPTY_STRING, null);
+    Part<String> EMPTY_HTML_PART = new GenericPart<>("text/html", Part.Disposition.NONE, EMPTY_STRING, null);
 
     List<EmailContact> NO_ONES = Collections.emptyList();
     List<Part> NO_PARTS = Collections.emptyList();
