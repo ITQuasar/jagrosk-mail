@@ -1,10 +1,9 @@
 package com.itquasar.multiverse.lib.mail;
 
 import com.itquasar.multiverse.lib.mail.exception.EmailException;
+import com.itquasar.multiverse.lib.mail.util.Parser;
 import java.util.UUID;
 import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,15 +33,9 @@ public class Email {
      */
     public Email(Message message) {
         try {
-            InternetAddress[] from = (InternetAddress[]) message.getFrom();
-            InternetAddress[] replyTo = (InternetAddress[]) message.getReplyTo();
-            InternetAddress[] to = (InternetAddress[]) message.getRecipients(Message.RecipientType.TO);
-            InternetAddress[] cc = (InternetAddress[]) message.getRecipients(Message.RecipientType.CC);
-            InternetAddress[] bcc = (InternetAddress[]) message.getRecipients(Message.RecipientType.BCC);
-            this.envelope = new Envelope(from, replyTo, to, cc, bcc);
-            this.content = new Content(message);
-        } catch (MessagingException ex) {
-            LOGGER.error("Error parsing javax.mail.Message [{}]", message, ex);
+            this.envelope = Parser.parseMessageEnvelope(message);
+            this.content = Parser.parseMessageContent(message);
+        } catch (Exception ex) {
             throw new EmailException("Could not initialize Email from Message.", ex);
         }
     }

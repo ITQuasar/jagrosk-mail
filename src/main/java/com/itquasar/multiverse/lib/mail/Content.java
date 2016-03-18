@@ -1,17 +1,10 @@
 package com.itquasar.multiverse.lib.mail;
 
-import com.itquasar.multiverse.lib.mail.exception.EmailException;
 import com.itquasar.multiverse.lib.mail.part.Part;
+import com.itquasar.multiverse.lib.mail.part.SinglePart;
 import com.itquasar.multiverse.lib.mail.util.Constants;
-import com.itquasar.multiverse.lib.mail.util.Parser;
 import com.itquasar.multiverse.lib.mail.util.Utils;
-import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.mail.Message;
-import javax.mail.MessagingException;
 
 /**
  *
@@ -25,42 +18,8 @@ public class Content {
     private final List<Part> htmlImages;
     private final List<Part> attachments;
 
-    public Content(Message message) {
-        try {
-            this.subject = Utils.emptyOnNull(message.getSubject());
-
-            List<Part> parts = Parser.parseParts(message);
-
-            Part<String> text = Constants.EMPTY_TEXT_PART;
-            Part<String> html = Constants.EMPTY_HTML_PART;
-            List<Part> images = new LinkedList<>();
-            List<Part> attachs = new LinkedList<>();
-
-            for (Part part : parts) {
-                if (text.getContent().isEmpty() && part.getMimeType().startsWith("text/plain")) {
-                    text = part;
-                } else if (html.getContent().isEmpty()) {
-                    if (part.getMimeType().startsWith("multipart")) {
-                        List<Part> subParts = part.getParts();
-                        if (subParts.get(0).getMimeType().startsWith("text/html")) {
-                            html = subParts.remove(0);
-                            images.addAll(subParts);
-                        }
-                    } else {
-                        html = part;
-                    }
-                } else {
-                    attachs.add(part);
-                }
-            }
-            this.textContent = text;
-            this.htmlContent = html;
-            this.htmlImages = images;
-            this.attachments = attachs;
-        } catch (MessagingException | IOException ex) {
-            Logger.getLogger(Content.class.getName()).log(Level.SEVERE, null, ex);
-            throw new EmailException("Could not build content from Message", ex);
-        }
+    public Content(String subject, String textContent) {
+        this(subject, new SinglePart(Part.Mime.TEXT_PLAIN, textContent));
     }
 
     public Content(String subject, Part<String> textContent) {

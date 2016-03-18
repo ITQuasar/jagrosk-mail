@@ -1,5 +1,6 @@
 package com.itquasar.multiverse.lib.mail.part;
 
+import com.itquasar.multiverse.lib.mail.util.Parser;
 import java.util.List;
 
 /**
@@ -24,6 +25,29 @@ public interface Part<T> {
         }
     }
 
+    enum Mime {
+        TEXT("text/*"),
+        TEXT_PLAIN("text/plain"),
+        TEXT_HTML("text/html"),
+        MESSAGE_RC822("message/rfc822"),
+        IMAGE("image/*"),
+        MULTIPART("multipart/*"),
+        MULTIPART_ALTERNATIVE("multipart/alternative"),
+        MULTIPART_MIXED("multipart/mixed"),
+        MULTIPART_RELATED("multipart/related");
+
+        private final String mimeType;
+
+        private Mime(String mimeType) {
+            this.mimeType = mimeType;
+        }
+
+        public String getMimeType() {
+            return mimeType;
+        }
+
+    }
+
     String getContentId();
 
     String getMimeType();
@@ -34,8 +58,22 @@ public interface Part<T> {
 
     Disposition getDisposition();
 
-    boolean hasContent();
+    default boolean hasContent() {
+        return this.getContent() != null;
+    }
 
-    List<Part> getParts();
+    default boolean isMultipart() {
+        return !this.getParts().isEmpty();
+    }
+
+    List<Part<?>> getParts();
+
+    default boolean isMimeType(Part.Mime mimeType) {
+        return Parser.isSameMime(this.getMimeType(), mimeType);
+    }
+
+    default boolean isMimeType(String mimeType) {
+        return Parser.isSameMime(this.getMimeType(), mimeType);
+    }
 
 }

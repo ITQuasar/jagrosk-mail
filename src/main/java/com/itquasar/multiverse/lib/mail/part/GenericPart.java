@@ -16,9 +16,9 @@ public class GenericPart<T> implements Part<T> {
     private final String name;
     private final String mimeType;
     private final T content;
-    private final List<Part> parts;
+    private final List<Part<?>> parts;
 
-    public GenericPart(String contentId, Disposition disposition, String name, String mimeType, T content, List<Part> parts) {
+    public GenericPart(String contentId, Disposition disposition, String name, String mimeType, T content, List<Part<?>> parts) {
         this.contentId = contentId == null ? Constants.EMPTY_STRING : contentId;
         this.disposition = disposition;
         this.name = name == null ? Constants.EMPTY_STRING : name;
@@ -65,18 +65,17 @@ public class GenericPart<T> implements Part<T> {
     }
 
     @Override
-    public boolean hasContent() {
-        return this.content != null;
-    }
-
-    @Override
-    public List<Part> getParts() {
+    public List<Part<?>> getParts() {
         return parts;
     }
 
     @Override
     public String toString() {
-        return "GenericPart{" + "contentId=" + contentId + ", disposition=" + disposition + ", name=" + name + ", mimeType=" + mimeType + ", content=" + (content != null ? content.getClass().getCanonicalName() : "<<null>>") + '}';
+        return this.getClass().getSimpleName()
+                + "#" + getContentId()
+                + "[" + (getDisposition() != Disposition.NONE ? getDisposition() : "") + "]"
+                + ":" + getName() + ":" + getMimeType()
+                + "=" + (content != null ? content.getClass().getCanonicalName() : "<<null>>");
     }
 
 }
