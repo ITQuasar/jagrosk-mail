@@ -1,7 +1,10 @@
 package com.itquasar.multiverse.lib.mail;
 
+import com.itquasar.multiverse.lib.mail.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.lib.mail.envelope.LazyEnvelope;
 import com.itquasar.multiverse.lib.mail.exception.EmailException;
+import com.itquasar.multiverse.lib.mail.util.Constants;
+import com.itquasar.multiverse.lib.mail.util.Utils;
 import java.util.UUID;
 import javax.mail.Message;
 import org.slf4j.Logger;
@@ -48,55 +51,63 @@ public class Email {
         return content;
     }
 
-//
-//
-//    /**
-//     * Try HTML content, otherwise TEXT content.
-//     *
-//     * @return
-//     */
-//    public Part getContent() {
-//        Part htmlPart = getContent(parts, true);
-//        return htmlPart.getDisposition().equals(Part.Disposition.NONE) ? getContent(parts, false) : htmlPart;
-//    }
-//
-//    public Part getContent(List<Part> partToSearch, boolean html) {
-//        for (Part part : partToSearch) {
-//            if (part.getDisposition().equals(Part.Disposition.FLOWED)) {
-//                if ((!html && part.getMimeType().startsWith("text/plain"))
-//                        || (html && part.getMimeType().startsWith("text/html"))) {
-//                    return part;
-//                }
-//            }
-//        }
-//        return EMPTY_PART;
-//    }
-//
-//    public String getContentAsString() {
-//        return (String) getContent().getContent();
-//    }
-//
-//    public String getTextContent() {
-//        return (String) getContent(parts, false).getContent();
-//    }
-//
-//    public String getHtmlContent() {
-//        return (String) getContent(parts, true).getContent();
-//    }
-//
-//    // FIXME: think and create send API
-//    public boolean send(Session session) {
-//        throw new UnsupportedOperationException("Not implemented yet!");
-//    }
-//
-//    // FIXME: think and create send API
-//    public boolean send() {
-//        throw new UnsupportedOperationException("Not implemented yet!");
-//    }
-//    @Override
-//    public String toString() {
-//        return "Email{" + "uuid=" + uuid + ", subject=" + subject + ", from=" + from + ", replyTo=" + replyTo + ", to=" + to + ", cc=" + cc + ", bcc=" + bcc + ", attachments=" + parts + '}';
-//    }
+    /**
+     * Create an email using this message, the content supplied and {@code from}
+     * supplied as from ad {@code replyTo}
+     *
+     * @param from
+     * @param content
+     * @return
+     */
+    // FIXME: too much side effects
+    public Email reply(EmailContact from, Content content) {
+        String subject = getEnvelope().getSubject();
+        if (!subject.startsWith("Re:")) {
+            subject = "Re: " + subject;
+        }
+        return new Email(
+                new ImmutableEnvelope(
+                        from,
+                        getEnvelope().getReplyTo(),
+                        getEnvelope().getCc(),
+                        getEnvelope().getBcc(),
+                        subject
+                ),
+                content
+        );
+    }
+
+    /**
+     * Create an email using this message, the content supplied adding all
+     * attachments to it, {@code from} supplied as from ad {@code replyTo} and
+     * {@code to} as recipients
+     *
+     * @param from
+     * @param content
+     * @param to
+     * @return
+     */
+    // FIXME: too much side effects
+    public Email forward(EmailContact from, Content content, EmailContact... to) {
+        // add original attachments
+        content.getAttachments().addAll(this.getContent().getAttachments());
+
+        String subject = getEnvelope().getSubject();
+        if (!subject.startsWith("Fwd:")) {
+            subject = "Fwd: " + subject;
+        }
+        return new Email(
+                new ImmutableEnvelope(
+                        from,
+                        Utils.emailContactToList(to),
+                        Constants.NO_ONES,
+                        Constants.NO_ONES,
+                        subject
+                ),
+                content
+        );
+    }
+
     @Override
     public String toString() {
         return "Email{" + "uuid=" + uuid + ", envelope=" + envelope + ", content=" + content + '}';

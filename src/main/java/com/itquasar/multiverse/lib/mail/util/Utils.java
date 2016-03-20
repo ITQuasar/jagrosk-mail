@@ -1,8 +1,10 @@
 package com.itquasar.multiverse.lib.mail.util;
 
+import com.itquasar.multiverse.lib.mail.EmailContact;
 import com.itquasar.multiverse.lib.mail.exception.NullArgumentException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -12,6 +14,14 @@ import java.util.List;
 public class Utils {
 
     private Utils() {
+    }
+
+    public static List<EmailContact> emailContactToList(EmailContact... contacts) {
+        List<EmailContact> list = new LinkedList<>();
+        if (contacts != null) {
+            list.addAll(Arrays.asList(contacts));
+        }
+        return list;
     }
 
     public static <T> T defaultOnNull(T valueToTest, T defaultValue) {
