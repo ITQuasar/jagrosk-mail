@@ -19,6 +19,23 @@
             <url>http://www.gnu.org/licenses/gpl-3.0.en.html</url>
         </license>
     </licenses>
+    <developers>
+        <developer>
+            <name>Guilherme I F L Weizenmann</name>
+            <email>guilherme@itquasar.com</email>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git@github.com:ITQuasar/lib-mail.git</connection>
+        <developerConnection>scm:git:git@github.com:ITQuasar/lib-mail.git</developerConnection>
+        <url>git@github.com:ITQuasar/lib-mail.git</url>
+    </scm>
+    <distributionManagement>
+        <repository>
+            <id>bintray</id>
+            <url>https://api.bintray.com/maven/giflw/maven/lib-mail/</url>
+        </repository>
+    </distributionManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -57,4 +74,32 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
