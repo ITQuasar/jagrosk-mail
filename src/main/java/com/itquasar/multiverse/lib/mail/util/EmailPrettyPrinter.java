@@ -41,15 +41,15 @@ public class EmailPrettyPrinter {
                 .append(EOL)
                 .append("Bcc:           ")
                 .append(envelope.getBcc().toString())
+                .append(EOL)
+                .append("Subject:       ")
+                .append(envelope.getSubject())
                 .append(EOL);
     }
 
     private void printContent() {
         Content content = email.getContent();
         stringBuilder
-                .append("Subject:       ")
-                .append(content.getSubject())
-                .append(EOL)
                 .append("Text ").append(SEPARATOR).append(EOL)
                 .append(content.getTextContent())
                 .append(EOL).append(SEPARATOR).append(EOL)

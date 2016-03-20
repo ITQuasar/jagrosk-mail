@@ -1,7 +1,7 @@
 package com.itquasar.multiverse.lib.mail.util;
 
-import com.itquasar.multiverse.lib.mail.Content;
-import com.itquasar.multiverse.lib.mail.Envelope;
+import com.itquasar.multiverse.lib.mail.content.ImmutableContent;
+import com.itquasar.multiverse.lib.mail.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.lib.mail.exception.EmailException;
 import com.itquasar.multiverse.lib.mail.part.Attachment;
 import com.itquasar.multiverse.lib.mail.part.Inline;
@@ -49,13 +49,13 @@ public class Parser {
     }
 
     public static boolean isSameMime(String mimeType, String searchMime) {
-        System.out.println("comparing [" + mimeType + "] with [" + searchMime + "]");
+        LOGGER.trace("comparing [" + mimeType + "] with [" + searchMime + "]");
         mimeType = sanitizeMimeToPrefix(mimeType);
         searchMime = sanitizeMimeToPrefix(searchMime);
         boolean isMimeType
                 = !mimeType.isEmpty()
                 && mimeType.toLowerCase().startsWith(searchMime);
-        System.out.println("[" + mimeType + "] starts with [" + searchMime + "]? " + isMimeType);
+        LOGGER.trace("[" + mimeType + "] starts with [" + searchMime + "]? " + isMimeType);
         return isMimeType;
     }
 
@@ -80,7 +80,7 @@ public class Parser {
         while (tab.length() < depth * 4) {
             tab += "    ";
         }
-        System.out.println(tab + "- " + part.getContentType());
+        LOGGER.trace(tab + "- " + part.getContentType());
 
         String contentId = Constants.EMPTY_STRING;
         if (MimePart.class.isInstance(part)) {
@@ -161,26 +161,27 @@ public class Parser {
 //        }
 //        return result;
 //    }
-    public static Envelope parseMessageEnvelope(Message message) {
+    public static ImmutableEnvelope parseMessageEnvelope(Message message) {
+        LOGGER.debug("Parsing message envelope...");
         try {
             InternetAddress[] from = (InternetAddress[]) message.getFrom();
             InternetAddress[] replyTo = (InternetAddress[]) message.getReplyTo();
             InternetAddress[] to = (InternetAddress[]) message.getRecipients(Message.RecipientType.TO);
             InternetAddress[] cc = (InternetAddress[]) message.getRecipients(Message.RecipientType.CC);
             InternetAddress[] bcc = (InternetAddress[]) message.getRecipients(Message.RecipientType.BCC);
-            return new Envelope(from, replyTo, to, cc, bcc);
+
+            String subject = Utils.emptyOnNull(message.getSubject());
+            LOGGER.debug("...message envelope parsed.");
+            return new ImmutableEnvelope(from, replyTo, to, cc, bcc, subject);
         } catch (MessagingException ex) {
             LOGGER.error("Error parsing javax.mail.Message [{}]", message, ex);
             throw new EmailException("Could not build envelope from Message", ex);
         }
     }
 
-    public static Content parseMessageContent(Message message) {
+    public static ImmutableContent parseMessageContent(Message message) {
         try {
-            System.out.println("========================================= CONTENT: " + message.getContentType());
-
-            String subject = Utils.emptyOnNull(message.getSubject());
-            System.out.println("------------ " + subject);
+            LOGGER.debug("Parsing message content...");
 
             Part<?> rootPart = Parser.parseParts(message);
 
@@ -212,7 +213,8 @@ public class Parser {
             List<Part> attachsFiltered = attachs.stream()
                     .filter((p) -> p.hasContent())
                     .collect(Collectors.toList());
-            return new Content(subject, textPart, htmlPart, images, attachsFiltered);
+            LOGGER.debug("...message content parsed.");
+            return new ImmutableContent(textPart, htmlPart, images, attachsFiltered);
         } catch (MessagingException | IOException ex) {
             LOGGER.error("Error parsing message content.", ex);
             throw new EmailException("Could not build content from Message", ex);
@@ -233,9 +235,9 @@ public class Parser {
 //                )
 //                .forEach((part) -> attachs.add(part));
         attachs.addAll(rootPart.getParts());
-        System.out.println("LIST:     " + attachs.size() + " " + attachs);
+        LOGGER.trace("LIST:     " + attachs.size() + " " + attachs);
         attachs.remove(mainContent);
-        System.out.println("LIST REM: " + attachs.size() + " " + attachs);
+        LOGGER.trace("LIST REM: " + attachs.size() + " " + attachs);
         return new Tuple<>(mainContent, attachs);
     }
 

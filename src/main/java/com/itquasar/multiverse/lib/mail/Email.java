@@ -1,7 +1,7 @@
 package com.itquasar.multiverse.lib.mail;
 
+import com.itquasar.multiverse.lib.mail.envelope.LazyEnvelope;
 import com.itquasar.multiverse.lib.mail.exception.EmailException;
-import com.itquasar.multiverse.lib.mail.util.Parser;
 import java.util.UUID;
 import javax.mail.Message;
 import org.slf4j.Logger;
@@ -33,8 +33,8 @@ public class Email {
      */
     public Email(Message message) {
         try {
-            this.envelope = Parser.parseMessageEnvelope(message);
-            this.content = Parser.parseMessageContent(message);
+            this.envelope = new LazyEnvelope(message);
+            this.content = new LazyContent(message);
         } catch (Exception ex) {
             throw new EmailException("Could not initialize Email from Message.", ex);
         }

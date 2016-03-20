@@ -1,63 +1,28 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.itquasar.multiverse.lib.mail;
 
-import java.util.Collections;
+import com.itquasar.multiverse.lib.mail.EmailContact;
 import java.util.List;
-import javax.mail.internet.InternetAddress;
 
 /**
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class Envelope {
+public interface Envelope {
 
-    private final List<EmailContact> from;
-    private final List<EmailContact> replyTo;
+    List<EmailContact> getBcc();
 
-    private final List<EmailContact> to;
-    private final List<EmailContact> cc;
-    private final List<EmailContact> bcc;
+    List<EmailContact> getCc();
 
-    public Envelope(List<EmailContact> from, List<EmailContact> replyTo,
-            List<EmailContact> to, List<EmailContact> cc, List<EmailContact> bcc) {
-        this.from = Collections.unmodifiableList(from);
-        this.replyTo = Collections.unmodifiableList(replyTo);
-        this.to = Collections.unmodifiableList(to);
-        this.cc = Collections.unmodifiableList(cc);
-        this.bcc = Collections.unmodifiableList(bcc);
-    }
+    List<EmailContact> getFrom();
 
-    public Envelope(InternetAddress[] from, InternetAddress[] replyTo,
-            InternetAddress[] to, InternetAddress[] cc, InternetAddress[] bcc) {
-        this(EmailContact.fromInternetAddresses(from),
-                EmailContact.fromInternetAddresses(replyTo),
-                EmailContact.fromInternetAddresses(to),
-                EmailContact.fromInternetAddresses(cc),
-                EmailContact.fromInternetAddresses(bcc));
-    }
+    List<EmailContact> getReplyTo();
 
-    public List<EmailContact> getFrom() {
-        return from;
-    }
+    List<EmailContact> getTo();
 
-    public List<EmailContact> getReplyTo() {
-        return replyTo;
-    }
-
-    public List<EmailContact> getTo() {
-        return to;
-    }
-
-    public List<EmailContact> getCc() {
-        return cc;
-    }
-
-    public List<EmailContact> getBcc() {
-        return bcc;
-    }
-
-    @Override
-    public String toString() {
-        return "Envelope{" + "from=" + from + ", replyTo=" + replyTo + ", to=" + to + ", cc=" + cc + ", bcc=" + bcc + '}';
-    }
-
+    String getSubject();
 }
