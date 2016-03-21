@@ -8,6 +8,7 @@
 
     <name>lib-Mail</name>
     <description>Wrapper around Java Mail API to make more easy work with email in Java, and Groovy and Scala too.</description>
+    <url>https://github.com/ITQuasar/lib-mail/releases</url>
     <organization>
         <name>ITQuasar</name>
         <url>http://itquasar.com</url>
