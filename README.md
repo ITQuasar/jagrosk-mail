@@ -16,3 +16,22 @@ lib-Mail by ITQuasar
 
 
 Wrapper around Java Mail API to make more easy work with email in Java, and Groovy and Scala too.
+
+
+Usage
+-----
+
+To use, by now:
+
+```
+...
+Message message = .... // javax.mail.Message
+...
+Email email = new Email(message);
+```
+
+To get recipients and subject use `getEnvelope()`. `Envelope` has methods `getTo()`, `getSubject()`, etc.
+
+To get content use `getContent()`. `Content` has methods `getTextContent()`, `getHtmlContent()`, `getAttachments()`, etc.
+
+The envelope and content parsing are made on demand (lazily). So, the headers are parsed when envelope getters are acessed, and the body when content getters are acessed. Just be sure to have an open mail session opened, as Java Mail API is lazy too.
