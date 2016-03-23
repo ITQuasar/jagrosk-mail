@@ -71,7 +71,8 @@ public class Email {
                         getEnvelope().getReplyTo(),
                         getEnvelope().getCc(),
                         getEnvelope().getBcc(),
-                        subject
+                        subject,
+                        null
                 ),
                 content
         );
@@ -102,10 +103,15 @@ public class Email {
                         Utils.emailContactToList(to),
                         Constants.NO_ONES,
                         Constants.NO_ONES,
-                        subject
+                        subject,
+                        null
                 ),
                 content
         );
+    }
+
+    public Message toMessage() {
+        throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     @Override

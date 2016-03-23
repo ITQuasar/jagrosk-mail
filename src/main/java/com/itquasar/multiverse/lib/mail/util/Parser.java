@@ -172,7 +172,7 @@ public class Parser {
 
             String subject = Utils.emptyOnNull(message.getSubject());
             LOGGER.debug("...message envelope parsed.");
-            return new ImmutableEnvelope(from, replyTo, to, cc, bcc, subject);
+            return new ImmutableEnvelope(from, replyTo, to, cc, bcc, subject, message.getReceivedDate());
         } catch (MessagingException ex) {
             LOGGER.error("Error parsing javax.mail.Message [{}]", message, ex);
             throw new EmailException("Could not build envelope from Message", ex);

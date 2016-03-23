@@ -5,9 +5,10 @@
  */
 package com.itquasar.multiverse.lib.mail.envelope;
 
-import com.itquasar.multiverse.lib.mail.Envelope;
 import com.itquasar.multiverse.lib.mail.EmailContact;
+import com.itquasar.multiverse.lib.mail.Envelope;
 import com.itquasar.multiverse.lib.mail.util.Parser;
+import java.util.Date;
 import java.util.List;
 import javax.mail.Message;
 
@@ -64,6 +65,12 @@ public class LazyEnvelope implements Envelope {
     public String getSubject() {
         this.init();
         return envelope.getSubject();
+    }
+
+    @Override
+    public Date getReceivedOn() {
+        this.init();
+        return envelope.getReceivedOn();
     }
 
 }

@@ -4,6 +4,7 @@ import com.itquasar.multiverse.lib.mail.EmailContact;
 import com.itquasar.multiverse.lib.mail.Envelope;
 import com.itquasar.multiverse.lib.mail.util.Utils;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import javax.mail.internet.InternetAddress;
 
@@ -22,32 +23,36 @@ public class ImmutableEnvelope implements Envelope {
 
     private final String subject;
 
+    private final Date receivedOn;
+
     public ImmutableEnvelope(EmailContact from,
             List<EmailContact> to, List<EmailContact> cc, List<EmailContact> bcc,
-            String subject) {
-        this(Utils.emailContactToList(from), Utils.emailContactToList(from), to, cc, bcc, subject);
+            String subject, Date receivedOn) {
+        this(Utils.emailContactToList(from), Utils.emailContactToList(from), to, cc, bcc, subject, receivedOn);
     }
 
     public ImmutableEnvelope(List<EmailContact> from, List<EmailContact> replyTo,
             List<EmailContact> to, List<EmailContact> cc, List<EmailContact> bcc,
-            String subject) {
+            String subject, Date receivedOn) {
         this.from = Collections.unmodifiableList(from);
         this.replyTo = Collections.unmodifiableList(replyTo);
         this.to = Collections.unmodifiableList(to);
         this.cc = Collections.unmodifiableList(cc);
         this.bcc = Collections.unmodifiableList(bcc);
         this.subject = Utils.emptyOnNull(subject);
+        // FIXME: null pointer
+        this.receivedOn = receivedOn;
     }
 
     public ImmutableEnvelope(InternetAddress[] from, InternetAddress[] replyTo,
             InternetAddress[] to, InternetAddress[] cc, InternetAddress[] bcc,
-            String subject) {
+            String subject, Date receivedOn) {
         this(EmailContact.fromInternetAddresses(from),
                 EmailContact.fromInternetAddresses(replyTo),
                 EmailContact.fromInternetAddresses(to),
                 EmailContact.fromInternetAddresses(cc),
                 EmailContact.fromInternetAddresses(bcc),
-                subject);
+                subject, receivedOn);
     }
 
     @Override
@@ -78,6 +83,12 @@ public class ImmutableEnvelope implements Envelope {
     @Override
     public String getSubject() {
         return this.subject;
+    }
+
+    // FIXME: null pointer
+    @Override
+    public Date getReceivedOn() {
+        return receivedOn != null ? new Date(receivedOn.getTime()) : null;
     }
 
     @Override

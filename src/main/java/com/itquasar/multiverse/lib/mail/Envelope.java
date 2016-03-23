@@ -5,7 +5,7 @@
  */
 package com.itquasar.multiverse.lib.mail;
 
-import com.itquasar.multiverse.lib.mail.EmailContact;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,4 +25,6 @@ public interface Envelope {
     List<EmailContact> getTo();
 
     String getSubject();
+
+    Date getReceivedOn();
 }
