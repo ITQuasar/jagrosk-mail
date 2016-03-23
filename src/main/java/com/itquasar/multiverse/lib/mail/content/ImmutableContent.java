@@ -90,12 +90,14 @@ public class ImmutableContent implements Content {
 
     @Override
     public boolean hasTextPlain() {
-        return this.textContent.hasContent() && !this.textContent.getContent().isEmpty();
+        return this.textContent.hasContent()
+                && !this.textContent.getContent().isEmpty();
     }
 
     @Override
     public boolean hasTextHtml() {
-        return this.textContent.hasContent() && !this.htmlContent.getContent().isEmpty();
+        return this.htmlContent.hasContent()
+                && !this.htmlContent.getContent().isEmpty();
     }
 
     @Override
