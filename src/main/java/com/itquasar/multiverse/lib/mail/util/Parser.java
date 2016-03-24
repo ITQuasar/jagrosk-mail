@@ -170,7 +170,7 @@ public class Parser {
             InternetAddress[] cc = (InternetAddress[]) message.getRecipients(Message.RecipientType.CC);
             InternetAddress[] bcc = (InternetAddress[]) message.getRecipients(Message.RecipientType.BCC);
 
-            String subject = Utils.emptyOnNull(message.getSubject());
+            String subject = FunctionUtils.emptyOnNull(message.getSubject());
             LOGGER.debug("...message envelope parsed.");
             return new ImmutableEnvelope(from, replyTo, to, cc, bcc, subject, message.getReceivedDate());
         } catch (MessagingException ex) {

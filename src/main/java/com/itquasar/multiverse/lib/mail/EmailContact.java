@@ -2,8 +2,8 @@ package com.itquasar.multiverse.lib.mail;
 
 import static com.itquasar.multiverse.lib.mail.util.Constants.EMPTY_STRING;
 import static com.itquasar.multiverse.lib.mail.util.Constants.RFC822_ADDRESS_SEPARATOR;
-import com.itquasar.multiverse.lib.mail.util.Utils;
-import static com.itquasar.multiverse.lib.mail.util.Utils.emptyOnNull;
+import com.itquasar.multiverse.lib.mail.util.FunctionUtils;
+import static com.itquasar.multiverse.lib.mail.util.FunctionUtils.emptyOnNull;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -33,7 +33,7 @@ public class EmailContact {
     }
 
     public static EmailContact fromInternetAddress(InternetAddress address) {
-        Utils.checkNullArgument(address, "internetAddress");
+        FunctionUtils.checkNullArgument(address, "internetAddress");
         return new EmailContact(address.getPersonal(), address.getAddress());
     }
 

@@ -4,7 +4,7 @@ import com.itquasar.multiverse.lib.mail.Content;
 import com.itquasar.multiverse.lib.mail.part.Part;
 import com.itquasar.multiverse.lib.mail.part.SinglePart;
 import com.itquasar.multiverse.lib.mail.util.Constants;
-import com.itquasar.multiverse.lib.mail.util.Utils;
+import com.itquasar.multiverse.lib.mail.util.FunctionUtils;
 import java.util.List;
 
 /**
@@ -36,10 +36,10 @@ public class ImmutableContent implements Content {
 
     public ImmutableContent(Part<String> textContent, Part<String> htmlContent, List<Part> htmlImages,
             List<Part> attachments) {
-        this.textContent = Utils.defaultOnNull(textContent, Constants.EMPTY_TEXT_PART);
-        this.htmlContent = Utils.defaultOnNull(htmlContent, Constants.EMPTY_HTML_PART);
-        this.htmlImages = Utils.defaultOnNull(htmlImages, Constants.NO_PARTS);
-        this.attachments = Utils.defaultOnNull(attachments, Constants.NO_PARTS);
+        this.textContent = FunctionUtils.defaultOnNull(textContent, Constants.EMPTY_TEXT_PART);
+        this.htmlContent = FunctionUtils.defaultOnNull(htmlContent, Constants.EMPTY_HTML_PART);
+        this.htmlImages = FunctionUtils.defaultOnNull(htmlImages, Constants.NO_PARTS);
+        this.attachments = FunctionUtils.defaultOnNull(attachments, Constants.NO_PARTS);
     }
 
     /**

@@ -3,6 +3,12 @@ package com.itquasar.multiverse.lib.mail.util;
 import com.itquasar.multiverse.lib.mail.EmailContact;
 import com.itquasar.multiverse.lib.mail.part.GenericPart;
 import com.itquasar.multiverse.lib.mail.part.Part;
+import com.itquasar.multiverse.lib.mail.server.listener.LoggerConnectionListener;
+import com.itquasar.multiverse.lib.mail.server.listener.LoggerFolderListenner;
+import com.itquasar.multiverse.lib.mail.server.listener.LoggerMessageChangedListener;
+import com.itquasar.multiverse.lib.mail.server.listener.LoggerMessageCountListener;
+import com.itquasar.multiverse.lib.mail.server.listener.LoggerStoreListenner;
+import com.itquasar.multiverse.lib.mail.server.listener.LoggerTransportListener;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,5 +29,18 @@ public interface Constants {
 
     List<EmailContact> NO_ONES = Collections.emptyList();
     List<Part> NO_PARTS = Collections.emptyList();
+
+    interface LoggerMailListener {
+
+        LoggerConnectionListener CONNECTION = new LoggerConnectionListener();
+
+        LoggerTransportListener TRANSPORT = new LoggerTransportListener();
+
+        LoggerFolderListenner FOLDER = new LoggerFolderListenner();
+        LoggerStoreListenner STORE = new LoggerStoreListenner();
+
+        LoggerMessageChangedListener MESSAGE_CHANGED = new LoggerMessageChangedListener();
+        LoggerMessageCountListener MESSAGE_COUNT = new LoggerMessageCountListener();
+    }
 
 }

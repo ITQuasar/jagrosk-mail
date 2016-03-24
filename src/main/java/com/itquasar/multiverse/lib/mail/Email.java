@@ -4,7 +4,7 @@ import com.itquasar.multiverse.lib.mail.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.lib.mail.envelope.LazyEnvelope;
 import com.itquasar.multiverse.lib.mail.exception.EmailException;
 import com.itquasar.multiverse.lib.mail.util.Constants;
-import com.itquasar.multiverse.lib.mail.util.Utils;
+import com.itquasar.multiverse.lib.mail.util.ClientUtils;
 import java.util.UUID;
 import javax.mail.Message;
 import org.slf4j.Logger;
@@ -100,7 +100,7 @@ public class Email {
         return new Email(
                 new ImmutableEnvelope(
                         from,
-                        Utils.emailContactToList(to),
+                        ClientUtils.emailContactToList(to),
                         Constants.NO_ONES,
                         Constants.NO_ONES,
                         subject,

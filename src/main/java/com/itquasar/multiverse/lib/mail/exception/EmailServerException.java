@@ -9,21 +9,21 @@ package com.itquasar.multiverse.lib.mail.exception;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class EmailException extends RuntimeException {
+public class EmailServerException extends EmailException {
 
-    public EmailException(String message) {
+    public EmailServerException(String message) {
         super(message);
     }
 
-    public EmailException(String message, Throwable cause) {
+    public EmailServerException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public EmailException(Throwable cause) {
+    public EmailServerException(Throwable cause) {
         super(cause);
     }
 
-    public EmailException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public EmailServerException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 

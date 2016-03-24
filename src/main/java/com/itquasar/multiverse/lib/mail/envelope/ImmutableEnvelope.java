@@ -2,7 +2,8 @@ package com.itquasar.multiverse.lib.mail.envelope;
 
 import com.itquasar.multiverse.lib.mail.EmailContact;
 import com.itquasar.multiverse.lib.mail.Envelope;
-import com.itquasar.multiverse.lib.mail.util.Utils;
+import com.itquasar.multiverse.lib.mail.util.ClientUtils;
+import com.itquasar.multiverse.lib.mail.util.FunctionUtils;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +29,7 @@ public class ImmutableEnvelope implements Envelope {
     public ImmutableEnvelope(EmailContact from,
             List<EmailContact> to, List<EmailContact> cc, List<EmailContact> bcc,
             String subject, Date receivedOn) {
-        this(Utils.emailContactToList(from), Utils.emailContactToList(from), to, cc, bcc, subject, receivedOn);
+        this(ClientUtils.emailContactToList(from), ClientUtils.emailContactToList(from), to, cc, bcc, subject, receivedOn);
     }
 
     public ImmutableEnvelope(List<EmailContact> from, List<EmailContact> replyTo,
@@ -39,7 +40,7 @@ public class ImmutableEnvelope implements Envelope {
         this.to = Collections.unmodifiableList(to);
         this.cc = Collections.unmodifiableList(cc);
         this.bcc = Collections.unmodifiableList(bcc);
-        this.subject = Utils.emptyOnNull(subject);
+        this.subject = FunctionUtils.emptyOnNull(subject);
         // FIXME: null pointer
         this.receivedOn = receivedOn;
     }
