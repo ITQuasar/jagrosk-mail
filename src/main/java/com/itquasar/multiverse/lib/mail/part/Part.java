@@ -9,45 +9,6 @@ import java.util.List;
  */
 public interface Part<T> {
 
-    enum Disposition {
-
-        INLINE, ATTACHMENT, NONE;
-
-        public static Disposition evaluate(String disposition) {
-            if (disposition != null) {
-                return Disposition.valueOf(disposition.toUpperCase());
-            }
-            return NONE;
-        }
-
-        public String value() {
-            return this.name().toLowerCase();
-        }
-    }
-
-    enum Mime {
-        TEXT("text/*"),
-        TEXT_PLAIN("text/plain"),
-        TEXT_HTML("text/html"),
-        MESSAGE_RC822("message/rfc822"),
-        IMAGE("image/*"),
-        MULTIPART("multipart/*"),
-        MULTIPART_ALTERNATIVE("multipart/alternative"),
-        MULTIPART_MIXED("multipart/mixed"),
-        MULTIPART_RELATED("multipart/related");
-
-        private final String mimeType;
-
-        private Mime(String mimeType) {
-            this.mimeType = mimeType;
-        }
-
-        public String getMimeType() {
-            return mimeType;
-        }
-
-    }
-
     String getContentId();
 
     String getMimeType();
@@ -68,7 +29,7 @@ public interface Part<T> {
 
     List<Part<?>> getParts();
 
-    default boolean isMimeType(Part.Mime mimeType) {
+    default boolean isMimeType(MimeType mimeType) {
         return Parser.isSameMime(this.getMimeType(), mimeType);
     }
 

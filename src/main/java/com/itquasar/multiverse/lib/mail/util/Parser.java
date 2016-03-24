@@ -4,7 +4,9 @@ import com.itquasar.multiverse.lib.mail.content.ImmutableContent;
 import com.itquasar.multiverse.lib.mail.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.lib.mail.exception.EmailException;
 import com.itquasar.multiverse.lib.mail.part.Attachment;
+import com.itquasar.multiverse.lib.mail.part.Disposition;
 import com.itquasar.multiverse.lib.mail.part.Inline;
+import com.itquasar.multiverse.lib.mail.part.MimeType;
 import com.itquasar.multiverse.lib.mail.part.Multipart;
 import com.itquasar.multiverse.lib.mail.part.Part;
 import com.itquasar.multiverse.lib.mail.part.SinglePart;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimePart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +47,7 @@ public class Parser {
 //        return isSameMime(mimeToMatch.getMimeType(), mimeType);
 //    }
 //
-    public static boolean isSameMime(String mimeType, Part.Mime searchMime) {
+    public static boolean isSameMime(String mimeType, MimeType searchMime) {
         return isSameMime(mimeType, searchMime.getMimeType());
     }
 
@@ -89,25 +92,25 @@ public class Parser {
         }
 
         if (part.getContentType().toLowerCase().contains("format=flowed")) {
-            if (part.isMimeType(Part.Mime.TEXT_PLAIN.getMimeType())) {
+            if (part.isMimeType(MimeType.TEXT_PLAIN.getMimeType())) {
                 return new SinglePart(
                         contentId,
-                        Part.Disposition.evaluate(part.getDisposition()),
+                        Disposition.evaluate(part.getDisposition()),
                         part.getContentType(),
                         String.class.cast(part.getContent())
                 );
-            } else if (part.isMimeType(Part.Mime.TEXT_HTML.getMimeType())) {
+            } else if (part.isMimeType(MimeType.TEXT_HTML.getMimeType())) {
                 return new SinglePart(
                         contentId,
-                        Part.Disposition.evaluate(part.getDisposition()),
+                        Disposition.evaluate(part.getDisposition()),
                         part.getContentType(),
                         String.class.cast(part.getContent())
                 );
             }
-        } else if (part.isMimeType(Part.Mime.IMAGE.getMimeType()) && Part.Disposition.evaluate(part.getDisposition()) != Part.Disposition.ATTACHMENT) {
+        } else if (part.isMimeType(MimeType.IMAGE.getMimeType()) && Disposition.evaluate(part.getDisposition()) != Disposition.ATTACHMENT) {
             MimePart mp = (MimePart) part;
             return new Inline(mp.getContentID(), mp.getFileName(), mp.getContentType(), mp.getContent());
-        } else if (part.isMimeType(Part.Mime.MULTIPART.getMimeType())) {
+        } else if (part.isMimeType(MimeType.MULTIPART.getMimeType())) {
             List<Part<?>> subParts = new LinkedList<>();
             javax.mail.Multipart mp;
             if (!javax.mail.Multipart.class.isInstance(part)) {
@@ -121,7 +124,7 @@ public class Parser {
             return new Multipart(part.getContentType(), subParts);
         }
 
-        switch (Part.Disposition.evaluate(part.getDescription())) {
+        switch (Disposition.evaluate(part.getDescription())) {
             case INLINE:
                 return new Inline(contentId, part.getFileName(), part.getContentType(), part.getContent());
             case ATTACHMENT:
@@ -164,6 +167,7 @@ public class Parser {
     public static ImmutableEnvelope parseMessageEnvelope(Message message) {
         LOGGER.debug("Parsing message envelope...");
         try {
+            InternetAddress sender = (InternetAddress) ((MimeMessage) message).getSender();
             InternetAddress[] from = (InternetAddress[]) message.getFrom();
             InternetAddress[] replyTo = (InternetAddress[]) message.getReplyTo();
             InternetAddress[] to = (InternetAddress[]) message.getRecipients(Message.RecipientType.TO);
@@ -172,7 +176,11 @@ public class Parser {
 
             String subject = FunctionUtils.emptyOnNull(message.getSubject());
             LOGGER.debug("...message envelope parsed.");
-            return new ImmutableEnvelope(from, replyTo, to, cc, bcc, subject, message.getReceivedDate());
+            return new ImmutableEnvelope(
+                    sender, from, replyTo,
+                    to, cc, bcc,
+                    subject, message.getReceivedDate()
+            );
         } catch (MessagingException ex) {
             LOGGER.error("Error parsing javax.mail.Message [{}]", message, ex);
             throw new EmailException("Could not build envelope from Message", ex);
@@ -190,24 +198,24 @@ public class Parser {
             final List<Part> images = new LinkedList<>();
             final List<Part> attachs = new LinkedList<>();
 
-            if (rootPart.isMimeType(Part.Mime.MULTIPART_MIXED)) {
+            if (rootPart.isMimeType(MimeType.MULTIPART_MIXED)) {
                 Tuple<Part<?>, List<Part<?>>> tuple = parseMultipartMixed(rootPart);
                 rootPart = tuple.fst().hasContent() ? tuple.fst() : rootPart;
                 attachs.addAll(tuple.snd());
             }
-            if (rootPart.isMimeType(Part.Mime.MULTIPART_ALTERNATIVE)) {
+            if (rootPart.isMimeType(MimeType.MULTIPART_ALTERNATIVE)) {
                 Tuple<Part<String>, Part<?>> tuple = parseMultipartAlternative(rootPart);
                 textPart = tuple.fst();
                 rootPart = tuple.snd().hasContent() ? tuple.snd() : rootPart;
             }
-            if (rootPart.isMimeType(Part.Mime.MULTIPART_RELATED)) {
+            if (rootPart.isMimeType(MimeType.MULTIPART_RELATED)) {
                 Tuple<Part<String>, List<Part<?>>> tuple = parseMultipartRelated(rootPart);
                 rootPart = tuple.fst().hasContent() ? tuple.fst() : rootPart;
                 images.addAll(tuple.snd());
             }
-            if (rootPart.isMimeType(Part.Mime.TEXT_PLAIN)) {
+            if (rootPart.isMimeType(MimeType.TEXT_PLAIN)) {
                 textPart = (Part<String>) rootPart;
-            } else if (rootPart.isMimeType(Part.Mime.TEXT_HTML)) {
+            } else if (rootPart.isMimeType(MimeType.TEXT_HTML)) {
                 htmlPart = (Part<String>) rootPart;
             }
             List<Part> attachsFiltered = attachs.stream()
@@ -224,7 +232,7 @@ public class Parser {
     private static Tuple<Part<?>, List<Part<?>>> parseMultipartMixed(Part<?> rootPart) {
         Part<?> mainContent = (Part<String>) rootPart.getParts().stream()
                 .filter((part)
-                        -> part.isMimeType(Part.Mime.TEXT) || part.isMimeType(Part.Mime.MULTIPART)
+                        -> part.isMimeType(MimeType.TEXT) || part.isMimeType(MimeType.MULTIPART)
                 )
                 .findFirst()
                 .get();
@@ -244,11 +252,11 @@ public class Parser {
     private static Tuple<Part<String>, Part<?>> parseMultipartAlternative(Part<?> rootPart) {
         Optional<Part<?>> opt;
         opt = rootPart.getParts().stream()
-                .filter((part) -> part.isMimeType(Part.Mime.TEXT_PLAIN))
+                .filter((part) -> part.isMimeType(MimeType.TEXT_PLAIN))
                 .findFirst();
         Part<String> textPart = (Part<String>) opt.orElse(Constants.EMPTY_PART);
         opt = rootPart.getParts().stream()
-                .filter((part) -> part.isMimeType(Part.Mime.MULTIPART_RELATED))
+                .filter((part) -> part.isMimeType(MimeType.MULTIPART_RELATED))
                 .findFirst();
         Part<?> relatedPart = opt.orElse(Constants.EMPTY_PART);
         return new Tuple<>(textPart, relatedPart);
@@ -256,12 +264,12 @@ public class Parser {
 
     private static Tuple<Part<String>, List<Part<?>>> parseMultipartRelated(Part<?> rootPart) {
         Optional<Part<?>> opt = rootPart.getParts().stream()
-                .filter((part) -> part.isMimeType(Part.Mime.TEXT))
+                .filter((part) -> part.isMimeType(MimeType.TEXT))
                 .findFirst();
         Part<String> htmlPart = (Part<String>) opt.orElse(Constants.EMPTY_PART);
         List<Part<?>> images = new LinkedList<>();
         rootPart.getParts().stream()
-                .filter((part) -> part.isMimeType(Part.Mime.IMAGE))
+                .filter((part) -> part.isMimeType(MimeType.IMAGE))
                 .forEach((part) -> images.add(part));
         return new Tuple<>(htmlPart, images);
     }

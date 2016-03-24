@@ -15,6 +15,7 @@ import javax.mail.internet.InternetAddress;
  */
 public class ImmutableEnvelope implements Envelope {
 
+    private final EmailContact sender;
     private final List<EmailContact> from;
     private final List<EmailContact> replyTo;
 
@@ -29,31 +30,38 @@ public class ImmutableEnvelope implements Envelope {
     public ImmutableEnvelope(EmailContact from,
             List<EmailContact> to, List<EmailContact> cc, List<EmailContact> bcc,
             String subject, Date receivedOn) {
-        this(ClientUtils.emailContactToList(from), ClientUtils.emailContactToList(from), to, cc, bcc, subject, receivedOn);
+        this(from, ClientUtils.emailContactToList(from), ClientUtils.emailContactToList(from), to, cc, bcc, subject, receivedOn);
     }
 
-    public ImmutableEnvelope(List<EmailContact> from, List<EmailContact> replyTo,
+    public ImmutableEnvelope(EmailContact sender, List<EmailContact> from, List<EmailContact> replyTo,
             List<EmailContact> to, List<EmailContact> cc, List<EmailContact> bcc,
             String subject, Date receivedOn) {
-        this.from = Collections.unmodifiableList(from);
-        this.replyTo = Collections.unmodifiableList(replyTo);
-        this.to = Collections.unmodifiableList(to);
-        this.cc = Collections.unmodifiableList(cc);
-        this.bcc = Collections.unmodifiableList(bcc);
+        this.sender = sender;
+        this.from = Collections.unmodifiableList(FunctionUtils.emptyOnNull(from));
+        this.replyTo = Collections.unmodifiableList(FunctionUtils.emptyOnNull(replyTo));
+        this.to = Collections.unmodifiableList(FunctionUtils.emptyOnNull(to));
+        this.cc = Collections.unmodifiableList(FunctionUtils.emptyOnNull(cc));
+        this.bcc = Collections.unmodifiableList(FunctionUtils.emptyOnNull(bcc));
         this.subject = FunctionUtils.emptyOnNull(subject);
         // FIXME: null pointer
         this.receivedOn = receivedOn;
     }
 
-    public ImmutableEnvelope(InternetAddress[] from, InternetAddress[] replyTo,
+    public ImmutableEnvelope(InternetAddress sender, InternetAddress[] from, InternetAddress[] replyTo,
             InternetAddress[] to, InternetAddress[] cc, InternetAddress[] bcc,
             String subject, Date receivedOn) {
-        this(EmailContact.fromInternetAddresses(from),
+        this(EmailContact.fromInternetAddress(sender),
+                EmailContact.fromInternetAddresses(from),
                 EmailContact.fromInternetAddresses(replyTo),
                 EmailContact.fromInternetAddresses(to),
                 EmailContact.fromInternetAddresses(cc),
                 EmailContact.fromInternetAddresses(bcc),
                 subject, receivedOn);
+    }
+
+    @Override
+    public EmailContact getSender() {
+        return sender;
     }
 
     @Override

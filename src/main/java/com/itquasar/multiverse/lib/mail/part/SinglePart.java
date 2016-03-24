@@ -18,7 +18,7 @@ public class SinglePart<T> extends GenericPart<T> {
         super(mimeType, content);
     }
 
-    public SinglePart(Part.Mime mimeType, T content) {
+    public SinglePart(MimeType mimeType, T content) {
         this(mimeType.getMimeType(), content);
     }
 

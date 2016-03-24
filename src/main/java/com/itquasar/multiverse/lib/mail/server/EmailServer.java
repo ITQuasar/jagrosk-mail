@@ -162,7 +162,7 @@ public class EmailServer implements Constants {
      * @throws EmailServerException
      */
     public EmailFolder openFolderForReadAndWrite(String name, boolean readAndWrite) {
-        ServerUtils.serviceConnectedOrError(_store);
+        ServerUtils.serviceConnectedOrError(getStore());
         return new EmailFolder(getStore(), name, readAndWrite, this);
     }
 
@@ -173,7 +173,7 @@ public class EmailServer implements Constants {
      * @throws EmailServerException
      */
     public void send(Email email) {
-        send(email.toMessage());
+        send(email.toMessage(session));
     }
 
     /**
@@ -184,7 +184,7 @@ public class EmailServer implements Constants {
      * @throws EmailServerException
      */
     public void send(Email email, Interceptor<Email> interceptor) {
-        send(email.toMessage(), interceptor.allow(email));
+        send(email.toMessage(session), interceptor.allow(email));
     }
 
     /**
@@ -216,7 +216,7 @@ public class EmailServer implements Constants {
      * @throws EmailServerException
      */
     private void send(Message message, boolean allow) {
-        ServerUtils.serviceConnectedOrError(_transport);
+        ServerUtils.serviceConnectedOrError(getTransport());
         if (allow) {
             try {
                 getTransport().sendMessage(message, message.getAllRecipients());

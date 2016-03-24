@@ -14,15 +14,17 @@ import java.util.List;
  */
 public interface Envelope {
 
-    List<EmailContact> getBcc();
-
-    List<EmailContact> getCc();
+    EmailContact getSender();
 
     List<EmailContact> getFrom();
 
     List<EmailContact> getReplyTo();
 
     List<EmailContact> getTo();
+
+    List<EmailContact> getCc();
+
+    List<EmailContact> getBcc();
 
     String getSubject();
 

@@ -1,11 +1,13 @@
 package com.itquasar.multiverse.lib.mail;
 
-import static com.itquasar.multiverse.lib.mail.util.Constants.EMPTY_STRING;
+import com.itquasar.multiverse.lib.mail.exception.EmailException;
+import com.itquasar.multiverse.lib.mail.util.Constants;
 import static com.itquasar.multiverse.lib.mail.util.Constants.RFC822_ADDRESS_SEPARATOR;
 import com.itquasar.multiverse.lib.mail.util.FunctionUtils;
-import static com.itquasar.multiverse.lib.mail.util.FunctionUtils.emptyOnNull;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import javax.mail.internet.InternetAddress;
@@ -38,25 +40,40 @@ public class EmailContact {
     }
 
     public static List<EmailContact> fromInternetAddresses(InternetAddress... addresses) {
+        addresses = FunctionUtils.defaultOnNull(addresses, Constants.NO_ADDRESSES);
         List<EmailContact> contacts = new LinkedList<>();
-        if (addresses != null) {
-            for (InternetAddress address : addresses) {
-                contacts.add(fromInternetAddress(address));
-            }
+        for (InternetAddress address : addresses) {
+            contacts.add(fromInternetAddress(address));
         }
         return contacts;
+    }
+
+    public static InternetAddress[] toInternetAddresses(EmailContact... emailContacts) {
+        emailContacts = FunctionUtils.defaultOnNull(emailContacts, Constants.NO_ONES_ARRAY);
+        return emailContacts.length > 0
+                ? toInternetAddresses(Arrays.asList(emailContacts))
+                : Constants.NO_ADDRESSES;
+    }
+
+    public static InternetAddress[] toInternetAddresses(List<EmailContact> emailContacts) {
+        emailContacts = FunctionUtils.defaultOnNull(emailContacts, Collections.EMPTY_LIST);
+        InternetAddress[] addresses = new InternetAddress[emailContacts.size()];
+        for (int i = 0; i < addresses.length; i++) {
+            addresses[i] = emailContacts.get(i).toInternetAddress();
+        }
+        return addresses;
     }
 
     private final String name;
     private final String email;
 
     public EmailContact(String email) {
-        this(EMPTY_STRING, email);
+        this(Constants.EMPTY_STRING, email);
     }
 
     public EmailContact(String name, String email) {
-        this.name = emptyOnNull(name);
-        this.email = emptyOnNull(email);
+        this.name = FunctionUtils.emptyOnNull(name);
+        this.email = FunctionUtils.emptyOnNull(email);
     }
 
     public String getName() {
@@ -69,10 +86,22 @@ public class EmailContact {
 
     public String toRFC822() {
         return email.isEmpty()
-                ? EMPTY_STRING
+                ? Constants.EMPTY_STRING
                 : (name.isEmpty()
-                        ? EMPTY_STRING
+                        ? Constants.EMPTY_STRING
                         : "\"" + name + "\" ") + "<" + email + ">";
+    }
+
+    public InternetAddress toInternetAddress() {
+        return toInternetAddress(null);
+    }
+
+    public InternetAddress toInternetAddress(String charset) {
+        try {
+            return new InternetAddress(email, name, charset);
+        } catch (UnsupportedEncodingException ex) {
+            throw new EmailException("Error converting EmailContac to IntenetAddress", ex);
+        }
     }
 
     @Override
