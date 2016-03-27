@@ -7,9 +7,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.mail.Folder;
+import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Store;
+import javax.mail.search.SearchTerm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,10 +26,10 @@ public class EmailFolder {
 
     private final String name;
     private final Folder folder;
-    private final EmailServer outer;
+    private final EmailServer emailServer;
 
     public EmailFolder(Store store, String name, boolean readAndWrite, final EmailServer outer) {
-        this.outer = outer;
+        this.emailServer = outer;
         try {
             this.name = name;
             this.folder = store.getFolder(name);
@@ -61,16 +64,38 @@ public class EmailFolder {
         return receive((e) -> e != null);
     }
 
-    public List<Email> receive(Predicate<Email> filter) {
+    public List<Email> receive(SearchTerm filter) {
         try {
-            return Arrays.asList(folder.getMessages()).stream().map((javax.mail.Message msg) -> new Email(msg)).filter(filter).collect(Collectors.toList());
+            return filterMessgesToEmails(folder.search(filter), null);
         } catch (MessagingException ex) {
-            throw ServerUtils.logErrorAndGetNewException("Error getting messages from folder " + name, ex, LOGGER);
+            throw ServerUtils.logErrorAndGetNewException("Error searching messages from folder " + name, ex, LOGGER);
         }
     }
 
-    public Folder getFolder() {
+    public List<Email> receive(Predicate<Email> filter) {
+        try {
+            return filterMessgesToEmails(folder.getMessages(), filter);
+        } catch (MessagingException ex) {
+            throw ServerUtils.logErrorAndGetNewException("Error filtering messages from folder " + name, ex, LOGGER);
+        }
+    }
+
+    private List<Email> filterMessgesToEmails(Message[] messages, Predicate<Email> filter) {
+        Stream<Email> emailStream = Arrays.asList(messages)
+                .stream()
+                .map((Message msg) -> new Email(msg));
+        if (filter != null) {
+            emailStream.filter(filter);
+        }
+        return emailStream.collect(Collectors.toList());
+    }
+
+    public Folder getMessageFolder() {
         return folder;
+    }
+
+    public EmailServer getServer() {
+        return emailServer;
     }
 
     @Override
