@@ -6,6 +6,7 @@ import com.itquasar.multiverse.lib.mail.part.Part;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
@@ -17,6 +18,11 @@ import javax.mail.internet.MimeMultipart;
  */
 public final class ClientUtils {
 
+    private static final String EMAIL_PATTERN_STR
+            = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_PATTERN_STR);
+
     private ClientUtils() {
     }
 
@@ -26,6 +32,10 @@ public final class ClientUtils {
             list.addAll(Arrays.asList(contacts));
         }
         return list;
+    }
+
+    public static boolean isEmailValid(String email) {
+        return EMAIL_PATTERN.matcher(email).matches();
     }
 
     public static MimeBodyPart partToMimeBodyPart(Part part) throws MessagingException {
