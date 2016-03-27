@@ -16,7 +16,7 @@ import javax.mail.internet.InternetAddress;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class EmailContact {
+public class EmailContact implements Comparable<EmailContact> {
 
     public static String listToRFC822String(EmailContact... contacts) {
         return listToRFC822String(Arrays.asList(contacts));
@@ -82,6 +82,23 @@ public class EmailContact {
 
     public String getEmail() {
         return email;
+    }
+
+    @Override
+    public int compareTo(EmailContact other) {
+        // compare emails
+        int c = email.compareTo(other.getEmail());
+        // compare names if not null
+        if (c == 0) {
+            if (name == null) {
+                c = -1;
+            } else if (other.getName() == null) {
+                c = 1;
+            } else {
+                c = name.compareTo(other.getName());
+            }
+        }
+        return c;
     }
 
     public String toRFC822() {
