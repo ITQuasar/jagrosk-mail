@@ -1,7 +1,7 @@
 package com.itquasar.multiverse.lib.mail.content;
 
 import com.itquasar.multiverse.lib.mail.Content;
-import com.itquasar.multiverse.lib.mail.part.MimeType;
+import com.itquasar.multiverse.lib.mail.part.MimeTypes;
 import com.itquasar.multiverse.lib.mail.part.Part;
 import com.itquasar.multiverse.lib.mail.part.SinglePart;
 import com.itquasar.multiverse.lib.mail.util.Constants;
@@ -20,7 +20,7 @@ public class ImmutableContent implements Content {
     private final List<Part> attachments;
 
     public ImmutableContent(String textContent) {
-        this(new SinglePart(MimeType.TEXT_PLAIN, textContent));
+        this(new SinglePart(MimeTypes.TEXT_PLAIN, textContent));
     }
 
     public ImmutableContent(Part<String> textContent) {

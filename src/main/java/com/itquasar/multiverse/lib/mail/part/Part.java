@@ -29,7 +29,7 @@ public interface Part<T> {
 
     List<Part<?>> getParts();
 
-    default boolean isMimeType(MimeType mimeType) {
+    default boolean isMimeType(MimeTypes mimeType) {
         return Parser.isSameMime(this.getMimeType(), mimeType);
     }
 

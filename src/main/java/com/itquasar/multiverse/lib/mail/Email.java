@@ -1,9 +1,10 @@
 package com.itquasar.multiverse.lib.mail;
 
+import com.itquasar.multiverse.lib.mail.content.LazyContent;
 import com.itquasar.multiverse.lib.mail.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.lib.mail.envelope.LazyEnvelope;
 import com.itquasar.multiverse.lib.mail.exception.EmailException;
-import static com.itquasar.multiverse.lib.mail.part.MimeType.*;
+import static com.itquasar.multiverse.lib.mail.part.MimeTypes.*;
 import com.itquasar.multiverse.lib.mail.part.Part;
 import com.itquasar.multiverse.lib.mail.util.ClientUtils;
 import com.itquasar.multiverse.lib.mail.util.Constants;

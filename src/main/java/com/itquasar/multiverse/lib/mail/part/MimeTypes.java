@@ -1,10 +1,12 @@
 package com.itquasar.multiverse.lib.mail.part;
 
+import com.itquasar.multiverse.lib.mail.IMimeType;
+
 /**
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public enum MimeType {
+public enum MimeTypes implements IMimeType {
     TEXT("text", "*"),
     TEXT_PLAIN("text", "plain"),
     TEXT_HTML("text", "html"),
@@ -19,20 +21,23 @@ public enum MimeType {
     private final String subType;
     private final String mimeType;
 
-    private MimeType(String mainType, String subType) {
+    private MimeTypes(String mainType, String subType) {
         this.mainType = mainType;
         this.subType = subType;
         this.mimeType = mainType + "/" + subType;
     }
 
+    @Override
     public String getMimeType() {
         return mimeType;
     }
 
+    @Override
     public String getMainType() {
         return mainType;
     }
 
+    @Override
     public String getSubType() {
         return subType;
     }

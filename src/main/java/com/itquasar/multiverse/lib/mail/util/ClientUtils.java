@@ -1,7 +1,7 @@
 package com.itquasar.multiverse.lib.mail.util;
 
 import com.itquasar.multiverse.lib.mail.EmailContact;
-import com.itquasar.multiverse.lib.mail.part.MimeType;
+import com.itquasar.multiverse.lib.mail.part.MimeTypes;
 import com.itquasar.multiverse.lib.mail.part.Part;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -37,7 +37,7 @@ public final class ClientUtils {
         return bodyPart;
     }
 
-    public static MimeBodyPart buildMultipartBody(MimeType mimeType, Multipart multipart) throws MessagingException {
+    public static MimeBodyPart buildMultipartBody(MimeTypes mimeType, Multipart multipart) throws MessagingException {
         return buildMultipartBody(mimeType.getMimeType(), multipart);
     }
 
