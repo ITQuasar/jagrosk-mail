@@ -1,5 +1,7 @@
 package com.itquasar.multiverse.lib.mail.part;
 
+import com.itquasar.multiverse.lib.mail.ID;
+import com.itquasar.multiverse.lib.mail.MimeType;
 import com.itquasar.multiverse.lib.mail.util.Parser;
 import java.util.List;
 
@@ -9,9 +11,9 @@ import java.util.List;
  */
 public interface Part<T> {
 
-    String getContentId();
+    ID getContentId();
 
-    String getMimeType();
+    MimeType getMimeType();
 
     String getName();
 
@@ -30,11 +32,11 @@ public interface Part<T> {
     List<Part<?>> getParts();
 
     default boolean isMimeType(MimeTypes mimeType) {
-        return Parser.isSameMime(this.getMimeType(), mimeType);
+        return Parser.isSameMime(this.getMimeType().getMimeType(), mimeType);
     }
 
     default boolean isMimeType(String mimeType) {
-        return Parser.isSameMime(this.getMimeType(), mimeType);
+        return Parser.isSameMime(this.getMimeType().getMimeType(), mimeType);
     }
 
 }

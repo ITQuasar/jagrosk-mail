@@ -30,9 +30,9 @@ public final class ClientUtils {
 
     public static MimeBodyPart partToMimeBodyPart(Part part) throws MessagingException {
         MimeBodyPart bodyPart = new MimeBodyPart();
-        bodyPart.setContentID(part.getContentId());
+        bodyPart.setContentID(part.getContentId().getId());
         bodyPart.setFileName(part.getName());
-        bodyPart.setContent(part.getContent(), part.getMimeType());
+        bodyPart.setContent(part.getContent(), part.getMimeType().getMimeType());
         bodyPart.setDisposition(part.getDisposition().value());
         return bodyPart;
     }
