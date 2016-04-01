@@ -35,7 +35,7 @@ public class EmailContact implements Comparable<EmailContact> {
     }
 
     public static EmailContact fromInternetAddress(InternetAddress address) {
-        FunctionUtils.checkNullArgument(address, "internetAddress");
+        FunctionUtils.throwExceptionOnNullArgument(address, "internetAddress");
         return new EmailContact(address.getPersonal(), address.getAddress());
     }
 

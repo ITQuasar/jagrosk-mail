@@ -26,7 +26,7 @@ public final class FunctionUtils {
         return defaultOnNull(valueToTest, Collections.EMPTY_LIST);
     }
 
-    public static void checkNullArgument(Object argument, String argumentName) {
+    public static void throwExceptionOnNullArgument(Object argument, String argumentName) {
         if (argument == null) {
             throw new NullArgumentException(argumentName);
         }

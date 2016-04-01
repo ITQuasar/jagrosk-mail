@@ -61,7 +61,11 @@ public class EmailFolder {
     }
 
     public List<Email> receive() {
-        return receive((e) -> e != null);
+        try {
+            return filterMessgesToEmails(folder.getMessages(), null);
+        } catch (MessagingException ex) {
+            throw ServerUtils.logErrorAndGetNewException("Error searching messages from folder " + name, ex, LOGGER);
+        }
     }
 
     public List<Email> receive(SearchTerm filter) {
