@@ -6,8 +6,8 @@
 package com.itquasar.multiverse.lib.mail;
 
 import com.itquasar.multiverse.lib.mail.util.Constants;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import org.junit.Assert;
@@ -19,7 +19,7 @@ import org.junit.Test;
  */
 public class EmailContactTest {
 
-    private static final Map<EmailContact, String> contacts = new HashMap<EmailContact, String>() {
+    private static final Map<EmailContact, String> contacts = new TreeMap<EmailContact, String>() {
         {
             put(Constants.NO_ONE, "");
             put(new EmailContact("a&@b.c"), "<a&@b.c>");
@@ -29,7 +29,7 @@ public class EmailContactTest {
         }
     };
 
-    private static final String ALL_CONTACTS = "\"A B C\" <a@b.c>,<a&@b.c>";
+    private static final String ALL_CONTACTS = "<a&@b.c>,\"A B C\" <a@b.c>";
 
     /**
      * Test of toRFC822 method, of class EmailContact.

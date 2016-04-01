@@ -2,8 +2,10 @@ package com.itquasar.multiverse.lib.mail.envelope;
 
 import com.itquasar.multiverse.lib.mail.EmailContact;
 import com.itquasar.multiverse.lib.mail.Envelope;
-import com.itquasar.multiverse.lib.mail.util.Utils;
+import com.itquasar.multiverse.lib.mail.util.ClientUtils;
+import com.itquasar.multiverse.lib.mail.util.FunctionUtils;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import javax.mail.internet.InternetAddress;
 
@@ -13,6 +15,7 @@ import javax.mail.internet.InternetAddress;
  */
 public class ImmutableEnvelope implements Envelope {
 
+    private final EmailContact sender;
     private final List<EmailContact> from;
     private final List<EmailContact> replyTo;
 
@@ -22,32 +25,43 @@ public class ImmutableEnvelope implements Envelope {
 
     private final String subject;
 
+    private final Date receivedOn;
+
     public ImmutableEnvelope(EmailContact from,
             List<EmailContact> to, List<EmailContact> cc, List<EmailContact> bcc,
-            String subject) {
-        this(Utils.emailContactToList(from), Utils.emailContactToList(from), to, cc, bcc, subject);
+            String subject, Date receivedOn) {
+        this(from, ClientUtils.emailContactToList(from), ClientUtils.emailContactToList(from), to, cc, bcc, subject, receivedOn);
     }
 
-    public ImmutableEnvelope(List<EmailContact> from, List<EmailContact> replyTo,
+    public ImmutableEnvelope(EmailContact sender, List<EmailContact> from, List<EmailContact> replyTo,
             List<EmailContact> to, List<EmailContact> cc, List<EmailContact> bcc,
-            String subject) {
-        this.from = Collections.unmodifiableList(from);
-        this.replyTo = Collections.unmodifiableList(replyTo);
-        this.to = Collections.unmodifiableList(to);
-        this.cc = Collections.unmodifiableList(cc);
-        this.bcc = Collections.unmodifiableList(bcc);
-        this.subject = Utils.emptyOnNull(subject);
+            String subject, Date receivedOn) {
+        this.sender = sender;
+        this.from = Collections.unmodifiableList(FunctionUtils.emptyOnNull(from));
+        this.replyTo = Collections.unmodifiableList(FunctionUtils.emptyOnNull(replyTo));
+        this.to = Collections.unmodifiableList(FunctionUtils.emptyOnNull(to));
+        this.cc = Collections.unmodifiableList(FunctionUtils.emptyOnNull(cc));
+        this.bcc = Collections.unmodifiableList(FunctionUtils.emptyOnNull(bcc));
+        this.subject = FunctionUtils.emptyOnNull(subject);
+        // FIXME: null pointer
+        this.receivedOn = receivedOn;
     }
 
-    public ImmutableEnvelope(InternetAddress[] from, InternetAddress[] replyTo,
+    public ImmutableEnvelope(InternetAddress sender, InternetAddress[] from, InternetAddress[] replyTo,
             InternetAddress[] to, InternetAddress[] cc, InternetAddress[] bcc,
-            String subject) {
-        this(EmailContact.fromInternetAddresses(from),
+            String subject, Date receivedOn) {
+        this(EmailContact.fromInternetAddress(sender),
+                EmailContact.fromInternetAddresses(from),
                 EmailContact.fromInternetAddresses(replyTo),
                 EmailContact.fromInternetAddresses(to),
                 EmailContact.fromInternetAddresses(cc),
                 EmailContact.fromInternetAddresses(bcc),
-                subject);
+                subject, receivedOn);
+    }
+
+    @Override
+    public EmailContact getSender() {
+        return sender;
     }
 
     @Override
@@ -78,6 +92,12 @@ public class ImmutableEnvelope implements Envelope {
     @Override
     public String getSubject() {
         return this.subject;
+    }
+
+    // FIXME: null pointer
+    @Override
+    public Date getReceivedOn() {
+        return receivedOn != null ? new Date(receivedOn.getTime()) : null;
     }
 
     @Override

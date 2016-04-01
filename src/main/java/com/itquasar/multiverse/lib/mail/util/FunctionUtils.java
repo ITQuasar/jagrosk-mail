@@ -1,27 +1,17 @@
 package com.itquasar.multiverse.lib.mail.util;
 
-import com.itquasar.multiverse.lib.mail.EmailContact;
 import com.itquasar.multiverse.lib.mail.exception.NullArgumentException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class Utils {
+public final class FunctionUtils {
 
-    private Utils() {
-    }
-
-    public static List<EmailContact> emailContactToList(EmailContact... contacts) {
-        List<EmailContact> list = new LinkedList<>();
-        if (contacts != null) {
-            list.addAll(Arrays.asList(contacts));
-        }
-        return list;
+    private FunctionUtils() {
     }
 
     public static <T> T defaultOnNull(T valueToTest, T defaultValue) {
@@ -32,7 +22,11 @@ public class Utils {
         return defaultOnNull(valueToTest, Constants.EMPTY_STRING);
     }
 
-    public static void checkNullArgument(Object argument, String argumentName) {
+    public static <T> List<T> emptyOnNull(List<T> valueToTest) {
+        return defaultOnNull(valueToTest, Collections.EMPTY_LIST);
+    }
+
+    public static void throwExceptionOnNullArgument(Object argument, String argumentName) {
         if (argument == null) {
             throw new NullArgumentException(argumentName);
         }
@@ -45,5 +39,4 @@ public class Utils {
             return Arrays.asList(array);
         }
     }
-
 }

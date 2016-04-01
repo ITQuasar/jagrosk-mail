@@ -1,5 +1,7 @@
 package com.itquasar.multiverse.lib.mail.part;
 
+import com.itquasar.multiverse.lib.mail.ID;
+import com.itquasar.multiverse.lib.mail.MimeType;
 import com.itquasar.multiverse.lib.mail.util.Constants;
 import java.util.Collections;
 import java.util.List;
@@ -11,18 +13,18 @@ import java.util.List;
  */
 public class GenericPart<T> implements Part<T> {
 
-    private final String contentId;
+    private final ID contentId;
     private final Disposition disposition;
     private final String name;
-    private final String mimeType;
+    private final MimeType mimeType;
     private final T content;
     private final List<Part<?>> parts;
 
     public GenericPart(String contentId, Disposition disposition, String name, String mimeType, T content, List<Part<?>> parts) {
-        this.contentId = contentId == null ? Constants.EMPTY_STRING : contentId;
+        this.contentId = new ID(contentId == null ? Constants.EMPTY_STRING : contentId);
         this.disposition = disposition;
         this.name = name == null ? Constants.EMPTY_STRING : name;
-        this.mimeType = mimeType.toLowerCase();
+        this.mimeType = new MimeType(mimeType.toLowerCase());
         this.content = content;
         this.parts = parts == null ? Collections.emptyList() : parts;
     }
@@ -40,7 +42,7 @@ public class GenericPart<T> implements Part<T> {
     }
 
     @Override
-    public String getContentId() {
+    public ID getContentId() {
         return contentId;
     }
 
@@ -55,7 +57,7 @@ public class GenericPart<T> implements Part<T> {
     }
 
     @Override
-    public String getMimeType() {
+    public MimeType getMimeType() {
         return mimeType;
     }
 

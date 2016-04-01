@@ -3,7 +3,7 @@ package com.itquasar.multiverse.lib.mail;
 import com.itquasar.multiverse.lib.mail.part.Attachment;
 import com.itquasar.multiverse.lib.mail.part.Inline;
 import com.itquasar.multiverse.lib.mail.util.Constants;
-import com.itquasar.multiverse.lib.mail.util.Utils;
+import com.itquasar.multiverse.lib.mail.util.FunctionUtils;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,32 +36,32 @@ public class EmailBuilder {
     }
 
     public EmailBuilder from(EmailContact... contacts) {
-        this.from = Utils.safeArrayToList(contacts);
+        this.from = FunctionUtils.safeArrayToList(contacts);
         return this;
     }
 
     public EmailBuilder replyTo(EmailContact... contacts) {
-        this.replyTo = Utils.safeArrayToList(contacts);
+        this.replyTo = FunctionUtils.safeArrayToList(contacts);
         return this;
     }
 
     public EmailBuilder to(EmailContact... contacts) {
-        this.to = Utils.safeArrayToList(contacts);
+        this.to = FunctionUtils.safeArrayToList(contacts);
         return this;
     }
 
     public EmailBuilder cc(EmailContact... contacts) {
-        this.cc = Utils.safeArrayToList(contacts);
+        this.cc = FunctionUtils.safeArrayToList(contacts);
         return this;
     }
 
     public EmailBuilder bcc(EmailContact... contacts) {
-        this.bcc = Utils.safeArrayToList(contacts);
+        this.bcc = FunctionUtils.safeArrayToList(contacts);
         return this;
     }
 
     public EmailBuilder subject(String subject) {
-        this.subject = Utils.emptyOnNull(subject);
+        this.subject = FunctionUtils.emptyOnNull(subject);
         return this;
     }
 
@@ -73,7 +73,7 @@ public class EmailBuilder {
     }
 
     public EmailBuilder message(String textContent, String htmlContent, Attachment... images) {
-        return this.message(textContent, htmlContent, Utils.safeArrayToList(images));
+        return this.message(textContent, htmlContent, FunctionUtils.safeArrayToList(images));
     }
 
     public EmailBuilder message(String textContent, String htmlContent, List<Attachment> images) {
@@ -83,33 +83,34 @@ public class EmailBuilder {
     }
 
     public EmailBuilder textMessage(String content) {
-        this.textContent = Utils.emptyOnNull(content);
+        this.textContent = FunctionUtils.emptyOnNull(content);
         return this;
     }
 
     public EmailBuilder htmlMessage(String content) {
-        this.htmlContent = Utils.emptyOnNull(content);
+        this.htmlContent = FunctionUtils.emptyOnNull(content);
         return this;
     }
 
     public EmailBuilder htmlMessage(String content, List<Attachment> images) {
         this.htmlMessage(content);
-        this.htmlImages = Utils.defaultOnNull(htmlImages, new LinkedList<Inline>());
+        this.htmlImages = FunctionUtils.defaultOnNull(htmlImages, new LinkedList<Inline>());
         return this;
     }
 
     public EmailBuilder htmlMessage(String content, Attachment... images) {
-        return this.htmlMessage(content, Utils.safeArrayToList(images));
+        return this.htmlMessage(content, FunctionUtils.safeArrayToList(images));
     }
 
     /**
      * Add any attachment to the attachments list.
      *
      * @param attachments
-     * @return
+     * @return The same instance on which this function was called
+     * ({@code  this}).
      */
     public EmailBuilder attach(Attachment... attachments) {
-        return this.attach(Utils.safeArrayToList(attachments));
+        return this.attach(FunctionUtils.safeArrayToList(attachments));
     }
 
     public EmailBuilder attach(List<Attachment> attachments) {

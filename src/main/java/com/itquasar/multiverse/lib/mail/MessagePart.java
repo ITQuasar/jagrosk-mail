@@ -1,5 +1,6 @@
 package com.itquasar.multiverse.lib.mail;
 
+import com.itquasar.multiverse.lib.mail.part.Disposition;
 import com.itquasar.multiverse.lib.mail.part.GenericPart;
 
 /**

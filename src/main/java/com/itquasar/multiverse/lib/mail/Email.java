@@ -1,12 +1,22 @@
 package com.itquasar.multiverse.lib.mail;
 
+import com.itquasar.multiverse.lib.mail.content.LazyContent;
 import com.itquasar.multiverse.lib.mail.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.lib.mail.envelope.LazyEnvelope;
 import com.itquasar.multiverse.lib.mail.exception.EmailException;
+import static com.itquasar.multiverse.lib.mail.part.MimeTypes.*;
+import com.itquasar.multiverse.lib.mail.part.Part;
+import com.itquasar.multiverse.lib.mail.util.ClientUtils;
 import com.itquasar.multiverse.lib.mail.util.Constants;
-import com.itquasar.multiverse.lib.mail.util.Utils;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +67,7 @@ public class Email {
      *
      * @param from
      * @param content
-     * @return
+     * @return A new Email instance.
      */
     // FIXME: too much side effects
     public Email reply(EmailContact from, Content content) {
@@ -71,7 +81,8 @@ public class Email {
                         getEnvelope().getReplyTo(),
                         getEnvelope().getCc(),
                         getEnvelope().getBcc(),
-                        subject
+                        subject,
+                        null
                 ),
                 content
         );
@@ -85,7 +96,7 @@ public class Email {
      * @param from
      * @param content
      * @param to
-     * @return
+     * @return A new Email instance.
      */
     // FIXME: too much side effects
     public Email forward(EmailContact from, Content content, EmailContact... to) {
@@ -99,13 +110,98 @@ public class Email {
         return new Email(
                 new ImmutableEnvelope(
                         from,
-                        Utils.emailContactToList(to),
+                        ClientUtils.emailContactToList(to),
                         Constants.NO_ONES,
                         Constants.NO_ONES,
-                        subject
+                        subject,
+                        null
                 ),
                 content
         );
+    }
+
+    public Message toMessage(Session session) {
+        MimeMessage message = new MimeMessage(session);
+        try {
+            // HEADERS
+            message.setSender(envelope.getSender().toInternetAddress());
+            message.addFrom(EmailContact.toInternetAddresses(envelope.getFrom()));
+            message.setReplyTo(EmailContact.toInternetAddresses(envelope.getReplyTo()));
+            message.setRecipients(Message.RecipientType.TO, EmailContact.toInternetAddresses(envelope.getTo()));
+            message.setRecipients(Message.RecipientType.CC, EmailContact.toInternetAddresses(envelope.getCc()));
+            message.setRecipients(Message.RecipientType.BCC, EmailContact.toInternetAddresses(envelope.getBcc()));
+            message.setSubject(envelope.getSubject());
+            // BODY
+            MimeMultipart multipartRelated = null;
+            MimeMultipart multipartAlternative = null;
+            MimeMultipart multipartMixed = null;
+            if (content.hasTextHtml()) {
+                // multipart/related
+                if (content.hasImages()) {
+                    List<Part> parts = new LinkedList<>();
+                    parts.add(content.getHtmlPart());
+                    parts.addAll(content.getHtmlImages());
+                    multipartRelated = ClientUtils.buildeMultipart(MULTIPART_RELATED.getSubType(), parts);
+                }
+                // multipart alternative
+                if (content.hasTextHtml() && content.hasTextPlain()) {
+                    // has no images (multipart/related)
+                    if (multipartRelated == null) {
+                        multipartAlternative = ClientUtils.buildeMultipart(
+                                MULTIPART_RELATED.getSubType(),
+                                content.getTextPart(), content.getHtmlPart()
+                        );
+                    } else {
+                        // has images (mutipart/related)
+                        multipartAlternative = ClientUtils.buildeMultipart(
+                                MULTIPART_RELATED.getSubType(),
+                                content.getTextPart()
+                        );
+                        multipartAlternative.addBodyPart(
+                                ClientUtils.buildMultipartBody(MULTIPART_RELATED.getMimeType(), multipartRelated)
+                        );
+                    }
+                }
+            }
+            // is mixed
+            if (!content.getAttachments().isEmpty()) {
+                MimeBodyPart mainContentPart = null;
+                // if main content is not multipart is only html or plain text
+                if (multipartAlternative == null && multipartRelated == null) {
+                    if (content.hasTextHtml()) {
+                        mainContentPart = ClientUtils.partToMimeBodyPart(content.getHtmlPart());
+                    } else if (content.hasTextPlain()) {
+                        mainContentPart = ClientUtils.partToMimeBodyPart(content.getTextPart());
+                    }
+                }
+                // add attachments
+                multipartMixed = ClientUtils.buildeMultipart(MULTIPART_MIXED.getSubType(), content.getAttachments());
+                // add main content if exists
+                if (mainContentPart != null) {
+                    multipartMixed.addBodyPart(mainContentPart, 0);
+                } else if (multipartAlternative != null) {
+                    multipartMixed.addBodyPart(ClientUtils.buildMultipartBody(MULTIPART_ALTERNATIVE, multipartAlternative), 0);
+                } else if (multipartRelated != null) {
+                    multipartMixed.addBodyPart(ClientUtils.buildMultipartBody(MULTIPART_RELATED, multipartRelated), 0);
+                }
+            }
+            // final touch: add correct content to message body
+            MimeMultipart multipart
+                    = multipartMixed != null
+                            ? multipartMixed
+                            : (multipartAlternative != null ? multipartAlternative : multipartRelated);
+            if (multipart != null) {
+                message.setContent(multipart);
+            } else if (content.hasTextHtml()) {
+                message.setText(content.getHtmlContent(), null, "html");
+            } else if (content.hasTextPlain()) {
+                message.setText(content.getTextContent(), null, "plain");
+            }
+            message.saveChanges();
+        } catch (MessagingException ex) {
+            throw new EmailException("Error generating Message from Email.", ex);
+        }
+        return message;
     }
 
     @Override
