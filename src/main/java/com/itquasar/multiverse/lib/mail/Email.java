@@ -67,7 +67,7 @@ public class Email {
      *
      * @param from
      * @param content
-     * @return
+     * @return A new Email instance.
      */
     // FIXME: too much side effects
     public Email reply(EmailContact from, Content content) {
@@ -96,7 +96,7 @@ public class Email {
      * @param from
      * @param content
      * @param to
-     * @return
+     * @return A new Email instance.
      */
     // FIXME: too much side effects
     public Email forward(EmailContact from, Content content, EmailContact... to) {
