@@ -1,10 +1,11 @@
 package com.itquasar.multiverse.lib.mail.content;
 
 import com.itquasar.multiverse.lib.mail.Content;
+import com.itquasar.multiverse.lib.mail.part.MimeTypes;
 import com.itquasar.multiverse.lib.mail.part.Part;
 import com.itquasar.multiverse.lib.mail.part.SinglePart;
 import com.itquasar.multiverse.lib.mail.util.Constants;
-import com.itquasar.multiverse.lib.mail.util.Utils;
+import com.itquasar.multiverse.lib.mail.util.FunctionUtils;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public class ImmutableContent implements Content {
     private final List<Part> attachments;
 
     public ImmutableContent(String textContent) {
-        this(new SinglePart(Part.Mime.TEXT_PLAIN, textContent));
+        this(new SinglePart(MimeTypes.TEXT_PLAIN, textContent));
     }
 
     public ImmutableContent(Part<String> textContent) {
@@ -36,10 +37,10 @@ public class ImmutableContent implements Content {
 
     public ImmutableContent(Part<String> textContent, Part<String> htmlContent, List<Part> htmlImages,
             List<Part> attachments) {
-        this.textContent = Utils.defaultOnNull(textContent, Constants.EMPTY_TEXT_PART);
-        this.htmlContent = Utils.defaultOnNull(htmlContent, Constants.EMPTY_HTML_PART);
-        this.htmlImages = Utils.defaultOnNull(htmlImages, Constants.NO_PARTS);
-        this.attachments = Utils.defaultOnNull(attachments, Constants.NO_PARTS);
+        this.textContent = FunctionUtils.defaultOnNull(textContent, Constants.EMPTY_TEXT_PART);
+        this.htmlContent = FunctionUtils.defaultOnNull(htmlContent, Constants.EMPTY_HTML_PART);
+        this.htmlImages = FunctionUtils.defaultOnNull(htmlImages, Constants.NO_PARTS);
+        this.attachments = FunctionUtils.defaultOnNull(attachments, Constants.NO_PARTS);
     }
 
     /**
@@ -90,12 +91,14 @@ public class ImmutableContent implements Content {
 
     @Override
     public boolean hasTextPlain() {
-        return this.textContent.hasContent() && !this.textContent.getContent().isEmpty();
+        return this.textContent.hasContent()
+                && !this.textContent.getContent().isEmpty();
     }
 
     @Override
     public boolean hasTextHtml() {
-        return this.textContent.hasContent() && !this.htmlContent.getContent().isEmpty();
+        return this.htmlContent.hasContent()
+                && !this.htmlContent.getContent().isEmpty();
     }
 
     @Override

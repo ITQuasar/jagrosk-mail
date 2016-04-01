@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package com.itquasar.multiverse.lib.mail;
+package com.itquasar.multiverse.lib.mail.content;
 
+import com.itquasar.multiverse.lib.mail.Content;
 import com.itquasar.multiverse.lib.mail.part.Part;
 import com.itquasar.multiverse.lib.mail.util.Parser;
 import java.util.List;
@@ -14,7 +10,7 @@ import javax.mail.Message;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-class LazyContent implements Content {
+public class LazyContent implements Content {
 
     private final Message message;
     private Content content;
