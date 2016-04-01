@@ -106,7 +106,8 @@ public class EmailBuilder {
      * Add any attachment to the attachments list.
      *
      * @param attachments
-     * @return
+     * @return The same instance on which this function was called
+     * ({@code  this}).
      */
     public EmailBuilder attach(Attachment... attachments) {
         return this.attach(FunctionUtils.safeArrayToList(attachments));

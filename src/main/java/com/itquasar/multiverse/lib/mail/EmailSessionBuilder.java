@@ -140,7 +140,8 @@ public class EmailSessionBuilder {
      * @param key Session property to be set (see JavaMail API javadocs,
      * specially packages for SMTP,IMAP and POP3).
      * @param value Value of the property.
-     * @return
+     * @return The same instance on which this function was called
+     * ({@code  this}).
      * @throws NullPointerException When key is null.
      */
     public EmailSessionBuilder set(String key, String value) {
@@ -175,7 +176,8 @@ public class EmailSessionBuilder {
     /**
      * Enables JavaMail API debug mode.
      *
-     * @return
+     * @return The same instance on which this function was called
+     * ({@code  this}).
      */
     public EmailSessionBuilder debug() {
         return debug(true);
@@ -185,7 +187,8 @@ public class EmailSessionBuilder {
      * Set JavaMail API debug mode.
      *
      * @param debug
-     * @return
+     * @return The same instance on which this function was called
+     * ({@code  this}).
      */
     public EmailSessionBuilder debug(boolean debug) {
         return setSessionParemeter(DEBUG, debug);
@@ -199,7 +202,8 @@ public class EmailSessionBuilder {
      * protocols.
      *
      * @param host
-     * @return
+     * @return The same instance on which this function was called
+     * ({@code  this}).
      */
     public EmailSessionBuilder server(String host) {
         return setSessionParemeter(HOST, host);
@@ -210,7 +214,8 @@ public class EmailSessionBuilder {
      *
      * @param receiveServer Host name to receive e-mails.
      * @param sendServer Host name to send e-mails.
-     * @return
+     * @return The same instance on which this function was called
+     * ({@code  this}).
      */
     public EmailSessionBuilder server(String receiveServer, String sendServer) {
         receiveServer(receiveServer);
@@ -222,7 +227,8 @@ public class EmailSessionBuilder {
      * Sets the receive server only.
      *
      * @param receiveServer Host name to receive e-mails.
-     * @return
+     * @return The same instance on which this function was called
+     * ({@code  this}).
      */
     public EmailSessionBuilder receiveServer(String receiveServer) {
         return setSessionParemeter(HOST, receiveServer);
@@ -232,7 +238,8 @@ public class EmailSessionBuilder {
      * Sets the send server only.
      *
      * @param sendServer Host name to send e-mails.
-     * @return
+     * @return The same instance on which this function was called
+     * ({@code  this}).
      */
     public EmailSessionBuilder sendServer(String sendServer) {
         return setSessionParemeter(HOST, sendServer);
