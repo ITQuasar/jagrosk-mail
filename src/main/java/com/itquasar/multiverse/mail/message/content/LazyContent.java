@@ -1,5 +1,6 @@
 package com.itquasar.multiverse.mail.message.content;
 
+import com.itquasar.multiverse.mail.api.Content;
 import com.itquasar.multiverse.mail.part.Part;
 import com.itquasar.multiverse.mail.util.Parser;
 import java.util.List;

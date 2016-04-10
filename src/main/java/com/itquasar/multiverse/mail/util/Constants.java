@@ -1,6 +1,6 @@
 package com.itquasar.multiverse.mail.util;
 
-import com.itquasar.multiverse.mail.EmailContact;
+import com.itquasar.multiverse.mail.api.EmailContact;
 import com.itquasar.multiverse.mail.part.Disposition;
 import com.itquasar.multiverse.mail.part.GenericPart;
 import com.itquasar.multiverse.mail.part.Part;

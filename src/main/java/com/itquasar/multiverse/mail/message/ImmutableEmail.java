@@ -1,8 +1,9 @@
 package com.itquasar.multiverse.mail.message;
 
-import com.itquasar.multiverse.mail.message.content.Content;
-import com.itquasar.multiverse.mail.EmailContact;
-import com.itquasar.multiverse.mail.message.envelope.Envelope;
+import com.itquasar.multiverse.mail.api.Email;
+import com.itquasar.multiverse.mail.api.Content;
+import com.itquasar.multiverse.mail.api.EmailContact;
+import com.itquasar.multiverse.mail.api.Envelope;
 import com.itquasar.multiverse.mail.message.content.LazyContent;
 import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.mail.message.envelope.LazyEnvelope;

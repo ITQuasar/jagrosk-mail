@@ -1,7 +1,7 @@
 package com.itquasar.multiverse.lib.mail;
 
-import com.itquasar.multiverse.mail.IMimeType;
-import com.itquasar.multiverse.mail.MimeType;
+import com.itquasar.multiverse.mail.api.IMimeType;
+import com.itquasar.multiverse.mail.api.MimeType;
 import static org.junit.Assert.*;
 import org.junit.Test;
 

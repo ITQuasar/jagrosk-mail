@@ -1,6 +1,6 @@
 package com.itquasar.multiverse.lib.mail;
 
-import com.itquasar.multiverse.mail.ID;
+import com.itquasar.multiverse.mail.api.ID;
 import static org.junit.Assert.*;
 import org.junit.Test;
 

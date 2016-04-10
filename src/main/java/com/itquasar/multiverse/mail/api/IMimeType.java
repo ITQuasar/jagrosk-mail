@@ -1,4 +1,4 @@
-package com.itquasar.multiverse.mail;
+package com.itquasar.multiverse.mail.api;
 
 import java.util.Collections;
 import java.util.Map;

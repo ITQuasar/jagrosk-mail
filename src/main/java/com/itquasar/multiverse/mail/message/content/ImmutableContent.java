@@ -1,5 +1,6 @@
 package com.itquasar.multiverse.mail.message.content;
 
+import com.itquasar.multiverse.mail.api.Content;
 import com.itquasar.multiverse.mail.part.MimeTypes;
 import com.itquasar.multiverse.mail.part.Part;
 import com.itquasar.multiverse.mail.part.SinglePart;

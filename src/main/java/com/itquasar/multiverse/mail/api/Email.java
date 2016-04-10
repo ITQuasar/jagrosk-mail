@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.itquasar.multiverse.mail.message;
+package com.itquasar.multiverse.mail.api;
 
-import com.itquasar.multiverse.mail.EmailContact;
-import com.itquasar.multiverse.mail.message.envelope.Envelope;
-import com.itquasar.multiverse.mail.message.content.Content;
+import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import javax.mail.Message;
 import javax.mail.Session;

@@ -1,6 +1,8 @@
-package com.itquasar.multiverse.mail;
+package com.itquasar.multiverse.mail.api.builder;
 
-import static com.itquasar.multiverse.mail.EmailSessionBuilder.MailProperties.*;
+import com.itquasar.multiverse.mail.api.EmailProtocol;
+import com.itquasar.multiverse.mail.api.Credentials;
+import static com.itquasar.multiverse.mail.api.builder.EmailSessionBuilder.MailProperties.*;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.Properties;
 import javax.mail.Authenticator;
