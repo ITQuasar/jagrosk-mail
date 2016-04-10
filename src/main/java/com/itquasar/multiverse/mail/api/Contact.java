@@ -16,13 +16,13 @@ import javax.mail.internet.InternetAddress;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class EmailContact implements Comparable<EmailContact> {
+public class Contact implements Comparable<Contact> {
 
-    public static String listToRFC822String(EmailContact... contacts) {
+    public static String listToRFC822String(Contact... contacts) {
         return listToRFC822String(Arrays.asList(contacts));
     }
 
-    public static String listToRFC822String(Collection<EmailContact> contacts) {
+    public static String listToRFC822String(Collection<Contact> contacts) {
         StringBuilder builder = new StringBuilder();
         contacts.stream()
                 .map((contact) -> contact.toRFC822())
@@ -34,28 +34,28 @@ public class EmailContact implements Comparable<EmailContact> {
         return builder.deleteCharAt(builder.length() - 1).toString();
     }
 
-    public static EmailContact fromInternetAddress(InternetAddress address) {
+    public static Contact fromInternetAddress(InternetAddress address) {
         FunctionUtils.throwExceptionOnNullArgument(address, "internetAddress");
-        return new EmailContact(address.getPersonal(), address.getAddress());
+        return new Contact(address.getPersonal(), address.getAddress());
     }
 
-    public static List<EmailContact> fromInternetAddresses(InternetAddress... addresses) {
+    public static List<Contact> fromInternetAddresses(InternetAddress... addresses) {
         addresses = FunctionUtils.defaultOnNull(addresses, Constants.NO_ADDRESSES);
-        List<EmailContact> contacts = new LinkedList<>();
+        List<Contact> contacts = new LinkedList<>();
         for (InternetAddress address : addresses) {
             contacts.add(fromInternetAddress(address));
         }
         return contacts;
     }
 
-    public static InternetAddress[] toInternetAddresses(EmailContact... emailContacts) {
+    public static InternetAddress[] toInternetAddresses(Contact... emailContacts) {
         emailContacts = FunctionUtils.defaultOnNull(emailContacts, Constants.NO_ONES_ARRAY);
         return emailContacts.length > 0
                 ? toInternetAddresses(Arrays.asList(emailContacts))
                 : Constants.NO_ADDRESSES;
     }
 
-    public static InternetAddress[] toInternetAddresses(List<EmailContact> emailContacts) {
+    public static InternetAddress[] toInternetAddresses(List<Contact> emailContacts) {
         emailContacts = FunctionUtils.defaultOnNull(emailContacts, Collections.EMPTY_LIST);
         InternetAddress[] addresses = new InternetAddress[emailContacts.size()];
         for (int i = 0; i < addresses.length; i++) {
@@ -67,11 +67,11 @@ public class EmailContact implements Comparable<EmailContact> {
     private final String name;
     private final String email;
 
-    public EmailContact(String email) {
+    public Contact(String email) {
         this(Constants.EMPTY_STRING, email);
     }
 
-    public EmailContact(String name, String email) {
+    public Contact(String name, String email) {
         this.name = FunctionUtils.emptyOnNull(name);
         this.email = FunctionUtils.emptyOnNull(email);
     }
@@ -85,7 +85,7 @@ public class EmailContact implements Comparable<EmailContact> {
     }
 
     @Override
-    public int compareTo(EmailContact other) {
+    public int compareTo(Contact other) {
         // compare emails
         int c = email.compareTo(other.getEmail());
         // compare names if not null

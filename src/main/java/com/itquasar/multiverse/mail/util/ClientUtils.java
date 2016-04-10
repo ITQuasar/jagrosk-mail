@@ -1,6 +1,6 @@
 package com.itquasar.multiverse.mail.util;
 
-import com.itquasar.multiverse.mail.api.EmailContact;
+import com.itquasar.multiverse.mail.api.Contact;
 import com.itquasar.multiverse.mail.part.MimeTypes;
 import com.itquasar.multiverse.mail.part.Part;
 import java.util.Arrays;
@@ -26,8 +26,8 @@ public final class ClientUtils {
     private ClientUtils() {
     }
 
-    public static List<EmailContact> emailContactToList(EmailContact... contacts) {
-        List<EmailContact> list = new LinkedList<>();
+    public static List<Contact> emailContactToList(Contact... contacts) {
+        List<Contact> list = new LinkedList<>();
         if (contacts != null) {
             list.addAll(Arrays.asList(contacts));
         }

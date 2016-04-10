@@ -1,7 +1,7 @@
 package com.itquasar.multiverse.mail.api.builder;
 
-import com.itquasar.multiverse.mail.api.EmailProtocol;
 import com.itquasar.multiverse.mail.api.Credentials;
+import com.itquasar.multiverse.mail.api.Protocol;
 import static com.itquasar.multiverse.mail.api.builder.EmailSessionBuilder.MailProperties.*;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.Properties;
@@ -18,16 +18,17 @@ public class EmailSessionBuilder {
         SSL, STARTTLS;
     }
 
-    public static enum Protocol implements EmailProtocol {
+    public static enum EmailServerProtocol implements Protocol {
         SMTP(Type.TRANSPORT),
+        SMTPS(Type.TRANSPORT),
         IMAP(Type.STORE),
         IMAPS(Type.STORE),
-        POP3S(Type.STORE),
-        POP3(Type.STORE);
+        POP3(Type.STORE),
+        POP3S(Type.STORE);
 
         private final Type type;
 
-        private Protocol(Type type) {
+        private EmailServerProtocol(Type type) {
             this.type = type;
         }
 
@@ -41,8 +42,8 @@ public class EmailSessionBuilder {
             return type;
         }
 
-        public EmailProtocol asEmailProtocol() {
-            return EmailProtocol.class.cast(this);
+        public Protocol asEmailProtocol() {
+            return Protocol.class.cast(this);
         }
 
     }
@@ -66,7 +67,7 @@ public class EmailSessionBuilder {
             return template;
         }
 
-        public String apply(String value, EmailProtocol protocol) {
+        public String apply(String value, Protocol protocol) {
             String result;
             if (protocol != null) {
                 result = template.replace("${protocol}", protocol.javamailName());
@@ -80,8 +81,8 @@ public class EmailSessionBuilder {
 
     private final Properties sessionProperties = new Properties();
 
-    private final EmailProtocol receiveProtocol;
-    private final EmailProtocol sendProtocol;
+    private final Protocol receiveProtocol;
+    private final Protocol sendProtocol;
     private Authenticator authenticator = null;
 
     ////////////////////////////////////////////////////////////////////////////
@@ -93,7 +94,7 @@ public class EmailSessionBuilder {
      *
      * @param receiveProtocol The Store protocol (POP3, IMAP).
      */
-    public EmailSessionBuilder(Protocol receiveProtocol) {
+    public EmailSessionBuilder(EmailServerProtocol receiveProtocol) {
         this(receiveProtocol.asEmailProtocol());
     }
 
@@ -103,8 +104,8 @@ public class EmailSessionBuilder {
      *
      * @param receiveProtocol The Store protocol (POP3, IMAP).
      */
-    public EmailSessionBuilder(EmailProtocol receiveProtocol) {
-        this(receiveProtocol, Protocol.SMTP);
+    public EmailSessionBuilder(Protocol receiveProtocol) {
+        this(receiveProtocol, EmailServerProtocol.SMTP);
     }
 
     /**
@@ -113,7 +114,7 @@ public class EmailSessionBuilder {
      * @param receiveProtocol The Store protocol (POP3, IMAP).
      * @param sendProtocol The Transport protocol (SMTP).
      */
-    public EmailSessionBuilder(Protocol receiveProtocol, Protocol sendProtocol) {
+    public EmailSessionBuilder(EmailServerProtocol receiveProtocol, EmailServerProtocol sendProtocol) {
         this(receiveProtocol.asEmailProtocol(), sendProtocol.asEmailProtocol());
     }
 
@@ -123,7 +124,7 @@ public class EmailSessionBuilder {
      * @param receiveProtocol The Store protocol (POP3, IMAP).
      * @param sendProtocol The Transport protocol (SMTP).
      */
-    public EmailSessionBuilder(EmailProtocol receiveProtocol, EmailProtocol sendProtocol) {
+    public EmailSessionBuilder(Protocol receiveProtocol, Protocol sendProtocol) {
         FunctionUtils.throwExceptionOnNullArgument(receiveProtocol, "receiveProtocol");
         FunctionUtils.throwExceptionOnNullArgument(sendProtocol, "sendProtocol");
         this.receiveProtocol = receiveProtocol;
@@ -159,7 +160,7 @@ public class EmailSessionBuilder {
         return setSessionParemeter(template, Boolean.toString(value), null);
     }
 
-    private EmailSessionBuilder setSessionParemeter(MailProperties template, boolean value, EmailProtocol protocol) {
+    private EmailSessionBuilder setSessionParemeter(MailProperties template, boolean value, Protocol protocol) {
         return setSessionParemeter(template, Boolean.toString(value), protocol);
     }
 
@@ -167,7 +168,7 @@ public class EmailSessionBuilder {
         return setSessionParemeter(template, value, null);
     }
 
-    private EmailSessionBuilder setSessionParemeter(MailProperties template, String value, EmailProtocol protocol) {
+    private EmailSessionBuilder setSessionParemeter(MailProperties template, String value, Protocol protocol) {
         sessionProperties.put(template.apply(value, protocol), value);
         return this;
     }

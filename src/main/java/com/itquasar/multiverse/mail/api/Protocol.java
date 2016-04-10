@@ -4,7 +4,7 @@ package com.itquasar.multiverse.mail.api;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public interface EmailProtocol {
+public interface Protocol {
 
     enum Type {
         /**

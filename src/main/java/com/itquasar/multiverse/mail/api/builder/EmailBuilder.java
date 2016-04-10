@@ -1,6 +1,6 @@
 package com.itquasar.multiverse.mail.api.builder;
 
-import com.itquasar.multiverse.mail.api.EmailContact;
+import com.itquasar.multiverse.mail.api.Contact;
 import com.itquasar.multiverse.mail.api.TemplatedContent;
 import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import com.itquasar.multiverse.mail.part.Attachment;
@@ -21,12 +21,12 @@ public class EmailBuilder {
         return new EmailBuilder();
     }
 
-    private List<EmailContact> from = Constants.NO_ONES;
-    private List<EmailContact> replyTo = Constants.NO_ONES;
+    private List<Contact> from = Constants.NO_ONES;
+    private List<Contact> replyTo = Constants.NO_ONES;
 
-    private List<EmailContact> to = Constants.NO_ONES;
-    private List<EmailContact> cc = Constants.NO_ONES;
-    private List<EmailContact> bcc = Constants.NO_ONES;
+    private List<Contact> to = Constants.NO_ONES;
+    private List<Contact> cc = Constants.NO_ONES;
+    private List<Contact> bcc = Constants.NO_ONES;
 
     private String subject = Constants.EMPTY_STRING;
     private String textContent = Constants.EMPTY_STRING;
@@ -38,27 +38,27 @@ public class EmailBuilder {
     private EmailBuilder() {
     }
 
-    public EmailBuilder from(EmailContact... contacts) {
+    public EmailBuilder from(Contact... contacts) {
         this.from = FunctionUtils.safeArrayToList(contacts);
         return this;
     }
 
-    public EmailBuilder replyTo(EmailContact... contacts) {
+    public EmailBuilder replyTo(Contact... contacts) {
         this.replyTo = FunctionUtils.safeArrayToList(contacts);
         return this;
     }
 
-    public EmailBuilder to(EmailContact... contacts) {
+    public EmailBuilder to(Contact... contacts) {
         this.to = FunctionUtils.safeArrayToList(contacts);
         return this;
     }
 
-    public EmailBuilder cc(EmailContact... contacts) {
+    public EmailBuilder cc(Contact... contacts) {
         this.cc = FunctionUtils.safeArrayToList(contacts);
         return this;
     }
 
-    public EmailBuilder bcc(EmailContact... contacts) {
+    public EmailBuilder bcc(Contact... contacts) {
         this.bcc = FunctionUtils.safeArrayToList(contacts);
         return this;
     }

@@ -1,6 +1,6 @@
 package com.itquasar.multiverse.mail.util;
 
-import com.itquasar.multiverse.mail.api.EmailContact;
+import com.itquasar.multiverse.mail.api.Contact;
 import com.itquasar.multiverse.mail.part.Disposition;
 import com.itquasar.multiverse.mail.part.GenericPart;
 import com.itquasar.multiverse.mail.part.Part;
@@ -23,14 +23,14 @@ public interface Constants {
     String EMPTY_STRING = "";
     String RFC822_ADDRESS_SEPARATOR = ",";
 
-    EmailContact NO_ONE = new EmailContact(EMPTY_STRING, EMPTY_STRING);
+    Contact NO_ONE = new Contact(EMPTY_STRING, EMPTY_STRING);
 
     Part<Object> EMPTY_PART = new GenericPart<>(EMPTY_STRING, Disposition.NONE, EMPTY_STRING, null);
     Part<String> EMPTY_TEXT_PART = new GenericPart<>("text/plain", Disposition.NONE, EMPTY_STRING, null);
     Part<String> EMPTY_HTML_PART = new GenericPart<>("text/html", Disposition.NONE, EMPTY_STRING, null);
 
-    List<EmailContact> NO_ONES = Collections.emptyList();
-    EmailContact[] NO_ONES_ARRAY = new EmailContact[0];
+    List<Contact> NO_ONES = Collections.emptyList();
+    Contact[] NO_ONES_ARRAY = new Contact[0];
     InternetAddress[] NO_ADDRESSES = new InternetAddress[0];
 
     List<Part> NO_PARTS = Collections.emptyList();

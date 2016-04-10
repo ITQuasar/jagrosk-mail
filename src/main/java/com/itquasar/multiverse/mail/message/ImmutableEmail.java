@@ -2,7 +2,7 @@ package com.itquasar.multiverse.mail.message;
 
 import com.itquasar.multiverse.mail.api.Email;
 import com.itquasar.multiverse.mail.api.Content;
-import com.itquasar.multiverse.mail.api.EmailContact;
+import com.itquasar.multiverse.mail.api.Contact;
 import com.itquasar.multiverse.mail.api.Envelope;
 import com.itquasar.multiverse.mail.message.content.LazyContent;
 import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
@@ -98,7 +98,7 @@ public class ImmutableEmail implements Email {
      */
     // FIXME: too much side effects
     @Override
-    public ImmutableEmail reply(EmailContact from, Content content) {
+    public ImmutableEmail reply(Contact from, Content content) {
         String subject = getEnvelope().getSubject();
         if (!subject.startsWith("Re:")) {
             subject = "Re: " + subject;
@@ -128,7 +128,7 @@ public class ImmutableEmail implements Email {
      */
     // FIXME: too much side effects
     @Override
-    public ImmutableEmail forward(EmailContact from, Content content, EmailContact... to) {
+    public ImmutableEmail forward(Contact from, Content content, Contact... to) {
         // add original attachments
         content.getAttachments().addAll(this.getContent().getAttachments());
 
@@ -155,11 +155,11 @@ public class ImmutableEmail implements Email {
         try {
             // HEADERS
             message.setSender(envelope.getSender().toInternetAddress());
-            message.addFrom(EmailContact.toInternetAddresses(envelope.getFrom()));
-            message.setReplyTo(EmailContact.toInternetAddresses(envelope.getReplyTo()));
-            message.setRecipients(Message.RecipientType.TO, EmailContact.toInternetAddresses(envelope.getTo()));
-            message.setRecipients(Message.RecipientType.CC, EmailContact.toInternetAddresses(envelope.getCc()));
-            message.setRecipients(Message.RecipientType.BCC, EmailContact.toInternetAddresses(envelope.getBcc()));
+            message.addFrom(Contact.toInternetAddresses(envelope.getFrom()));
+            message.setReplyTo(Contact.toInternetAddresses(envelope.getReplyTo()));
+            message.setRecipients(Message.RecipientType.TO, Contact.toInternetAddresses(envelope.getTo()));
+            message.setRecipients(Message.RecipientType.CC, Contact.toInternetAddresses(envelope.getCc()));
+            message.setRecipients(Message.RecipientType.BCC, Contact.toInternetAddresses(envelope.getBcc()));
             message.setSubject(envelope.getSubject());
             // BODY
             MimeMultipart multipartRelated = null;

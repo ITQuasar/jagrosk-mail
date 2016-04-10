@@ -27,7 +27,7 @@ public interface Email {
      * @return A new ImmutableEmail instance.
      */
     // FIXME: too much side effects
-    ImmutableEmail forward(EmailContact from, Content content, EmailContact... to);
+    ImmutableEmail forward(Contact from, Content content, Contact... to);
 
     /**
      *
@@ -56,7 +56,7 @@ public interface Email {
      * @return A new ImmutableEmail instance.
      */
     // FIXME: too much side effects
-    ImmutableEmail reply(EmailContact from, Content content);
+    ImmutableEmail reply(Contact from, Content content);
 
     Message toMessage(Session session);
 

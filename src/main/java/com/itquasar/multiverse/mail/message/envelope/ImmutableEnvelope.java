@@ -1,7 +1,7 @@
 package com.itquasar.multiverse.mail.message.envelope;
 
 import com.itquasar.multiverse.mail.api.Envelope;
-import com.itquasar.multiverse.mail.api.EmailContact;
+import com.itquasar.multiverse.mail.api.Contact;
 import com.itquasar.multiverse.mail.util.ClientUtils;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.Collections;
@@ -15,26 +15,26 @@ import javax.mail.internet.InternetAddress;
  */
 public class ImmutableEnvelope implements Envelope {
 
-    private final EmailContact sender;
-    private final List<EmailContact> from;
-    private final List<EmailContact> replyTo;
+    private final Contact sender;
+    private final List<Contact> from;
+    private final List<Contact> replyTo;
 
-    private final List<EmailContact> to;
-    private final List<EmailContact> cc;
-    private final List<EmailContact> bcc;
+    private final List<Contact> to;
+    private final List<Contact> cc;
+    private final List<Contact> bcc;
 
     private final String subject;
 
     private final Date receivedOn;
 
-    public ImmutableEnvelope(EmailContact from,
-            List<EmailContact> to, List<EmailContact> cc, List<EmailContact> bcc,
+    public ImmutableEnvelope(Contact from,
+            List<Contact> to, List<Contact> cc, List<Contact> bcc,
             String subject, Date receivedOn) {
         this(from, ClientUtils.emailContactToList(from), ClientUtils.emailContactToList(from), to, cc, bcc, subject, receivedOn);
     }
 
-    public ImmutableEnvelope(EmailContact sender, List<EmailContact> from, List<EmailContact> replyTo,
-            List<EmailContact> to, List<EmailContact> cc, List<EmailContact> bcc,
+    public ImmutableEnvelope(Contact sender, List<Contact> from, List<Contact> replyTo,
+            List<Contact> to, List<Contact> cc, List<Contact> bcc,
             String subject, Date receivedOn) {
         this.sender = sender;
         this.from = Collections.unmodifiableList(FunctionUtils.emptyOnNull(from));
@@ -50,42 +50,42 @@ public class ImmutableEnvelope implements Envelope {
     public ImmutableEnvelope(InternetAddress sender, InternetAddress[] from, InternetAddress[] replyTo,
             InternetAddress[] to, InternetAddress[] cc, InternetAddress[] bcc,
             String subject, Date receivedOn) {
-        this(EmailContact.fromInternetAddress(sender),
-                EmailContact.fromInternetAddresses(from),
-                EmailContact.fromInternetAddresses(replyTo),
-                EmailContact.fromInternetAddresses(to),
-                EmailContact.fromInternetAddresses(cc),
-                EmailContact.fromInternetAddresses(bcc),
+        this(Contact.fromInternetAddress(sender),
+                Contact.fromInternetAddresses(from),
+                Contact.fromInternetAddresses(replyTo),
+                Contact.fromInternetAddresses(to),
+                Contact.fromInternetAddresses(cc),
+                Contact.fromInternetAddresses(bcc),
                 subject, receivedOn);
     }
 
     @Override
-    public EmailContact getSender() {
+    public Contact getSender() {
         return sender;
     }
 
     @Override
-    public List<EmailContact> getFrom() {
+    public List<Contact> getFrom() {
         return from;
     }
 
     @Override
-    public List<EmailContact> getReplyTo() {
+    public List<Contact> getReplyTo() {
         return replyTo;
     }
 
     @Override
-    public List<EmailContact> getTo() {
+    public List<Contact> getTo() {
         return to;
     }
 
     @Override
-    public List<EmailContact> getCc() {
+    public List<Contact> getCc() {
         return cc;
     }
 
     @Override
-    public List<EmailContact> getBcc() {
+    public List<Contact> getBcc() {
         return bcc;
     }
 
