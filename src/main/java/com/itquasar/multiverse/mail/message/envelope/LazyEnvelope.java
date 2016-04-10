@@ -1,7 +1,6 @@
 package com.itquasar.multiverse.mail.message.envelope;
 
 import com.itquasar.multiverse.mail.EmailContact;
-import com.itquasar.multiverse.mail.Envelope;
 import com.itquasar.multiverse.mail.util.Parser;
 import java.util.Date;
 import java.util.List;

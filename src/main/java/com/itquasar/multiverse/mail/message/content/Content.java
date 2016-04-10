@@ -1,4 +1,4 @@
-package com.itquasar.multiverse.mail;
+package com.itquasar.multiverse.mail.message.content;
 
 import com.itquasar.multiverse.mail.part.Part;
 import java.util.List;
