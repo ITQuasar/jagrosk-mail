@@ -4,6 +4,7 @@ import com.itquasar.multiverse.lib.mail.exception.NullArgumentException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.slf4j.Logger;
 
 /**
  *
@@ -12,6 +13,23 @@ import java.util.List;
 public final class FunctionUtils {
 
     private FunctionUtils() {
+    }
+
+    @FunctionalInterface
+    public static interface SupplierWithException<T> {
+
+        public T get() throws Exception;
+
+    }
+
+    public static <T> T defaultOnNullOrException(SupplierWithException<T> supplier, T defaultValue, Logger logger) {
+        T value = null;
+        try {
+            value = supplier.get();
+        } catch (Exception e) {
+            logger.error("Error while acessing a value", e);
+        }
+        return defaultOnNull(value, defaultValue);
     }
 
     public static <T> T defaultOnNull(T valueToTest, T defaultValue) {

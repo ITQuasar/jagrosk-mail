@@ -8,6 +8,7 @@ import static com.itquasar.multiverse.lib.mail.part.MimeTypes.*;
 import com.itquasar.multiverse.lib.mail.part.Part;
 import com.itquasar.multiverse.lib.mail.util.ClientUtils;
 import com.itquasar.multiverse.lib.mail.util.Constants;
+import com.itquasar.multiverse.lib.mail.util.FunctionUtils;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -30,11 +31,13 @@ public class Email {
 
     private UUID uuid = UUID.randomUUID();
 
+    private Message message;
     private final Envelope envelope;
     private final Content content;
 
     //   private final List<Part> parts = new LinkedList<>();
     public Email(Envelope envelope, Content content) {
+        this.message = null;
         this.envelope = envelope;
         this.content = content;
     }
@@ -46,6 +49,7 @@ public class Email {
      */
     public Email(Message message) {
         try {
+            this.message = message;
             this.envelope = new LazyEnvelope(message);
             this.content = new LazyContent(message);
         } catch (Exception ex) {
@@ -59,6 +63,14 @@ public class Email {
 
     public Content getContent() {
         return content;
+    }
+
+    /**
+     *
+     * @return The size of wrapped message or -1 when no message wrapped.
+     */
+    public int getSize() {
+        return FunctionUtils.defaultOnNullOrException(() -> message.getSize(), -1, LOGGER);
     }
 
     /**
