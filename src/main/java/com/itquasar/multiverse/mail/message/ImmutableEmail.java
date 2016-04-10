@@ -29,9 +29,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class Email implements Email {
+public class ImmutableEmail implements Email {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Email.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImmutableEmail.class);
 
     private UUID uuid = UUID.randomUUID();
 
@@ -40,7 +40,7 @@ public class Email implements Email {
     private final Content content;
 
     //   private final List<Part> parts = new LinkedList<>();
-    public Email(Envelope envelope, Content content) {
+    public ImmutableEmail(Envelope envelope, Content content) {
         this.message = null;
         this.envelope = envelope;
         this.content = content;
@@ -51,7 +51,7 @@ public class Email implements Email {
      *
      * @param message The message to use as source.
      */
-    public Email(Message message) {
+    public ImmutableEmail(Message message) {
         try {
             this.message = message;
             this.envelope = new LazyEnvelope(message);
@@ -94,16 +94,16 @@ public class Email implements Email {
      *
      * @param from
      * @param content
-     * @return A new Email instance.
+     * @return A new ImmutableEmail instance.
      */
     // FIXME: too much side effects
     @Override
-    public Email reply(Contact from, Content content) {
+    public ImmutableEmail reply(Contact from, Content content) {
         String subject = getEnvelope().getSubject();
         if (!subject.startsWith("Re:")) {
             subject = "Re: " + subject;
         }
-        return new Email(
+        return new ImmutableEmail(
                 new ImmutableEnvelope(
                         from,
                         getEnvelope().getReplyTo(),
@@ -124,11 +124,11 @@ public class Email implements Email {
      * @param from
      * @param content
      * @param to
-     * @return A new Email instance.
+     * @return A new ImmutableEmail instance.
      */
     // FIXME: too much side effects
     @Override
-    public Email forward(Contact from, Content content, Contact... to) {
+    public ImmutableEmail forward(Contact from, Content content, Contact... to) {
         // add original attachments
         for (Part part : this.getContent().getAttachments()) {
             ((List<? super Part>) content.getAttachments()).add(part);
@@ -138,7 +138,7 @@ public class Email implements Email {
         if (!subject.startsWith("Fwd:")) {
             subject = "Fwd: " + subject;
         }
-        return new Email(
+        return new ImmutableEmail(
                 new ImmutableEnvelope(
                         from,
                         FunctionUtils.toList(to),

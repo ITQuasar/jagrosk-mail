@@ -1,6 +1,6 @@
 package com.itquasar.multiverse.mail.server;
 
-import com.itquasar.multiverse.mail.message.Email;
+import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import com.itquasar.multiverse.mail.util.Constants;
 import com.itquasar.multiverse.mail.util.ServerUtils;
 import java.util.Arrays;
@@ -60,7 +60,7 @@ public class EmailFolder {
         }
     }
 
-    public List<Email> receive() {
+    public List<ImmutableEmail> receive() {
         try {
             return filterMessgesToEmails(folder.getMessages(), null);
         } catch (MessagingException ex) {
@@ -68,7 +68,7 @@ public class EmailFolder {
         }
     }
 
-    public List<Email> receive(SearchTerm filter) {
+    public List<ImmutableEmail> receive(SearchTerm filter) {
         try {
             return filterMessgesToEmails(folder.search(filter), null);
         } catch (MessagingException ex) {
@@ -76,7 +76,7 @@ public class EmailFolder {
         }
     }
 
-    public List<Email> receive(Predicate<Email> filter) {
+    public List<ImmutableEmail> receive(Predicate<ImmutableEmail> filter) {
         try {
             return filterMessgesToEmails(folder.getMessages(), filter);
         } catch (MessagingException ex) {
@@ -84,10 +84,10 @@ public class EmailFolder {
         }
     }
 
-    private List<Email> filterMessgesToEmails(Message[] messages, Predicate<Email> filter) {
-        Stream<Email> emailStream = Arrays.asList(messages)
+    private List<ImmutableEmail> filterMessgesToEmails(Message[] messages, Predicate<ImmutableEmail> filter) {
+        Stream<ImmutableEmail> emailStream = Arrays.asList(messages)
                 .stream()
-                .map((Message msg) -> new Email(msg));
+                .map((Message msg) -> new ImmutableEmail(msg));
         if (filter != null) {
             emailStream.filter(filter);
         }

@@ -1,6 +1,6 @@
 package com.itquasar.multiverse.mail.transformer;
 
-import com.itquasar.multiverse.mail.message.Email;
+import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import com.itquasar.multiverse.mail.part.Part;
 import com.itquasar.multiverse.mail.util.Constants;
 import java.io.ByteArrayOutputStream;
@@ -13,9 +13,9 @@ import java.util.Base64;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class WebEmail extends Email {
+public class WebEmail extends ImmutableEmail {
 
-    public WebEmail(Email email) {
+    public WebEmail(ImmutableEmail email) {
         super(email.getEnvelope(), email.getContent());
     }
 
