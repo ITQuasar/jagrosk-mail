@@ -26,7 +26,7 @@ public class LazyContent implements Content {
     }
 
     @Override
-    public List<Part> getAttachments() {
+    public List<? extends Part> getAttachments() {
         this.init();
         return content.getAttachments();
     }
@@ -38,7 +38,7 @@ public class LazyContent implements Content {
     }
 
     @Override
-    public List<Part> getHtmlImages() {
+    public List<? extends Part> getHtmlImages() {
         this.init();
         return content.getHtmlImages();
     }

@@ -2,9 +2,13 @@ package com.itquasar.multiverse.mail.api.builder;
 
 import com.itquasar.multiverse.mail.api.Contact;
 import com.itquasar.multiverse.mail.api.TemplatedContent;
-import com.itquasar.multiverse.mail.message.ImmutableEmail;
+import com.itquasar.multiverse.mail.message.Email;
+import com.itquasar.multiverse.mail.message.content.ImmutableContent;
+import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.mail.part.Attachment;
 import com.itquasar.multiverse.mail.part.Inline;
+import com.itquasar.multiverse.mail.part.MimeTypes;
+import com.itquasar.multiverse.mail.part.SinglePart;
 import com.itquasar.multiverse.mail.util.Constants;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.Collections;
@@ -121,8 +125,15 @@ public class EmailBuilder {
         return this;
     }
 
-    public ImmutableEmail build() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+    public Email build() {
+        return new Email(
+                new ImmutableEnvelope(from, replyTo, to, cc, bcc, subject),
+                new ImmutableContent(
+                        new SinglePart<String>(MimeTypes.TEXT_PLAIN, textContent),
+                        new SinglePart<String>(MimeTypes.TEXT_HTML, htmlContent),
+                        htmlImages, attachments
+                )
+        );
     }
 
 }

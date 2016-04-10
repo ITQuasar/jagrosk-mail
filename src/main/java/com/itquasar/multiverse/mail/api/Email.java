@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.itquasar.multiverse.mail.api;
 
-import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import javax.mail.Message;
 import javax.mail.Session;
@@ -24,10 +19,10 @@ public interface Email {
      * @param from
      * @param content
      * @param to
-     * @return A new ImmutableEmail instance.
+     * @return A new Email instance.
      */
     // FIXME: too much side effects
-    ImmutableEmail forward(Contact from, Content content, Contact... to);
+    com.itquasar.multiverse.mail.message.Email forward(Contact from, Content content, Contact... to);
 
     /**
      *
@@ -53,10 +48,10 @@ public interface Email {
      *
      * @param from
      * @param content
-     * @return A new ImmutableEmail instance.
+     * @return A new Email instance.
      */
     // FIXME: too much side effects
-    ImmutableEmail reply(Contact from, Content content);
+    com.itquasar.multiverse.mail.message.Email reply(Contact from, Content content);
 
     Message toMessage(Session session);
 

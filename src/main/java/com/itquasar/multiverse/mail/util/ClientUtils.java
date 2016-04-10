@@ -1,10 +1,8 @@
 package com.itquasar.multiverse.mail.util;
 
-import com.itquasar.multiverse.mail.api.Contact;
 import com.itquasar.multiverse.mail.part.MimeTypes;
 import com.itquasar.multiverse.mail.part.Part;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.mail.MessagingException;
@@ -24,14 +22,6 @@ public final class ClientUtils {
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_PATTERN_STR);
 
     private ClientUtils() {
-    }
-
-    public static List<Contact> emailContactToList(Contact... contacts) {
-        List<Contact> list = new LinkedList<>();
-        if (contacts != null) {
-            list.addAll(Arrays.asList(contacts));
-        }
-        return list;
     }
 
     public static boolean isEmailValid(String email) {
@@ -61,7 +51,7 @@ public final class ClientUtils {
         return buildeMultipart(subType, Arrays.asList(parts));
     }
 
-    public static MimeMultipart buildeMultipart(String subType, List<Part> parts) throws MessagingException {
+    public static MimeMultipart buildeMultipart(String subType, List<? extends Part> parts) throws MessagingException {
         parts = FunctionUtils.defaultOnNull(parts, Constants.NO_PARTS);
         MimeMultipart multipart = new MimeMultipart(subType);
         for (Part part : parts) {

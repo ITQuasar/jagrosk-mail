@@ -1,8 +1,7 @@
 package com.itquasar.multiverse.mail.message.envelope;
 
-import com.itquasar.multiverse.mail.api.Envelope;
 import com.itquasar.multiverse.mail.api.Contact;
-import com.itquasar.multiverse.mail.util.ClientUtils;
+import com.itquasar.multiverse.mail.api.Envelope;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.Collections;
 import java.util.Date;
@@ -30,7 +29,19 @@ public class ImmutableEnvelope implements Envelope {
     public ImmutableEnvelope(Contact from,
             List<Contact> to, List<Contact> cc, List<Contact> bcc,
             String subject, Date receivedOn) {
-        this(from, ClientUtils.emailContactToList(from), ClientUtils.emailContactToList(from), to, cc, bcc, subject, receivedOn);
+        this(FunctionUtils.toList(from), to, cc, bcc, subject, receivedOn);
+    }
+
+    public ImmutableEnvelope(List<Contact> from,
+            List<Contact> to, List<Contact> cc, List<Contact> bcc,
+            String subject, Date receivedOn) {
+        this(from.get(0), from, from, to, cc, bcc, subject, receivedOn);
+    }
+
+    public ImmutableEnvelope(List<Contact> from, List<Contact> replyTo,
+            List<Contact> to, List<Contact> cc, List<Contact> bcc,
+            String subject) {
+        this(from.get(0), from, replyTo, to, cc, bcc, subject, null);
     }
 
     public ImmutableEnvelope(Contact sender, List<Contact> from, List<Contact> replyTo,

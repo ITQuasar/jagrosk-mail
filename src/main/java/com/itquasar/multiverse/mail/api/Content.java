@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface Content {
 
-    List<Part> getAttachments();
+    List<? extends Part> getAttachments();
 
     /**
      *
@@ -17,7 +17,7 @@ public interface Content {
      */
     String getHtmlContent();
 
-    List<Part> getHtmlImages();
+    List<? extends Part> getHtmlImages();
 
     /**
      *

@@ -16,8 +16,8 @@ public class ImmutableContent implements Content {
 
     private final Part<String> textContent;
     private final Part<String> htmlContent;
-    private final List<Part> htmlImages;
-    private final List<Part> attachments;
+    private final List<? extends Part> htmlImages;
+    private final List<? extends Part> attachments;
 
     public ImmutableContent(String textContent) {
         this(new SinglePart(MimeTypes.TEXT_PLAIN, textContent));
@@ -27,16 +27,16 @@ public class ImmutableContent implements Content {
         this(textContent, null, null);
     }
 
-    public ImmutableContent(Part<String> htmlContent, List<Part> htmlImages) {
+    public ImmutableContent(Part<String> htmlContent, List<? extends Part> htmlImages) {
         this(null, htmlContent, htmlImages);
     }
 
-    public ImmutableContent(Part<String> textContent, Part<String> htmlContent, List<Part> htmlImages) {
+    public ImmutableContent(Part<String> textContent, Part<String> htmlContent, List<? extends Part> htmlImages) {
         this(textContent, htmlContent, htmlImages, null);
     }
 
-    public ImmutableContent(Part<String> textContent, Part<String> htmlContent, List<Part> htmlImages,
-            List<Part> attachments) {
+    public ImmutableContent(Part<String> textContent, Part<String> htmlContent, List<? extends Part> htmlImages,
+            List<? extends Part> attachments) {
         this.textContent = FunctionUtils.defaultOnNull(textContent, Constants.EMPTY_TEXT_PART);
         this.htmlContent = FunctionUtils.defaultOnNull(htmlContent, Constants.EMPTY_HTML_PART);
         this.htmlImages = FunctionUtils.defaultOnNull(htmlImages, Constants.NO_PARTS);
@@ -80,12 +80,12 @@ public class ImmutableContent implements Content {
     }
 
     @Override
-    public List<Part> getHtmlImages() {
+    public List<? extends Part> getHtmlImages() {
         return htmlImages;
     }
 
     @Override
-    public List<Part> getAttachments() {
+    public List<? extends Part> getAttachments() {
         return attachments;
     }
 

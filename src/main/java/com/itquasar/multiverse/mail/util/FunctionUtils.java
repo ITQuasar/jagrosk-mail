@@ -3,6 +3,7 @@ package com.itquasar.multiverse.mail.util;
 import com.itquasar.multiverse.mail.exception.NullArgumentException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import org.slf4j.Logger;
 
@@ -56,5 +57,15 @@ public final class FunctionUtils {
         } else {
             return Arrays.asList(array);
         }
+    }
+
+    public static <T> List<T> toList(T... values) {
+        List<T> list = new LinkedList<>();
+        if (values != null && !(values.length == 1 && values[0] == null)) {
+            for (T value : values) {
+                list.add(value);
+            }
+        }
+        return list;
     }
 }

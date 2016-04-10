@@ -1,13 +1,13 @@
 package com.itquasar.multiverse.mail.message;
 
-import com.itquasar.multiverse.mail.api.Email;
-import com.itquasar.multiverse.mail.api.Content;
 import com.itquasar.multiverse.mail.api.Contact;
+import com.itquasar.multiverse.mail.api.Content;
+import com.itquasar.multiverse.mail.api.Email;
 import com.itquasar.multiverse.mail.api.Envelope;
+import com.itquasar.multiverse.mail.exception.EmailException;
 import com.itquasar.multiverse.mail.message.content.LazyContent;
 import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.mail.message.envelope.LazyEnvelope;
-import com.itquasar.multiverse.mail.exception.EmailException;
 import static com.itquasar.multiverse.mail.part.MimeTypes.*;
 import com.itquasar.multiverse.mail.part.Part;
 import com.itquasar.multiverse.mail.util.ClientUtils;
@@ -29,9 +29,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class ImmutableEmail implements Email {
+public class Email implements Email {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ImmutableEmail.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Email.class);
 
     private UUID uuid = UUID.randomUUID();
 
@@ -40,7 +40,7 @@ public class ImmutableEmail implements Email {
     private final Content content;
 
     //   private final List<Part> parts = new LinkedList<>();
-    public ImmutableEmail(Envelope envelope, Content content) {
+    public Email(Envelope envelope, Content content) {
         this.message = null;
         this.envelope = envelope;
         this.content = content;
@@ -51,7 +51,7 @@ public class ImmutableEmail implements Email {
      *
      * @param message The message to use as source.
      */
-    public ImmutableEmail(Message message) {
+    public Email(Message message) {
         try {
             this.message = message;
             this.envelope = new LazyEnvelope(message);
@@ -94,16 +94,16 @@ public class ImmutableEmail implements Email {
      *
      * @param from
      * @param content
-     * @return A new ImmutableEmail instance.
+     * @return A new Email instance.
      */
     // FIXME: too much side effects
     @Override
-    public ImmutableEmail reply(Contact from, Content content) {
+    public Email reply(Contact from, Content content) {
         String subject = getEnvelope().getSubject();
         if (!subject.startsWith("Re:")) {
             subject = "Re: " + subject;
         }
-        return new ImmutableEmail(
+        return new Email(
                 new ImmutableEnvelope(
                         from,
                         getEnvelope().getReplyTo(),
@@ -124,22 +124,24 @@ public class ImmutableEmail implements Email {
      * @param from
      * @param content
      * @param to
-     * @return A new ImmutableEmail instance.
+     * @return A new Email instance.
      */
     // FIXME: too much side effects
     @Override
-    public ImmutableEmail forward(Contact from, Content content, Contact... to) {
+    public Email forward(Contact from, Content content, Contact... to) {
         // add original attachments
-        content.getAttachments().addAll(this.getContent().getAttachments());
+        for (Part part : this.getContent().getAttachments()) {
+            ((List<? super Part>) content.getAttachments()).add(part);
+        }
 
         String subject = getEnvelope().getSubject();
         if (!subject.startsWith("Fwd:")) {
             subject = "Fwd: " + subject;
         }
-        return new ImmutableEmail(
+        return new Email(
                 new ImmutableEnvelope(
                         from,
-                        ClientUtils.emailContactToList(to),
+                        FunctionUtils.toList(to),
                         Constants.NO_ONES,
                         Constants.NO_ONES,
                         subject,

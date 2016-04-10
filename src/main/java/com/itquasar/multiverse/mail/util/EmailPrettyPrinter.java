@@ -1,8 +1,8 @@
 package com.itquasar.multiverse.mail.util;
 
 import com.itquasar.multiverse.mail.api.Content;
-import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import com.itquasar.multiverse.mail.api.Envelope;
+import com.itquasar.multiverse.mail.message.Email;
 import com.itquasar.multiverse.mail.part.Part;
 import java.util.List;
 
@@ -15,10 +15,10 @@ public class EmailPrettyPrinter {
     private static final String EOL = "\n";//System.getProperty("line.seprator");
     private static final String SEPARATOR = "---------------------------------";
 
-    private final ImmutableEmail email;
+    private final Email email;
     private final StringBuilder stringBuilder = new StringBuilder();
 
-    public EmailPrettyPrinter(ImmutableEmail email) {
+    public EmailPrettyPrinter(Email email) {
         this.email = email;
         printEnvelope();
         printContent();
@@ -64,7 +64,7 @@ public class EmailPrettyPrinter {
                 .append(EOL);
     }
 
-    private String printParts(List<Part> parts, int depth) {
+    private String printParts(List<? extends Part> parts, int depth) {
         StringBuilder aux = new StringBuilder();
         while (aux.length() < depth) {
             aux.append(" ");
