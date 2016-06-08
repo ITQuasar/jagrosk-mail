@@ -1,12 +1,12 @@
 package com.itquasar.multiverse.mail.part;
 
-import com.itquasar.multiverse.mail.api.IMimeType;
+import com.itquasar.multiverse.mail.api.MimeType;
 
 /**
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public enum MimeTypes implements IMimeType {
+public enum MimeTypes implements MimeType {
     TEXT("text", "*"),
     TEXT_PLAIN("text", "plain"),
     TEXT_HTML("text", "html"),

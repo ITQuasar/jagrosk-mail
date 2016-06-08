@@ -24,7 +24,7 @@ public class GenericPart<T> implements Part<T> {
         this.contentId = new ID(contentId == null ? Constants.EMPTY_STRING : contentId);
         this.disposition = disposition;
         this.name = name == null ? Constants.EMPTY_STRING : name;
-        this.mimeType = new MimeType(mimeType.toLowerCase());
+        this.mimeType = MimeType.build(mimeType.toLowerCase());
         this.content = content;
         this.parts = parts == null ? Collections.emptyList() : parts;
     }
