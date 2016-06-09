@@ -14,10 +14,13 @@ import javax.mail.Session;
  */
 public class EmailSessionBuilder {
 
-    enum Secure {
+    private static enum Secure {
         SSL, STARTTLS;
     }
 
+    /**
+     * Enum to map known protocols for simplify builder use.
+     */
     public static enum EmailServerProtocol implements Protocol {
         SMTP(Type.TRANSPORT),
         SMTPS(Type.TRANSPORT),
@@ -48,6 +51,9 @@ public class EmailSessionBuilder {
 
     }
 
+    /**
+     * Enum to map commonly used Java Mail properties.
+     */
     public static enum MailProperties {
         DEBUG("mail.debug"),
         HOST("mail.${protocol}.host"),
@@ -133,6 +139,12 @@ public class EmailSessionBuilder {
         sessionProperties.put("mail.transport.protocol", sendProtocol.javamailName());
     }
 
+    /**
+     *
+     * Builds email session.
+     *
+     * @return Session builded according to setted options.
+     */
     public Session build() {
         return Session.getInstance(sessionProperties, authenticator);
     }
@@ -251,24 +263,56 @@ public class EmailSessionBuilder {
     ////////////////////////////////////////////////////////////////////////////
     // SSL/STARTTLS
     ////////////////////////////////////////////////////////////////////////////
+    /**
+     * Enable SSL on send and receive.
+     *
+     *
+     * @return The same instance on which this function was called
+     * ({@code  this}).
+     */
     public EmailSessionBuilder sslOn() {
         sslOnReceive();
         sslOnSend();
         return this;
     }
 
+    /**
+     * Enable SSL only on receive.
+     *
+     * @return The same instance on which this function was called
+     * ({@code  this}).
+     */
     public EmailSessionBuilder sslOnReceive() {
         return setSessionParemeter(SSL, true, receiveProtocol);
     }
 
+    /**
+     * Enable SSL only on send.
+     *
+     * @return The same instance on which this function was called
+     * ({@code  this}).
+     */
     public EmailSessionBuilder sslOnSend() {
         return setSessionParemeter(SSL, true, sendProtocol);
     }
 
+    /**
+     * Trust all hosts when using SSL (send and receive).
+     *
+     * @return The same instance on which this function was called
+     * ({@code  this}).
+     */
     public EmailSessionBuilder sslTrustAllHosts() {
         return sslTrustedHosts("*");
     }
 
+    /**
+     * Trust SSL certificates of given hosts (send and receive).
+     *
+     * @param hosts
+     * @return The same instance on which this function was called
+     * ({@code  this}).
+     */
     public EmailSessionBuilder sslTrustedHosts(String... hosts) {
         FunctionUtils.throwExceptionOnNullArgument(hosts, "hosts");
         StringBuilder buffy = new StringBuilder();
@@ -281,16 +325,34 @@ public class EmailSessionBuilder {
         return this;
     }
 
+    /**
+     * Enable StartTLS on send and receive.
+     *
+     * @return The same instance on which this function was called
+     * ({@code  this}).
+     */
     public EmailSessionBuilder startTlsOn() {
         startTlsOnReceive();
         startTlsOnSend();
         return this;
     }
 
+    /**
+     * Enable StartTLS only on receive.
+     *
+     * @return The same instance on which this function was called
+     * ({@code  this}).
+     */
     public EmailSessionBuilder startTlsOnReceive() {
         return setSessionParemeter(STARTTLS, true, receiveProtocol);
     }
 
+    /**
+     * Enable StartTLS only on send.
+     *
+     * @return The same instance on which this function was called
+     * ({@code  this}).
+     */
     public EmailSessionBuilder startTlsOnSend() {
         return setSessionParemeter(STARTTLS, true, sendProtocol);
     }
@@ -298,16 +360,38 @@ public class EmailSessionBuilder {
     ////////////////////////////////////////////////////////////////////////////
     // Authentication
     ////////////////////////////////////////////////////////////////////////////
+    /**
+     * Set credentials to authenticate on servers.
+     *
+     * @param username The login to use.
+     * @param password The password to use.
+     * @return The same instance on which this function was called
+     * ({@code  this}).
+     */
     public EmailSessionBuilder authentication(String username, String password) {
         authentication(new Credentials(username, password));
         return this;
     }
 
+    /**
+     * Set credentials to authenticate on servers.
+     *
+     * @param credentials Credentials implementation to use to authenticate.
+     * @return The same instance on which this function was called
+     * ({@code  this}).
+     */
     public EmailSessionBuilder authentication(Credentials credentials) {
         authentication(credentials.asAuthenticator());
         return this;
     }
 
+    /**
+     * Set credentials to authenticate on servers.
+     *
+     * @param credentials Authenticator to use.
+     * @return The same instance on which this function was called
+     * ({@code  this}).
+     */
     public EmailSessionBuilder authentication(Authenticator credentials) {
         authenticator = credentials;
         return this;
