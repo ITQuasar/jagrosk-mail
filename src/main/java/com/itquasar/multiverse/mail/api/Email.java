@@ -5,8 +5,6 @@
  */
 package com.itquasar.multiverse.mail.api;
 
-import com.itquasar.multiverse.mail.message.ImmutableEmail;
-import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import javax.mail.Message;
 import javax.mail.Session;
 
@@ -15,19 +13,6 @@ import javax.mail.Session;
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
 public interface Email {
-
-    /**
-     * Create an email using this message, the content supplied adding all
-     * attachments to it, {@code from} supplied as from ad {@code replyTo} and
-     * {@code to} as recipients
-     *
-     * @param from
-     * @param content
-     * @param to
-     * @return A new ImmutableEmail instance.
-     */
-    // FIXME: too much side effects
-    ImmutableEmail forward(Contact from, Content content, Contact... to);
 
     /**
      *
@@ -47,17 +32,32 @@ public interface Email {
      */
     int getSize();
 
-    /**
-     * Create an email using this message, the content supplied and {@code from}
-     * supplied as from ad {@code replyTo}
-     *
-     * @param from
-     * @param content
-     * @return A new ImmutableEmail instance.
-     */
-    // FIXME: too much side effects
-    ImmutableEmail reply(Contact from, Content content);
-
+//    /**
+//     * Create an email using this message, the content supplied and {@code from}
+//     * supplied as from ad {@code replyTo}
+//     *
+//     * @param from
+//     * @param content
+//     * @return A new ImmutableEmail instance.
+//     */
+//    Email reply(Contact from, Content content);
+//
+//    Email replyAll(Contact from, Content content);
+//
+//    default Email reply(Contact from, Content content, boolean replyAll) {
+//        return replyAll ? replyAll(from, content) : reply(from, content);
+//    }
+//     /**
+//     * Create an email using this message, the content supplied adding all
+//     * attachments to it, {@code from} supplied as from ad {@code replyTo} and
+//     * {@code to} as recipients
+//     *
+//     * @param from
+//     * @param content
+//     * @param to
+//     * @return A new ImmutableEmail instance.
+//     */
+//    Email forward(Contact from, Content content, Contact... to);
     Message toMessage(Session session);
 
 }

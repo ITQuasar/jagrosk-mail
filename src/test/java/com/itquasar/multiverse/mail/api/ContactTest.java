@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.itquasar.multiverse.lib.mail;
+package com.itquasar.multiverse.mail.api;
 
 import com.itquasar.multiverse.mail.api.Contact;
 import com.itquasar.multiverse.mail.util.Constants;

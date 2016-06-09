@@ -29,6 +29,12 @@ public class ImmutableEnvelope implements Envelope {
 
     public ImmutableEnvelope(Contact from,
             List<Contact> to, List<Contact> cc, List<Contact> bcc,
+            String subject) {
+        this(FunctionUtils.toList(from), to, cc, bcc, subject, null);
+    }
+
+    public ImmutableEnvelope(Contact from,
+            List<Contact> to, List<Contact> cc, List<Contact> bcc,
             String subject, Instant receivedOn) {
         this(FunctionUtils.toList(from), to, cc, bcc, subject, receivedOn);
     }

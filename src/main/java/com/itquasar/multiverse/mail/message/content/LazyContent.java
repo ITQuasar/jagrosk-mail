@@ -1,6 +1,8 @@
 package com.itquasar.multiverse.mail.message.content;
 
 import com.itquasar.multiverse.mail.api.Content;
+import com.itquasar.multiverse.mail.part.Attachment;
+import com.itquasar.multiverse.mail.part.Inline;
 import com.itquasar.multiverse.mail.part.Part;
 import com.itquasar.multiverse.mail.util.Parser;
 import java.util.List;
@@ -26,7 +28,7 @@ public class LazyContent implements Content {
     }
 
     @Override
-    public List<? extends Part> getAttachments() {
+    public List<Attachment<?>> getAttachments() {
         this.init();
         return content.getAttachments();
     }
@@ -38,7 +40,7 @@ public class LazyContent implements Content {
     }
 
     @Override
-    public List<? extends Part> getHtmlImages() {
+    public List<Inline<?>> getHtmlImages() {
         this.init();
         return content.getHtmlImages();
     }

@@ -1,27 +1,16 @@
 package com.itquasar.multiverse.mail.message;
 
-import com.itquasar.multiverse.mail.api.Contact;
 import com.itquasar.multiverse.mail.api.Content;
 import com.itquasar.multiverse.mail.api.Email;
 import com.itquasar.multiverse.mail.api.Envelope;
 import com.itquasar.multiverse.mail.exception.EmailException;
 import com.itquasar.multiverse.mail.message.content.LazyContent;
-import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.mail.message.envelope.LazyEnvelope;
-import static com.itquasar.multiverse.mail.part.MimeTypes.*;
-import com.itquasar.multiverse.mail.part.Part;
-import com.itquasar.multiverse.mail.util.ClientUtils;
-import com.itquasar.multiverse.mail.util.Constants;
+import com.itquasar.multiverse.mail.util.EmailUtils;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.Session;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,153 +77,9 @@ public class ImmutableEmail implements Email {
         return FunctionUtils.defaultOnNullOrException(() -> message.getSize(), -1, LOGGER);
     }
 
-    /**
-     * Create an email using this message, the content supplied and {@code from}
-     * supplied as from ad {@code replyTo}
-     *
-     * @param from
-     * @param content
-     * @return A new ImmutableEmail instance.
-     */
-    // FIXME: too much side effects
-    @Override
-    public ImmutableEmail reply(Contact from, Content content) {
-        String subject = getEnvelope().getSubject();
-        if (!subject.startsWith("Re:")) {
-            subject = "Re: " + subject;
-        }
-        return new ImmutableEmail(
-                new ImmutableEnvelope(
-                        from,
-                        getEnvelope().getReplyTo(),
-                        getEnvelope().getCc(),
-                        getEnvelope().getBcc(),
-                        subject,
-                        null
-                ),
-                content
-        );
-    }
-
-    /**
-     * Create an email using this message, the content supplied adding all
-     * attachments to it, {@code from} supplied as from ad {@code replyTo} and
-     * {@code to} as recipients
-     *
-     * @param from
-     * @param content
-     * @param to
-     * @return A new ImmutableEmail instance.
-     */
-    // FIXME: too much side effects
-    @Override
-    public ImmutableEmail forward(Contact from, Content content, Contact... to) {
-        // add original attachments
-        for (Part part : this.getContent().getAttachments()) {
-            ((List<? super Part>) content.getAttachments()).add(part);
-        }
-
-        String subject = getEnvelope().getSubject();
-        if (!subject.startsWith("Fwd:")) {
-            subject = "Fwd: " + subject;
-        }
-        return new ImmutableEmail(
-                new ImmutableEnvelope(
-                        from,
-                        FunctionUtils.toList(to),
-                        Constants.NO_ONES,
-                        Constants.NO_ONES,
-                        subject,
-                        null
-                ),
-                content
-        );
-    }
-
-    // TODO: move this code to ClientUtils
     @Override
     public Message toMessage(Session session) {
-        MimeMessage message = new MimeMessage(session);
-        try {
-            // HEADERS
-            message.setSender(envelope.getSender().toInternetAddress());
-            message.addFrom(Contact.toInternetAddresses(envelope.getFrom()));
-            message.setReplyTo(Contact.toInternetAddresses(envelope.getReplyTo()));
-            message.setRecipients(Message.RecipientType.TO, Contact.toInternetAddresses(envelope.getTo()));
-            message.setRecipients(Message.RecipientType.CC, Contact.toInternetAddresses(envelope.getCc()));
-            message.setRecipients(Message.RecipientType.BCC, Contact.toInternetAddresses(envelope.getBcc()));
-            message.setSubject(envelope.getSubject());
-            // BODY
-            MimeMultipart multipartRelated = null;
-            MimeMultipart multipartAlternative = null;
-            MimeMultipart multipartMixed = null;
-            if (content.hasTextHtml()) {
-                // multipart/related
-                if (content.hasImages()) {
-                    List<Part> parts = new LinkedList<>();
-                    parts.add(content.getHtmlPart());
-                    parts.addAll(content.getHtmlImages());
-                    multipartRelated = ClientUtils.buildeMultipart(MULTIPART_RELATED.getSubType(), parts);
-                }
-                // multipart alternative
-                if (content.hasTextHtml() && content.hasTextPlain()) {
-                    // has no images (multipart/related)
-                    if (multipartRelated == null) {
-                        multipartAlternative = ClientUtils.buildeMultipart(
-                                MULTIPART_RELATED.getSubType(),
-                                content.getTextPart(), content.getHtmlPart()
-                        );
-                    } else {
-                        // has images (mutipart/related)
-                        multipartAlternative = ClientUtils.buildeMultipart(
-                                MULTIPART_RELATED.getSubType(),
-                                content.getTextPart()
-                        );
-                        multipartAlternative.addBodyPart(
-                                ClientUtils.buildMultipartBody(MULTIPART_RELATED.getMimeType(), multipartRelated)
-                        );
-                    }
-                }
-            }
-            // is mixed
-            if (!content.getAttachments().isEmpty()) {
-                MimeBodyPart mainContentPart = null;
-                // if main content is not multipart is only html or plain text
-                if (multipartAlternative == null && multipartRelated == null) {
-                    if (content.hasTextHtml()) {
-                        mainContentPart = ClientUtils.partToMimeBodyPart(content.getHtmlPart());
-                    } else if (content.hasTextPlain()) {
-                        mainContentPart = ClientUtils.partToMimeBodyPart(content.getTextPart());
-                    }
-                }
-                // add attachments
-                multipartMixed = ClientUtils.buildeMultipart(MULTIPART_MIXED.getSubType(), content.getAttachments());
-                // add main content if exists
-                if (mainContentPart != null) {
-                    multipartMixed.addBodyPart(mainContentPart, 0);
-                } else if (multipartAlternative != null) {
-                    multipartMixed.addBodyPart(ClientUtils.buildMultipartBody(MULTIPART_ALTERNATIVE, multipartAlternative), 0);
-                } else if (multipartRelated != null) {
-                    multipartMixed.addBodyPart(ClientUtils.buildMultipartBody(MULTIPART_RELATED, multipartRelated), 0);
-                }
-            }
-            // final touch: add correct content to message body
-            MimeMultipart multipart
-                    = multipartMixed != null
-                            ? multipartMixed
-                            : (multipartAlternative != null ? multipartAlternative : multipartRelated);
-            if (multipart != null) {
-                message.setContent(multipart);
-            } else if (content.hasTextHtml()) {
-                message.setText(content.getHtmlContent(), null, "html");
-            } else if (content.hasTextPlain()) {
-                message.setText(content.getTextContent(), null, "plain");
-            }
-            message.saveChanges();
-        } catch (MessagingException ex) {
-            throw new EmailException("Error generating Message from Email.", ex);
-        }
-        return message;
+        return EmailUtils.toMessage(this, session);
     }
 
     @Override

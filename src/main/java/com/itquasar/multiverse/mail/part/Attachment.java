@@ -11,6 +11,10 @@ public class Attachment<T> extends GenericPart<T> {
 
     public static final Disposition ATTACHMENT_DISPOSITION = Disposition.ATTACHMENT;
 
+    public Attachment(Part<T> part) {
+        this(part.getContentId().getId(), part.getName(), part.getMimeType().getMimeType(), part.getContent());
+    }
+
     public Attachment(String contentId, String name, String mimeType, T content) {
         super(contentId, ATTACHMENT_DISPOSITION, name, mimeType, content, Collections.emptyList());
     }

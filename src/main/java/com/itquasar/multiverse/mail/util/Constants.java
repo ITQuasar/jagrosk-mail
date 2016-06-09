@@ -1,8 +1,10 @@
 package com.itquasar.multiverse.mail.util;
 
 import com.itquasar.multiverse.mail.api.Contact;
+import com.itquasar.multiverse.mail.part.Attachment;
 import com.itquasar.multiverse.mail.part.Disposition;
 import com.itquasar.multiverse.mail.part.GenericPart;
+import com.itquasar.multiverse.mail.part.Inline;
 import com.itquasar.multiverse.mail.part.Part;
 import com.itquasar.multiverse.mail.server.listener.LoggerConnectionListener;
 import com.itquasar.multiverse.mail.server.listener.LoggerFolderListenner;
@@ -34,7 +36,9 @@ public interface Constants {
     Contact[] NO_ONES_ARRAY = new Contact[0];
     InternetAddress[] NO_ADDRESSES = new InternetAddress[0];
 
-    List<Part> NO_PARTS = Collections.emptyList();
+    List<Part<?>> NO_PARTS = Collections.emptyList();
+    List<Inline<?>> NO_INLINES = Collections.emptyList();
+    List<Attachment<?>> NO_ATTACHMENTS = Collections.emptyList();
     Part[] NO_PARTS_ARRAY = new Part[0];
 
     interface LoggerMailListener {

@@ -1,8 +1,8 @@
 package com.itquasar.multiverse.mail.api.java;
 
 import com.itquasar.multiverse.mail.api.Content;
-import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import com.itquasar.multiverse.mail.api.Envelope;
+import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import javax.mail.Message;
 
 /**

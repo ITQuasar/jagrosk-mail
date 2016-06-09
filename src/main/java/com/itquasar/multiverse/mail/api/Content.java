@@ -1,5 +1,7 @@
 package com.itquasar.multiverse.mail.api;
 
+import com.itquasar.multiverse.mail.part.Attachment;
+import com.itquasar.multiverse.mail.part.Inline;
 import com.itquasar.multiverse.mail.part.Part;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  */
 public interface Content {
 
-    List<? extends Part> getAttachments();
+    List<Attachment<?>> getAttachments();
 
     /**
      *
@@ -17,7 +19,7 @@ public interface Content {
      */
     String getHtmlContent();
 
-    List<? extends Part> getHtmlImages();
+    List<Inline<?>> getHtmlImages();
 
     /**
      *

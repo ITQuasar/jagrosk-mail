@@ -195,11 +195,11 @@ public class Parser {
 
             Part<String> textPart = Constants.EMPTY_TEXT_PART;
             Part<String> htmlPart = Constants.EMPTY_HTML_PART;
-            final List<Part> images = new LinkedList<>();
-            final List<Part> attachs = new LinkedList<>();
+            final List<Inline<?>> images = new LinkedList<>();
+            final List<Attachment<?>> attachs = new LinkedList<>();
 
             if (rootPart.isMimeType(MimeTypes.MULTIPART_MIXED)) {
-                Tuple<Part<?>, List<Part<?>>> tuple = parseMultipartMixed(rootPart);
+                Tuple<Part<?>, List<Attachment<?>>> tuple = parseMultipartMixed(rootPart);
                 rootPart = tuple.fst().hasContent() ? tuple.fst() : rootPart;
                 attachs.addAll(tuple.snd());
             }
@@ -209,7 +209,7 @@ public class Parser {
                 rootPart = tuple.snd().hasContent() ? tuple.snd() : rootPart;
             }
             if (rootPart.isMimeType(MimeTypes.MULTIPART_RELATED)) {
-                Tuple<Part<String>, List<Part<?>>> tuple = parseMultipartRelated(rootPart);
+                Tuple<Part<String>, List<Inline<?>>> tuple = parseMultipartRelated(rootPart);
                 rootPart = tuple.fst().hasContent() ? tuple.fst() : rootPart;
                 images.addAll(tuple.snd());
             }
@@ -218,7 +218,7 @@ public class Parser {
             } else if (rootPart.isMimeType(MimeTypes.TEXT_HTML)) {
                 htmlPart = (Part<String>) rootPart;
             }
-            List<Part> attachsFiltered = attachs.stream()
+            List<Attachment<?>> attachsFiltered = attachs.stream()
                     .filter((p) -> p.hasContent())
                     .collect(Collectors.toList());
             LOGGER.debug("...message content parsed.");
@@ -229,20 +229,20 @@ public class Parser {
         }
     }
 
-    private static Tuple<Part<?>, List<Part<?>>> parseMultipartMixed(Part<?> rootPart) {
+    private static Tuple<Part<?>, List<Attachment<?>>> parseMultipartMixed(Part<?> rootPart) {
         Part<?> mainContent = (Part<String>) rootPart.getParts().stream()
                 .filter((part)
                         -> part.isMimeType(MimeTypes.TEXT) || part.isMimeType(MimeTypes.MULTIPART)
                 )
                 .findFirst()
                 .get();
-        List<Part<?>> attachs = new LinkedList<>();
+        List<Attachment<?>> attachs = new LinkedList<>();
 //        rootPart.getParts().stream()
 //                .filter((part)
 //                        -> !(part.isMimeType(Part.Mime.TEXT) || part.isMimeType(Part.Mime.MULTIPART))
 //                )
 //                .forEach((part) -> attachs.add(part));
-        attachs.addAll(rootPart.getParts());
+        attachs.addAll(rootPart.getParts().stream().map(Attachment::new).collect(Collectors.toList()));
         LOGGER.trace("LIST:     " + attachs.size() + " " + attachs);
         attachs.remove(mainContent);
         LOGGER.trace("LIST REM: " + attachs.size() + " " + attachs);
@@ -262,15 +262,15 @@ public class Parser {
         return new Tuple<>(textPart, relatedPart);
     }
 
-    private static Tuple<Part<String>, List<Part<?>>> parseMultipartRelated(Part<?> rootPart) {
+    private static Tuple<Part<String>, List<Inline<?>>> parseMultipartRelated(Part<?> rootPart) {
         Optional<Part<?>> opt = rootPart.getParts().stream()
                 .filter((part) -> part.isMimeType(MimeTypes.TEXT))
                 .findFirst();
         Part<String> htmlPart = (Part<String>) opt.orElse(Constants.EMPTY_PART);
-        List<Part<?>> images = new LinkedList<>();
+        List<Inline<?>> images = new LinkedList<>();
         rootPart.getParts().stream()
                 .filter((part) -> part.isMimeType(MimeTypes.IMAGE))
-                .forEach((part) -> images.add(part));
+                .forEach((part) -> images.add(new Inline(part)));
         return new Tuple<>(htmlPart, images);
     }
 

@@ -1,4 +1,4 @@
-package com.itquasar.multiverse.lib.mail;
+package com.itquasar.multiverse.mail.api;
 
 import com.itquasar.multiverse.mail.api.ID;
 import static org.junit.Assert.*;
