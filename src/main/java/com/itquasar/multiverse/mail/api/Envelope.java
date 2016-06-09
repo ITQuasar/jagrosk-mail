@@ -5,6 +5,7 @@
  */
 package com.itquasar.multiverse.mail.api;
 
+import com.itquasar.multiverse.mail.util.Constants;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -15,19 +16,35 @@ import java.util.Optional;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public interface Envelope {
+public interface Envelope extends Constants {
 
-    Contact getSender();
+    Senders getSenders();
 
-    List<Contact> getFrom();
+    Recipients getRecipients();
 
-    List<Contact> getReplyTo();
+    default Contact getSender() {
+        return getSenders().getSender();
+    }
 
-    List<Contact> getTo();
+    default List<Contact> getFrom() {
+        return getSenders().getFrom();
+    }
 
-    List<Contact> getCc();
+    default List<Contact> getReplyTo() {
+        return getSenders().getReplyTo();
+    }
 
-    List<Contact> getBcc();
+    default List<Contact> getTo() {
+        return getRecipients().getTo();
+    }
+
+    default List<Contact> getCc() {
+        return getRecipients().getCc();
+    }
+
+    default List<Contact> getBcc() {
+        return getRecipients().getBcc();
+    }
 
     String getSubject();
 

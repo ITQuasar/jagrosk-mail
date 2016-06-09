@@ -4,6 +4,8 @@ import com.itquasar.multiverse.mail.api.Contact;
 import com.itquasar.multiverse.mail.api.Content;
 import com.itquasar.multiverse.mail.api.Email;
 import com.itquasar.multiverse.mail.api.Envelope;
+import com.itquasar.multiverse.mail.api.Recipients;
+import com.itquasar.multiverse.mail.api.Senders;
 import com.itquasar.multiverse.mail.api.TemplatedContent;
 import com.itquasar.multiverse.mail.exception.EmailException;
 import com.itquasar.multiverse.mail.message.ImmutableEmail;
@@ -121,27 +123,29 @@ public class EmailUtils {
 
     }
 
-    public static Email reply(Email email, Contact from, TemplatedContent content) {
-        return reply(email, from, content, false);
+    public static Email reply(Email email, Senders senders, TemplatedContent content) {
+        return reply(email, senders, content, false);
     }
 
-    public static Email replyAll(Email email, Contact from, TemplatedContent content, boolean replayAll) {
-        return reply(email, from, content, true);
+    public static Email replyAll(Email email, Senders senders, TemplatedContent content, boolean replayAll) {
+        return reply(email, senders, content, true);
     }
 
-    public static Email reply(Email email, Contact from, TemplatedContent content, boolean replayAll) {
+    public static Email reply(Email email, Senders senders, TemplatedContent content, boolean replayAll) {
         String subject = email.getEnvelope().getSubject();
         if (!subject.startsWith("Re:")) {
             subject = "Re: " + subject;
         }
         return new ImmutableEmail(
                 new ImmutableEnvelope(
-                        from,
-                        replayAll
-                                ? join(email.getEnvelope().getReplyTo(), email.getEnvelope().getFrom(), true)
-                                : email.getEnvelope().getReplyTo(),
-                        replayAll ? email.getEnvelope().getCc() : Constants.NO_ONES,
-                        replayAll ? email.getEnvelope().getBcc() : Constants.NO_ONES,
+                        senders,
+                        new Recipients(
+                                replayAll
+                                        ? join(email.getEnvelope().getReplyTo(), email.getEnvelope().getFrom(), true)
+                                        : email.getEnvelope().getReplyTo(),
+                                replayAll ? email.getEnvelope().getCc() : Constants.NO_ONES,
+                                replayAll ? email.getEnvelope().getBcc() : Constants.NO_ONES
+                        ),
                         subject
                 ),
                 new ImmutableContent(
@@ -159,17 +163,15 @@ public class EmailUtils {
         );
     }
 
-    public static Email forward(Email email, Contact from, TemplatedContent content, Contact... to) {
+    public static Email forward(Email email, Senders senders, TemplatedContent content, Recipients recipients) {
         String subject = email.getEnvelope().getSubject();
         if (!subject.startsWith("Fwd:")) {
             subject = "Fwd: " + subject;
         }
         return new ImmutableEmail(
                 new ImmutableEnvelope(
-                        from,
-                        FunctionUtils.toList(to),
-                        Constants.NO_ONES,
-                        Constants.NO_ONES,
+                        senders,
+                        recipients,
                         subject
                 ),
                 new ImmutableContent(

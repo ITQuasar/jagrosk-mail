@@ -2,6 +2,8 @@ package com.itquasar.multiverse.mail.message.envelope;
 
 import com.itquasar.multiverse.mail.api.Contact;
 import com.itquasar.multiverse.mail.api.Envelope;
+import com.itquasar.multiverse.mail.api.Recipients;
+import com.itquasar.multiverse.mail.api.Senders;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.time.Instant;
 import java.util.Collections;
@@ -15,17 +17,24 @@ import javax.mail.internet.InternetAddress;
  */
 public class ImmutableEnvelope implements Envelope {
 
-    private final Contact sender;
-    private final List<Contact> from;
-    private final List<Contact> replyTo;
-
-    private final List<Contact> to;
-    private final List<Contact> cc;
-    private final List<Contact> bcc;
+    private final Senders senders;
+    private final Recipients recipients;
 
     private final String subject;
 
     private final Optional<Instant> receivedOn;
+
+    public ImmutableEnvelope(Senders senders, Recipients recipients, String subject) {
+        this(senders, recipients, subject, null);
+    }
+
+    public ImmutableEnvelope(Senders senders, Recipients recipients, String subject,
+            Optional<Instant> receivedOn) {
+        this.senders = senders == null ? NO_SENDERS : senders;
+        this.recipients = recipients == null ? NO_RECIPIENTS : recipients;
+        this.subject = subject;
+        this.receivedOn = receivedOn;
+    }
 
     public ImmutableEnvelope(Contact from,
             List<Contact> to, List<Contact> cc, List<Contact> bcc,
@@ -54,12 +63,16 @@ public class ImmutableEnvelope implements Envelope {
     public ImmutableEnvelope(Contact sender, List<Contact> from, List<Contact> replyTo,
             List<Contact> to, List<Contact> cc, List<Contact> bcc,
             String subject, Instant receivedOn) {
-        this.sender = sender;
-        this.from = Collections.unmodifiableList(FunctionUtils.emptyOnNull(from));
-        this.replyTo = Collections.unmodifiableList(FunctionUtils.emptyOnNull(replyTo));
-        this.to = Collections.unmodifiableList(FunctionUtils.emptyOnNull(to));
-        this.cc = Collections.unmodifiableList(FunctionUtils.emptyOnNull(cc));
-        this.bcc = Collections.unmodifiableList(FunctionUtils.emptyOnNull(bcc));
+        this.senders = new Senders(
+                sender == null ? NO_ONE : sender,
+                Collections.unmodifiableList(FunctionUtils.emptyOnNull(from)),
+                Collections.unmodifiableList(FunctionUtils.emptyOnNull(replyTo))
+        );
+        this.recipients = new Recipients(
+                Collections.unmodifiableList(FunctionUtils.emptyOnNull(to)),
+                Collections.unmodifiableList(FunctionUtils.emptyOnNull(cc)),
+                Collections.unmodifiableList(FunctionUtils.emptyOnNull(bcc))
+        );
         this.subject = FunctionUtils.emptyOnNull(subject);
         this.receivedOn = Optional.ofNullable(receivedOn);
     }
@@ -77,33 +90,13 @@ public class ImmutableEnvelope implements Envelope {
     }
 
     @Override
-    public Contact getSender() {
-        return sender;
+    public Senders getSenders() {
+        return senders;
     }
 
     @Override
-    public List<Contact> getFrom() {
-        return from;
-    }
-
-    @Override
-    public List<Contact> getReplyTo() {
-        return replyTo;
-    }
-
-    @Override
-    public List<Contact> getTo() {
-        return to;
-    }
-
-    @Override
-    public List<Contact> getCc() {
-        return cc;
-    }
-
-    @Override
-    public List<Contact> getBcc() {
-        return bcc;
+    public Recipients getRecipients() {
+        return recipients;
     }
 
     @Override
@@ -118,7 +111,7 @@ public class ImmutableEnvelope implements Envelope {
 
     @Override
     public String toString() {
-        return "ImmutableEnvelope{" + "sender=" + sender + ", from=" + from + ", replyTo=" + replyTo + ", to=" + to + ", cc=" + cc + ", bcc=" + bcc + ", subject=" + subject + ", receivedOn=" + receivedOn + '}';
+        return "ImmutableEnvelope{" + "senders=" + senders + ", recipients=" + recipients + ", subject=" + subject + ", receivedOn=" + receivedOn + '}';
     }
 
 }

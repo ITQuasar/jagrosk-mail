@@ -1,10 +1,10 @@
 package com.itquasar.multiverse.mail.message.envelope;
 
 import com.itquasar.multiverse.mail.api.Envelope;
-import com.itquasar.multiverse.mail.api.Contact;
+import com.itquasar.multiverse.mail.api.Recipients;
+import com.itquasar.multiverse.mail.api.Senders;
 import com.itquasar.multiverse.mail.util.Parser;
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 import javax.mail.Message;
 
@@ -28,39 +28,15 @@ public class LazyEnvelope implements Envelope {
     }
 
     @Override
-    public Contact getSender() {
+    public Senders getSenders() {
         this.init();
-        return envelope.getSender();
+        return envelope.getSenders();
     }
 
     @Override
-    public List<Contact> getFrom() {
+    public Recipients getRecipients() {
         this.init();
-        return envelope.getFrom();
-    }
-
-    @Override
-    public List<Contact> getReplyTo() {
-        this.init();
-        return envelope.getReplyTo();
-    }
-
-    @Override
-    public List<Contact> getTo() {
-        this.init();
-        return envelope.getTo();
-    }
-
-    @Override
-    public List<Contact> getCc() {
-        this.init();
-        return envelope.getCc();
-    }
-
-    @Override
-    public List<Contact> getBcc() {
-        this.init();
-        return envelope.getBcc();
+        return envelope.getRecipients();
     }
 
     @Override
