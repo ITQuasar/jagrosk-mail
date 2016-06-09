@@ -1,6 +1,6 @@
 package com.itquasar.multiverse.mail.transformer;
 
-import com.itquasar.multiverse.mail.ImmutableEmail;
+import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import com.itquasar.multiverse.mail.part.Part;
 import com.itquasar.multiverse.mail.util.Constants;
 import java.io.ByteArrayOutputStream;

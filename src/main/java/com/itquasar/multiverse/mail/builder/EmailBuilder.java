@@ -1,11 +1,10 @@
 package com.itquasar.multiverse.mail.builder;
 
 import com.itquasar.multiverse.mail.contact.Contact;
-import com.itquasar.multiverse.mail.Email;
-import com.itquasar.multiverse.mail.TemplatedContent;
-import com.itquasar.multiverse.mail.ImmutableEmail;
-import com.itquasar.multiverse.mail.content.ImmutableContent;
-import com.itquasar.multiverse.mail.envelope.ImmutableEnvelope;
+import com.itquasar.multiverse.mail.message.Email;
+import com.itquasar.multiverse.mail.message.ImmutableEmail;
+import com.itquasar.multiverse.mail.message.content.ImmutableContent;
+import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.mail.part.Attachment;
 import com.itquasar.multiverse.mail.part.Inline;
 import com.itquasar.multiverse.mail.part.MimeTypes;
@@ -15,6 +14,7 @@ import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import com.itquasar.multiverse.mail.message.TemplatedSubjectAndContent;
 
 /**
  * This class builds an Email in a fluid manner. After setting all data as you
@@ -164,13 +164,13 @@ public class EmailBuilder {
     }
 
     /**
-     * Sets the content using the given {@link TemplatedContent}, that set
+     * Sets the content using the given {@link TemplatedSubjectAndContent}, that set
      * subject, text and html message, according to implementation;
      *
      * @param content
      * @return The same builder instance.
      */
-    public EmailBuilder content(TemplatedContent content) {
+    public EmailBuilder content(TemplatedSubjectAndContent content) {
         this.subject(content.getSubject());
         this.textMessage(content.getTextContent());
         this.htmlMessage(content.getHtmlContent(), content.getHtmlImages());

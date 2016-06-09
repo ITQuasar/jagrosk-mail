@@ -5,7 +5,7 @@
  */
 package com.itquasar.multiverse.mail.contact;
 
-import com.itquasar.multiverse.mail.envelope.Envelope;
+import com.itquasar.multiverse.mail.message.envelope.Envelope;
 import com.itquasar.multiverse.mail.util.Constants;
 import java.util.List;
 

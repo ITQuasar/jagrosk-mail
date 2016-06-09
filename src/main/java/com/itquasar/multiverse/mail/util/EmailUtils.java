@@ -1,17 +1,16 @@
 package com.itquasar.multiverse.mail.util;
 
-import com.itquasar.multiverse.mail.content.Content;
-import com.itquasar.multiverse.mail.Email;
-import com.itquasar.multiverse.mail.envelope.Envelope;
-import com.itquasar.multiverse.mail.TemplatedContent;
+import com.itquasar.multiverse.mail.message.content.Content;
+import com.itquasar.multiverse.mail.message.Email;
+import com.itquasar.multiverse.mail.message.envelope.Envelope;
 import com.itquasar.multiverse.mail.contact.Contact;
 import com.itquasar.multiverse.mail.contact.ImmutableRecipients;
 import com.itquasar.multiverse.mail.contact.Recipients;
 import com.itquasar.multiverse.mail.contact.Senders;
 import com.itquasar.multiverse.mail.exception.EmailException;
-import com.itquasar.multiverse.mail.ImmutableEmail;
-import com.itquasar.multiverse.mail.content.ImmutableContent;
-import com.itquasar.multiverse.mail.envelope.ImmutableEnvelope;
+import com.itquasar.multiverse.mail.message.ImmutableEmail;
+import com.itquasar.multiverse.mail.message.content.ImmutableContent;
+import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.mail.part.MimeTypes;
 import static com.itquasar.multiverse.mail.part.MimeTypes.MULTIPART_ALTERNATIVE;
 import static com.itquasar.multiverse.mail.part.MimeTypes.MULTIPART_MIXED;
@@ -27,6 +26,7 @@ import javax.mail.Session;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import com.itquasar.multiverse.mail.message.TemplatedSubjectAndContent;
 
 /**
  *
@@ -124,15 +124,15 @@ public class EmailUtils {
 
     }
 
-    public static Email reply(Email email, Senders senders, TemplatedContent content) {
+    public static Email reply(Email email, Senders senders, TemplatedSubjectAndContent content) {
         return reply(email, senders, content, false);
     }
 
-    public static Email replyAll(Email email, Senders senders, TemplatedContent content, boolean replayAll) {
+    public static Email replyAll(Email email, Senders senders, TemplatedSubjectAndContent content, boolean replayAll) {
         return reply(email, senders, content, true);
     }
 
-    public static Email reply(Email email, Senders senders, TemplatedContent content, boolean replayAll) {
+    public static Email reply(Email email, Senders senders, TemplatedSubjectAndContent content, boolean replayAll) {
         String subject = email.getEnvelope().getSubject();
         if (!subject.startsWith("Re:")) {
             subject = "Re: " + subject;
@@ -164,7 +164,7 @@ public class EmailUtils {
         );
     }
 
-    public static Email forward(Email email, Senders senders, TemplatedContent content, Recipients recipients) {
+    public static Email forward(Email email, Senders senders, TemplatedSubjectAndContent content, Recipients recipients) {
         String subject = email.getEnvelope().getSubject();
         if (!subject.startsWith("Fwd:")) {
             subject = "Fwd: " + subject;

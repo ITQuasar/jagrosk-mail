@@ -1,7 +1,5 @@
 package com.itquasar.multiverse.mail.part;
 
-import com.itquasar.multiverse.mail.MimeType;
-
 /**
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>

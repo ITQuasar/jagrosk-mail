@@ -1,4 +1,4 @@
-package com.itquasar.multiverse.mail;
+package com.itquasar.multiverse.mail.server;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;

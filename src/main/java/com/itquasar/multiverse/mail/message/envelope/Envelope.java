@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.itquasar.multiverse.mail.envelope;
+package com.itquasar.multiverse.mail.message.envelope;
 
 import com.itquasar.multiverse.mail.contact.Recipients;
 import com.itquasar.multiverse.mail.contact.Senders;

@@ -1,8 +1,8 @@
 package com.itquasar.multiverse.mail.util;
 
 import com.itquasar.multiverse.mail.exception.EmailException;
-import com.itquasar.multiverse.mail.content.ImmutableContent;
-import com.itquasar.multiverse.mail.envelope.ImmutableEnvelope;
+import com.itquasar.multiverse.mail.message.content.ImmutableContent;
+import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.mail.part.Attachment;
 import com.itquasar.multiverse.mail.part.Disposition;
 import com.itquasar.multiverse.mail.part.Inline;

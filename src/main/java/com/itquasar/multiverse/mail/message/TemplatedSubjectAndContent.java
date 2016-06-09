@@ -1,4 +1,4 @@
-package com.itquasar.multiverse.mail;
+package com.itquasar.multiverse.mail.message;
 
 import com.itquasar.multiverse.mail.part.Inline;
 import com.itquasar.multiverse.mail.util.Constants;
@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public interface TemplatedContent {
+public interface TemplatedSubjectAndContent {
 
     default String getSubject() {
         return Constants.EMPTY_STRING;
