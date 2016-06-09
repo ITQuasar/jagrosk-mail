@@ -151,6 +151,7 @@ public class ImmutableEmail implements Email {
         );
     }
 
+    // TODO: move this code to ClientUtils
     @Override
     public Message toMessage(Session session) {
         MimeMessage message = new MimeMessage(session);

@@ -21,6 +21,7 @@ import javax.mail.internet.InternetAddress;
 public interface Constants {
 
     String EMPTY_STRING = "";
+    String[] EMPTY_STRING_ARRAY = new String[0];
     String RFC822_ADDRESS_SEPARATOR = ",";
 
     Contact NO_ONE = new Contact(EMPTY_STRING, EMPTY_STRING);

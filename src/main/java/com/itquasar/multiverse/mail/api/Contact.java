@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.mail.internet.InternetAddress;
 
 /**
@@ -37,6 +39,11 @@ public class Contact implements Comparable<Contact> {
     public static Contact fromInternetAddress(InternetAddress address) {
         FunctionUtils.throwExceptionOnNullArgument(address, "internetAddress");
         return new Contact(address.getPersonal(), address.getAddress());
+    }
+
+    public static List<Contact> fromStrings(String... addresses) {
+        addresses = FunctionUtils.defaultOnNull(addresses, Constants.EMPTY_STRING_ARRAY);
+        return Stream.of(addresses).map((s) -> new Contact(s)).collect(Collectors.toList());
     }
 
     public static List<Contact> fromInternetAddresses(InternetAddress... addresses) {

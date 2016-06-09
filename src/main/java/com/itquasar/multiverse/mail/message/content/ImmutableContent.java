@@ -6,9 +6,17 @@ import com.itquasar.multiverse.mail.part.Part;
 import com.itquasar.multiverse.mail.part.SinglePart;
 import com.itquasar.multiverse.mail.util.Constants;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
+import java.util.Collections;
 import java.util.List;
 
 /**
+ * This class assures immutable content on email messages at best effort basis.
+ *
+ * All fields are final and immutable. But as {@link Part} has a generic
+ * content, if that content is mutable, there is nothing that can be done here
+ * to prevent mutation on that part content.
+ *
+ * All other cases should remain immutable.
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
@@ -31,16 +39,21 @@ public class ImmutableContent implements Content {
         this(null, htmlContent, htmlImages);
     }
 
-    public ImmutableContent(Part<String> textContent, Part<String> htmlContent, List<? extends Part> htmlImages) {
+    public ImmutableContent(Part<String> textContent, Part<String> htmlContent,
+            List<? extends Part> htmlImages) {
         this(textContent, htmlContent, htmlImages, null);
     }
 
-    public ImmutableContent(Part<String> textContent, Part<String> htmlContent, List<? extends Part> htmlImages,
-            List<? extends Part> attachments) {
+    public ImmutableContent(Part<String> textContent, Part<String> htmlContent,
+            List<? extends Part> htmlImages, List<? extends Part> attachments) {
         this.textContent = FunctionUtils.defaultOnNull(textContent, Constants.EMPTY_TEXT_PART);
         this.htmlContent = FunctionUtils.defaultOnNull(htmlContent, Constants.EMPTY_HTML_PART);
-        this.htmlImages = FunctionUtils.defaultOnNull(htmlImages, Constants.NO_PARTS);
-        this.attachments = FunctionUtils.defaultOnNull(attachments, Constants.NO_PARTS);
+        this.htmlImages = Collections.unmodifiableList(
+                FunctionUtils.defaultOnNull(htmlImages, Constants.NO_PARTS)
+        );
+        this.attachments = Collections.unmodifiableList(
+                FunctionUtils.defaultOnNull(attachments, Constants.NO_PARTS)
+        );
     }
 
     /**
@@ -89,12 +102,24 @@ public class ImmutableContent implements Content {
         return attachments;
     }
 
+    /**
+     *
+     * @return {@code true} if plain text part has content
+     * ({@link Part#hasContent()}) and the string content is not empty
+     * ({@link String#isEmpty()}).
+     */
     @Override
     public boolean hasTextPlain() {
         return this.textContent.hasContent()
                 && !this.textContent.getContent().isEmpty();
     }
 
+    /**
+     *
+     * @return {@code true} if html text part has content
+     * ({@link Part#hasContent()}) and the string content is not empty
+     * ({@link String#isEmpty()}).
+     */
     @Override
     public boolean hasTextHtml() {
         return this.htmlContent.hasContent()

@@ -3,8 +3,9 @@ package com.itquasar.multiverse.mail.message.envelope;
 import com.itquasar.multiverse.mail.api.Envelope;
 import com.itquasar.multiverse.mail.api.Contact;
 import com.itquasar.multiverse.mail.util.Parser;
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import javax.mail.Message;
 
 /**
@@ -69,7 +70,7 @@ public class LazyEnvelope implements Envelope {
     }
 
     @Override
-    public Date getReceivedOn() {
+    public Optional<Instant> getReceivedOn() {
         this.init();
         return envelope.getReceivedOn();
     }

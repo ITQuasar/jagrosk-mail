@@ -3,9 +3,10 @@ package com.itquasar.multiverse.mail.message.envelope;
 import com.itquasar.multiverse.mail.api.Contact;
 import com.itquasar.multiverse.mail.api.Envelope;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
+import java.time.Instant;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import javax.mail.internet.InternetAddress;
 
 /**
@@ -24,17 +25,17 @@ public class ImmutableEnvelope implements Envelope {
 
     private final String subject;
 
-    private final Date receivedOn;
+    private final Optional<Instant> receivedOn;
 
     public ImmutableEnvelope(Contact from,
             List<Contact> to, List<Contact> cc, List<Contact> bcc,
-            String subject, Date receivedOn) {
+            String subject, Instant receivedOn) {
         this(FunctionUtils.toList(from), to, cc, bcc, subject, receivedOn);
     }
 
     public ImmutableEnvelope(List<Contact> from,
             List<Contact> to, List<Contact> cc, List<Contact> bcc,
-            String subject, Date receivedOn) {
+            String subject, Instant receivedOn) {
         this(from.get(0), from, from, to, cc, bcc, subject, receivedOn);
     }
 
@@ -46,7 +47,7 @@ public class ImmutableEnvelope implements Envelope {
 
     public ImmutableEnvelope(Contact sender, List<Contact> from, List<Contact> replyTo,
             List<Contact> to, List<Contact> cc, List<Contact> bcc,
-            String subject, Date receivedOn) {
+            String subject, Instant receivedOn) {
         this.sender = sender;
         this.from = Collections.unmodifiableList(FunctionUtils.emptyOnNull(from));
         this.replyTo = Collections.unmodifiableList(FunctionUtils.emptyOnNull(replyTo));
@@ -54,13 +55,12 @@ public class ImmutableEnvelope implements Envelope {
         this.cc = Collections.unmodifiableList(FunctionUtils.emptyOnNull(cc));
         this.bcc = Collections.unmodifiableList(FunctionUtils.emptyOnNull(bcc));
         this.subject = FunctionUtils.emptyOnNull(subject);
-        // FIXME: null pointer
-        this.receivedOn = receivedOn;
+        this.receivedOn = Optional.ofNullable(receivedOn);
     }
 
     public ImmutableEnvelope(InternetAddress sender, InternetAddress[] from, InternetAddress[] replyTo,
             InternetAddress[] to, InternetAddress[] cc, InternetAddress[] bcc,
-            String subject, Date receivedOn) {
+            String subject, Instant receivedOn) {
         this(Contact.fromInternetAddress(sender),
                 Contact.fromInternetAddresses(from),
                 Contact.fromInternetAddresses(replyTo),
@@ -105,15 +105,14 @@ public class ImmutableEnvelope implements Envelope {
         return this.subject;
     }
 
-    // FIXME: null pointer
     @Override
-    public Date getReceivedOn() {
-        return receivedOn != null ? new Date(receivedOn.getTime()) : null;
+    public Optional<Instant> getReceivedOn() {
+        return receivedOn;
     }
 
     @Override
     public String toString() {
-        return "Envelope{" + "from=" + from + ", replyTo=" + replyTo + ", to=" + to + ", cc=" + cc + ", bcc=" + bcc + '}';
+        return "ImmutableEnvelope{" + "sender=" + sender + ", from=" + from + ", replyTo=" + replyTo + ", to=" + to + ", cc=" + cc + ", bcc=" + bcc + ", subject=" + subject + ", receivedOn=" + receivedOn + '}';
     }
 
 }

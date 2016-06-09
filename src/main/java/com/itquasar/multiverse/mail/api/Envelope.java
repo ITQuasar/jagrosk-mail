@@ -5,8 +5,11 @@
  */
 package com.itquasar.multiverse.mail.api;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -28,5 +31,14 @@ public interface Envelope {
 
     String getSubject();
 
-    Date getReceivedOn();
+    Optional<Instant> getReceivedOn();
+
+    default Optional<ZonedDateTime> getReceivedOn(ZoneId zoneId) {
+        return getReceivedOn().map((i) -> i.atZone(zoneId));
+    }
+
+    default Optional<ZonedDateTime> getReceivedOnOnSystemZoneId() {
+        return getReceivedOn().map((i) -> i.atZone(ZoneId.systemDefault()));
+    }
+
 }

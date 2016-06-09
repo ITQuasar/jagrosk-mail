@@ -1,6 +1,8 @@
 package com.itquasar.multiverse.mail.api;
 
-import com.itquasar.multiverse.mail.part.Attachment;
+import com.itquasar.multiverse.mail.part.Inline;
+import com.itquasar.multiverse.mail.util.Constants;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -9,11 +11,19 @@ import java.util.List;
  */
 public interface TemplatedContent {
 
-    String getSubject();
+    default String getSubject() {
+        return Constants.EMPTY_STRING;
+    }
 
-    String getTextContent();
+    default String getTextContent() {
+        return Constants.EMPTY_STRING;
+    }
 
-    String getHtmlContent();
+    default String getHtmlContent() {
+        return Constants.EMPTY_STRING;
+    }
 
-    List<Attachment> getHtmlImages();
+    default List<Inline<?>> getHtmlImages() {
+        return Collections.emptyList();
+    }
 }

@@ -1,8 +1,8 @@
 package com.itquasar.multiverse.mail.util;
 
+import com.itquasar.multiverse.mail.exception.EmailException;
 import com.itquasar.multiverse.mail.message.content.ImmutableContent;
 import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
-import com.itquasar.multiverse.mail.exception.EmailException;
 import com.itquasar.multiverse.mail.part.Attachment;
 import com.itquasar.multiverse.mail.part.Disposition;
 import com.itquasar.multiverse.mail.part.Inline;
@@ -179,7 +179,7 @@ public class Parser {
             return new ImmutableEnvelope(
                     sender, from, replyTo,
                     to, cc, bcc,
-                    subject, message.getReceivedDate()
+                    subject, message.getReceivedDate().toInstant()
             );
         } catch (MessagingException ex) {
             LOGGER.error("Error parsing javax.mail.Message [{}]", message, ex);
