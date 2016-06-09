@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.itquasar.multiverse.mail.api;
+package com.itquasar.multiverse.mail.api.contact;
 
-import com.itquasar.multiverse.mail.util.Constants;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.List;
 
@@ -13,25 +12,25 @@ import java.util.List;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class Senders implements Constants {
+public class ImmutableSenders implements Senders {
 
     private final Contact sender;
     private final List<Contact> from;
     private final List<Contact> replyTo;
 
-    public Senders(Contact from) {
+    public ImmutableSenders(Contact from) {
         this(FunctionUtils.toList(from));
     }
 
-    public Senders(List<Contact> from) {
+    public ImmutableSenders(List<Contact> from) {
         this(from, NO_ONES);
     }
 
-    public Senders(List<Contact> from, List<Contact> replyTo) {
+    public ImmutableSenders(List<Contact> from, List<Contact> replyTo) {
         this(NO_ONE, from, replyTo);
     }
 
-    public Senders(Contact sender, List<Contact> from, List<Contact> replyTo) {
+    public ImmutableSenders(Contact sender, List<Contact> from, List<Contact> replyTo) {
         this.sender = sender;
         this.from = from;
         this.replyTo = replyTo;

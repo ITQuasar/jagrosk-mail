@@ -5,6 +5,9 @@
  */
 package com.itquasar.multiverse.mail.api;
 
+import com.itquasar.multiverse.mail.api.contact.Recipients;
+import com.itquasar.multiverse.mail.api.contact.Senders;
+import com.itquasar.multiverse.mail.api.contact.Contact;
 import com.itquasar.multiverse.mail.util.Constants;
 import java.time.Instant;
 import java.time.ZoneId;

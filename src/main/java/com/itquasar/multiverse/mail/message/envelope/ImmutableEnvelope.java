@@ -1,9 +1,11 @@
 package com.itquasar.multiverse.mail.message.envelope;
 
-import com.itquasar.multiverse.mail.api.Contact;
 import com.itquasar.multiverse.mail.api.Envelope;
-import com.itquasar.multiverse.mail.api.Recipients;
-import com.itquasar.multiverse.mail.api.Senders;
+import com.itquasar.multiverse.mail.api.contact.Contact;
+import com.itquasar.multiverse.mail.api.contact.ImmutableRecipients;
+import com.itquasar.multiverse.mail.api.contact.ImmutableSenders;
+import com.itquasar.multiverse.mail.api.contact.Recipients;
+import com.itquasar.multiverse.mail.api.contact.Senders;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.time.Instant;
 import java.util.Collections;
@@ -63,12 +65,12 @@ public class ImmutableEnvelope implements Envelope {
     public ImmutableEnvelope(Contact sender, List<Contact> from, List<Contact> replyTo,
             List<Contact> to, List<Contact> cc, List<Contact> bcc,
             String subject, Instant receivedOn) {
-        this.senders = new Senders(
+        this.senders = new ImmutableSenders(
                 sender == null ? NO_ONE : sender,
                 Collections.unmodifiableList(FunctionUtils.emptyOnNull(from)),
                 Collections.unmodifiableList(FunctionUtils.emptyOnNull(replyTo))
         );
-        this.recipients = new Recipients(
+        this.recipients = new ImmutableRecipients(
                 Collections.unmodifiableList(FunctionUtils.emptyOnNull(to)),
                 Collections.unmodifiableList(FunctionUtils.emptyOnNull(cc)),
                 Collections.unmodifiableList(FunctionUtils.emptyOnNull(bcc))

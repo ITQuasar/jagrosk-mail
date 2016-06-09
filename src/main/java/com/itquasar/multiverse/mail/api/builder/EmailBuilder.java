@@ -1,6 +1,6 @@
 package com.itquasar.multiverse.mail.api.builder;
 
-import com.itquasar.multiverse.mail.api.Contact;
+import com.itquasar.multiverse.mail.api.contact.Contact;
 import com.itquasar.multiverse.mail.api.Email;
 import com.itquasar.multiverse.mail.api.TemplatedContent;
 import com.itquasar.multiverse.mail.message.ImmutableEmail;

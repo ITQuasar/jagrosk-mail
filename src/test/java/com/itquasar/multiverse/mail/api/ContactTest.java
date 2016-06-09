@@ -5,7 +5,7 @@
  */
 package com.itquasar.multiverse.mail.api;
 
-import com.itquasar.multiverse.mail.api.Contact;
+import com.itquasar.multiverse.mail.api.contact.Contact;
 import com.itquasar.multiverse.mail.util.Constants;
 import java.util.Map;
 import java.util.TreeMap;

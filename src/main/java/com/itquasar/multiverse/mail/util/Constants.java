@@ -1,8 +1,10 @@
 package com.itquasar.multiverse.mail.util;
 
-import com.itquasar.multiverse.mail.api.Contact;
-import com.itquasar.multiverse.mail.api.Recipients;
-import com.itquasar.multiverse.mail.api.Senders;
+import com.itquasar.multiverse.mail.api.contact.Contact;
+import com.itquasar.multiverse.mail.api.contact.ImmutableRecipients;
+import com.itquasar.multiverse.mail.api.contact.ImmutableSenders;
+import com.itquasar.multiverse.mail.api.contact.Recipients;
+import com.itquasar.multiverse.mail.api.contact.Senders;
 import com.itquasar.multiverse.mail.part.Attachment;
 import com.itquasar.multiverse.mail.part.Disposition;
 import com.itquasar.multiverse.mail.part.GenericPart;
@@ -33,8 +35,8 @@ public interface Constants {
     Contact[] NO_ONES_ARRAY = new Contact[0];
     InternetAddress[] NO_ADDRESSES = new InternetAddress[0];
 
-    Senders NO_SENDERS = new Senders(NO_ONES);
-    Recipients NO_RECIPIENTS = new Recipients(NO_ONES);
+    Senders NO_SENDERS = new ImmutableSenders(NO_ONES);
+    Recipients NO_RECIPIENTS = new ImmutableRecipients(NO_ONES);
 
     Part<Object> EMPTY_PART = new GenericPart<>(EMPTY_STRING, Disposition.NONE, EMPTY_STRING, null);
     Part<String> EMPTY_TEXT_PART = new GenericPart<>("text/plain", Disposition.NONE, EMPTY_STRING, null);

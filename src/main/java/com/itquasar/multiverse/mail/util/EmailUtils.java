@@ -1,12 +1,13 @@
 package com.itquasar.multiverse.mail.util;
 
-import com.itquasar.multiverse.mail.api.Contact;
 import com.itquasar.multiverse.mail.api.Content;
 import com.itquasar.multiverse.mail.api.Email;
 import com.itquasar.multiverse.mail.api.Envelope;
-import com.itquasar.multiverse.mail.api.Recipients;
-import com.itquasar.multiverse.mail.api.Senders;
 import com.itquasar.multiverse.mail.api.TemplatedContent;
+import com.itquasar.multiverse.mail.api.contact.Contact;
+import com.itquasar.multiverse.mail.api.contact.ImmutableRecipients;
+import com.itquasar.multiverse.mail.api.contact.Recipients;
+import com.itquasar.multiverse.mail.api.contact.Senders;
 import com.itquasar.multiverse.mail.exception.EmailException;
 import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import com.itquasar.multiverse.mail.message.content.ImmutableContent;
@@ -139,7 +140,7 @@ public class EmailUtils {
         return new ImmutableEmail(
                 new ImmutableEnvelope(
                         senders,
-                        new Recipients(
+                        new ImmutableRecipients(
                                 replayAll
                                         ? join(email.getEnvelope().getReplyTo(), email.getEnvelope().getFrom(), true)
                                         : email.getEnvelope().getReplyTo(),
