@@ -1,11 +1,11 @@
-package com.itquasar.multiverse.mail.message;
+package com.itquasar.multiverse.mail;
 
-import com.itquasar.multiverse.mail.api.Content;
-import com.itquasar.multiverse.mail.api.Email;
-import com.itquasar.multiverse.mail.api.Envelope;
+import com.itquasar.multiverse.mail.content.Content;
+import com.itquasar.multiverse.mail.Email;
+import com.itquasar.multiverse.mail.envelope.Envelope;
 import com.itquasar.multiverse.mail.exception.EmailException;
-import com.itquasar.multiverse.mail.message.content.LazyContent;
-import com.itquasar.multiverse.mail.message.envelope.LazyEnvelope;
+import com.itquasar.multiverse.mail.content.LazyContent;
+import com.itquasar.multiverse.mail.envelope.LazyEnvelope;
 import com.itquasar.multiverse.mail.util.EmailUtils;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.UUID;

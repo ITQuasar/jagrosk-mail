@@ -1,10 +1,10 @@
 package com.itquasar.multiverse.mail.util;
 
-import com.itquasar.multiverse.mail.api.contact.Contact;
-import com.itquasar.multiverse.mail.api.contact.ImmutableRecipients;
-import com.itquasar.multiverse.mail.api.contact.ImmutableSenders;
-import com.itquasar.multiverse.mail.api.contact.Recipients;
-import com.itquasar.multiverse.mail.api.contact.Senders;
+import com.itquasar.multiverse.mail.contact.Contact;
+import com.itquasar.multiverse.mail.contact.ImmutableRecipients;
+import com.itquasar.multiverse.mail.contact.ImmutableSenders;
+import com.itquasar.multiverse.mail.contact.Recipients;
+import com.itquasar.multiverse.mail.contact.Senders;
 import com.itquasar.multiverse.mail.part.Attachment;
 import com.itquasar.multiverse.mail.part.Disposition;
 import com.itquasar.multiverse.mail.part.GenericPart;

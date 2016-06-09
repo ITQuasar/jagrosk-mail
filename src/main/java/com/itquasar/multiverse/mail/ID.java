@@ -1,4 +1,4 @@
-package com.itquasar.multiverse.mail.api;
+package com.itquasar.multiverse.mail;
 
 /**
  * Represents an RFC Message/Part ID.

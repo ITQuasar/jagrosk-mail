@@ -1,6 +1,6 @@
 package com.itquasar.multiverse.mail.part;
 
-import com.itquasar.multiverse.mail.api.MimeType;
+import com.itquasar.multiverse.mail.MimeType;
 
 /**
  *

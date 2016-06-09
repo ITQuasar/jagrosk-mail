@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.itquasar.multiverse.mail.api.contact;
+package com.itquasar.multiverse.mail.contact;
 
-import com.itquasar.multiverse.mail.api.Envelope;
+import com.itquasar.multiverse.mail.envelope.Envelope;
 import com.itquasar.multiverse.mail.util.Constants;
 import java.util.List;
 

@@ -1,11 +1,11 @@
-package com.itquasar.multiverse.mail.api.builder;
+package com.itquasar.multiverse.mail.builder;
 
-import com.itquasar.multiverse.mail.api.contact.Contact;
-import com.itquasar.multiverse.mail.api.Email;
-import com.itquasar.multiverse.mail.api.TemplatedContent;
-import com.itquasar.multiverse.mail.message.ImmutableEmail;
-import com.itquasar.multiverse.mail.message.content.ImmutableContent;
-import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
+import com.itquasar.multiverse.mail.contact.Contact;
+import com.itquasar.multiverse.mail.Email;
+import com.itquasar.multiverse.mail.TemplatedContent;
+import com.itquasar.multiverse.mail.ImmutableEmail;
+import com.itquasar.multiverse.mail.content.ImmutableContent;
+import com.itquasar.multiverse.mail.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.mail.part.Attachment;
 import com.itquasar.multiverse.mail.part.Inline;
 import com.itquasar.multiverse.mail.part.MimeTypes;

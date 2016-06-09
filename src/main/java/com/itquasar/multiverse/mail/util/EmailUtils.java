@@ -1,17 +1,17 @@
 package com.itquasar.multiverse.mail.util;
 
-import com.itquasar.multiverse.mail.api.Content;
-import com.itquasar.multiverse.mail.api.Email;
-import com.itquasar.multiverse.mail.api.Envelope;
-import com.itquasar.multiverse.mail.api.TemplatedContent;
-import com.itquasar.multiverse.mail.api.contact.Contact;
-import com.itquasar.multiverse.mail.api.contact.ImmutableRecipients;
-import com.itquasar.multiverse.mail.api.contact.Recipients;
-import com.itquasar.multiverse.mail.api.contact.Senders;
+import com.itquasar.multiverse.mail.content.Content;
+import com.itquasar.multiverse.mail.Email;
+import com.itquasar.multiverse.mail.envelope.Envelope;
+import com.itquasar.multiverse.mail.TemplatedContent;
+import com.itquasar.multiverse.mail.contact.Contact;
+import com.itquasar.multiverse.mail.contact.ImmutableRecipients;
+import com.itquasar.multiverse.mail.contact.Recipients;
+import com.itquasar.multiverse.mail.contact.Senders;
 import com.itquasar.multiverse.mail.exception.EmailException;
-import com.itquasar.multiverse.mail.message.ImmutableEmail;
-import com.itquasar.multiverse.mail.message.content.ImmutableContent;
-import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
+import com.itquasar.multiverse.mail.ImmutableEmail;
+import com.itquasar.multiverse.mail.content.ImmutableContent;
+import com.itquasar.multiverse.mail.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.mail.part.MimeTypes;
 import static com.itquasar.multiverse.mail.part.MimeTypes.MULTIPART_ALTERNATIVE;
 import static com.itquasar.multiverse.mail.part.MimeTypes.MULTIPART_MIXED;

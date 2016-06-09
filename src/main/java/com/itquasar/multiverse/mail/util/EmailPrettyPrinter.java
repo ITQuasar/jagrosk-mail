@@ -1,8 +1,8 @@
 package com.itquasar.multiverse.mail.util;
 
-import com.itquasar.multiverse.mail.api.Content;
-import com.itquasar.multiverse.mail.api.Envelope;
-import com.itquasar.multiverse.mail.message.ImmutableEmail;
+import com.itquasar.multiverse.mail.content.Content;
+import com.itquasar.multiverse.mail.envelope.Envelope;
+import com.itquasar.multiverse.mail.ImmutableEmail;
 import com.itquasar.multiverse.mail.part.Part;
 import java.util.List;
 

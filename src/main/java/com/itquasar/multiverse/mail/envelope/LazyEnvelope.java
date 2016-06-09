@@ -1,8 +1,7 @@
-package com.itquasar.multiverse.mail.message.envelope;
+package com.itquasar.multiverse.mail.envelope;
 
-import com.itquasar.multiverse.mail.api.Envelope;
-import com.itquasar.multiverse.mail.api.contact.Recipients;
-import com.itquasar.multiverse.mail.api.contact.Senders;
+import com.itquasar.multiverse.mail.contact.Recipients;
+import com.itquasar.multiverse.mail.contact.Senders;
 import com.itquasar.multiverse.mail.util.Parser;
 import java.time.Instant;
 import java.util.Optional;

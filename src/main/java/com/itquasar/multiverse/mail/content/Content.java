@@ -1,4 +1,4 @@
-package com.itquasar.multiverse.mail.api;
+package com.itquasar.multiverse.mail.content;
 
 import com.itquasar.multiverse.mail.part.Attachment;
 import com.itquasar.multiverse.mail.part.Inline;

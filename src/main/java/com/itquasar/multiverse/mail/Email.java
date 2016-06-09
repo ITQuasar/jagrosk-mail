@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.itquasar.multiverse.mail.api;
+package com.itquasar.multiverse.mail;
 
+import com.itquasar.multiverse.mail.content.Content;
+import com.itquasar.multiverse.mail.envelope.Envelope;
 import javax.mail.Message;
 import javax.mail.Session;
 

@@ -1,7 +1,7 @@
 package com.itquasar.multiverse.mail.part;
 
-import com.itquasar.multiverse.mail.api.ID;
-import com.itquasar.multiverse.mail.api.MimeType;
+import com.itquasar.multiverse.mail.ID;
+import com.itquasar.multiverse.mail.MimeType;
 import com.itquasar.multiverse.mail.util.Parser;
 import java.util.List;
 

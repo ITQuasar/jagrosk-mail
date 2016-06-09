@@ -1,6 +1,6 @@
 package com.itquasar.multiverse.mail.server;
 
-import com.itquasar.multiverse.mail.message.ImmutableEmail;
+import com.itquasar.multiverse.mail.ImmutableEmail;
 import com.itquasar.multiverse.mail.exception.EmailServerException;
 import com.itquasar.multiverse.mail.util.Constants;
 import com.itquasar.multiverse.mail.util.ServerUtils;

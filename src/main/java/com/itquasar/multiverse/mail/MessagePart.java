@@ -1,6 +1,5 @@
-package com.itquasar.multiverse.mail.api;
+package com.itquasar.multiverse.mail;
 
-import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import com.itquasar.multiverse.mail.part.Disposition;
 import com.itquasar.multiverse.mail.part.GenericPart;
 

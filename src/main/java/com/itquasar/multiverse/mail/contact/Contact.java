@@ -1,4 +1,4 @@
-package com.itquasar.multiverse.mail.api.contact;
+package com.itquasar.multiverse.mail.contact;
 
 import com.itquasar.multiverse.mail.exception.EmailException;
 import com.itquasar.multiverse.mail.util.Constants;
