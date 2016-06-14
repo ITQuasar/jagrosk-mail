@@ -37,8 +37,8 @@ public interface Constants {
     Contact[] NO_ONES_ARRAY = new Contact[0];
     InternetAddress[] NO_ADDRESSES = new InternetAddress[0];
 
-    Senders NO_SENDERS = new ImmutableSenders(NO_ONES_LIST);
-    Recipients NO_RECIPIENTS = new ImmutableRecipients(NO_ONES_LIST);
+    Senders NO_SENDERS = new ImmutableSenders(NO_ONES_SET);
+    Recipients NO_RECIPIENTS = new ImmutableRecipients(NO_ONES_SET);
 
     Part<Object> EMPTY_PART = new GenericPart<>(EMPTY_STRING, Disposition.NONE, EMPTY_STRING, null);
     Part<String> EMPTY_TEXT_PART = new GenericPart<>("text/plain", Disposition.NONE, EMPTY_STRING, null);
