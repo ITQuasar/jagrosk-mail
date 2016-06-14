@@ -18,6 +18,7 @@ import com.itquasar.multiverse.mail.server.listener.LoggerStoreListenner;
 import com.itquasar.multiverse.mail.server.listener.LoggerTransportListener;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import javax.mail.internet.InternetAddress;
 
 /**
@@ -31,12 +32,13 @@ public interface Constants {
     String RFC822_ADDRESS_SEPARATOR = ",";
 
     Contact NO_ONE = new Contact(EMPTY_STRING, EMPTY_STRING);
-    List<Contact> NO_ONES = Collections.emptyList();
+    List<Contact> NO_ONES_LIST = Collections.emptyList();
+    Set<Contact> NO_ONES_SET = Collections.emptySet();
     Contact[] NO_ONES_ARRAY = new Contact[0];
     InternetAddress[] NO_ADDRESSES = new InternetAddress[0];
 
-    Senders NO_SENDERS = new ImmutableSenders(NO_ONES);
-    Recipients NO_RECIPIENTS = new ImmutableRecipients(NO_ONES);
+    Senders NO_SENDERS = new ImmutableSenders(NO_ONES_LIST);
+    Recipients NO_RECIPIENTS = new ImmutableRecipients(NO_ONES_LIST);
 
     Part<Object> EMPTY_PART = new GenericPart<>(EMPTY_STRING, Disposition.NONE, EMPTY_STRING, null);
     Part<String> EMPTY_TEXT_PART = new GenericPart<>("text/plain", Disposition.NONE, EMPTY_STRING, null);

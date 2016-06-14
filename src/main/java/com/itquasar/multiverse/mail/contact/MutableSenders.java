@@ -5,36 +5,36 @@
  */
 package com.itquasar.multiverse.mail.contact;
 
+import static com.itquasar.multiverse.mail.util.Constants.NO_ONE;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
-import java.util.Collections;
 import java.util.Set;
 
 /**
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class ImmutableSenders extends AbstractSenders {
+public class MutableSenders extends AbstractSenders {
 
-    private final Contact sender;
-    private final Set<Contact> from;
-    private final Set<Contact> replyTo;
+    private Contact sender;
+    private Set<Contact> from;
+    private Set<Contact> replyTo;
 
-    public ImmutableSenders(Contact from) {
+    public MutableSenders(Contact from) {
         this(FunctionUtils.toSet(from));
     }
 
-    public ImmutableSenders(Set<Contact> from) {
+    public MutableSenders(Set<Contact> from) {
         this(from, NO_ONES_SET);
     }
 
-    public ImmutableSenders(Set<Contact> from, Set<Contact> replyTo) {
+    public MutableSenders(Set<Contact> from, Set<Contact> replyTo) {
         this(NO_ONE, from, replyTo);
     }
 
-    public ImmutableSenders(Contact sender, Set<Contact> from, Set<Contact> replyTo) {
+    public MutableSenders(Contact sender, Set<Contact> from, Set<Contact> replyTo) {
         this.sender = sender;
-        this.from = Collections.unmodifiableSet(from);
-        this.replyTo = Collections.unmodifiableSet(replyTo);
+        this.from = from;
+        this.replyTo = replyTo;
     }
 
     @Override
@@ -50,6 +50,18 @@ public class ImmutableSenders extends AbstractSenders {
     @Override
     public Set<Contact> getReplyTo() {
         return replyTo;
+    }
+
+    public void setSender(Contact sender) {
+        this.sender = sender;
+    }
+
+    public void setFrom(Set<Contact> from) {
+        this.from = from;
+    }
+
+    public void setReplyTo(Set<Contact> replyTo) {
+        this.replyTo = replyTo;
     }
 
 }

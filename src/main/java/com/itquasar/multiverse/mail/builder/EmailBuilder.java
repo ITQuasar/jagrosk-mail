@@ -36,12 +36,12 @@ public class EmailBuilder {
         return new EmailBuilder();
     }
 
-    private List<Contact> from = Constants.NO_ONES;
-    private List<Contact> replyTo = Constants.NO_ONES;
+    private List<Contact> from = Constants.NO_ONES_LIST;
+    private List<Contact> replyTo = Constants.NO_ONES_LIST;
 
-    private List<Contact> to = Constants.NO_ONES;
-    private List<Contact> cc = Constants.NO_ONES;
-    private List<Contact> bcc = Constants.NO_ONES;
+    private List<Contact> to = Constants.NO_ONES_LIST;
+    private List<Contact> cc = Constants.NO_ONES_LIST;
+    private List<Contact> bcc = Constants.NO_ONES_LIST;
 
     private String subject = Constants.EMPTY_STRING;
     private String textContent = Constants.EMPTY_STRING;

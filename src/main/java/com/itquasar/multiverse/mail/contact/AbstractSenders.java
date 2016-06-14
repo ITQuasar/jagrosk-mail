@@ -5,19 +5,15 @@
  */
 package com.itquasar.multiverse.mail.contact;
 
-import com.itquasar.multiverse.mail.util.Constants;
-
 /**
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-// FIXME: use Sets instead of Lists
-public interface Senders extends Constants {
+public abstract class AbstractSenders implements Senders {
 
-    Contact getSender();
-
-    Iterable<Contact> getFrom();
-
-    Iterable<Contact> getReplyTo();
+    @Override
+    public String toString() {
+        return "Senders{" + "sender=" + getSender() + ", from=" + getFrom() + ", replyTo=" + getReplyTo() + '}';
+    }
 
 }

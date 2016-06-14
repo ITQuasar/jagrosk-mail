@@ -144,8 +144,8 @@ public class EmailUtils {
                                 replayAll
                                         ? join(email.getEnvelope().getReplyTo(), email.getEnvelope().getFrom(), true)
                                         : email.getEnvelope().getReplyTo(),
-                                replayAll ? email.getEnvelope().getCc() : Constants.NO_ONES,
-                                replayAll ? email.getEnvelope().getBcc() : Constants.NO_ONES
+                                replayAll ? email.getEnvelope().getCc() : Constants.NO_ONES_LIST,
+                                replayAll ? email.getEnvelope().getBcc() : Constants.NO_ONES_LIST
                         ),
                         subject
                 ),

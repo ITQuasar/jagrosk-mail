@@ -2,16 +2,22 @@ package com.itquasar.multiverse.mail.util;
 
 import com.itquasar.multiverse.mail.exception.NullArgumentException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
 public final class FunctionUtils {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(FunctionUtils.class);
 
     private FunctionUtils() {
     }
@@ -60,12 +66,27 @@ public final class FunctionUtils {
     }
 
     public static <T> List<T> toList(T... values) {
-        List<T> list = new LinkedList<>();
-        if (values != null && !(values.length == 1 && values[0] == null)) {
-            for (T value : values) {
-                list.add(value);
-            }
-        }
-        return list;
+        return toCollection(LinkedList.class, values);
     }
+
+    public static <T> Set<T> toSet(T... values) {
+        return toCollection(HashSet.class, values);
+    }
+
+    public static <C extends Collection, T> C toCollection(Class<C> collectionClass, T... values) {
+        try {
+            C collection = collectionClass.newInstance();
+            if (values != null && !(values.length == 1 && values[0] == null)) {
+                for (T value : values) {
+                    collection.add(value);
+                }
+            }
+            return collection;
+        } catch (InstantiationException | IllegalAccessException ex) {
+            String msg = "Error instantiating given collection class '" + collectionClass.getCanonicalName() + "'.";
+            LOGGER.error(msg, ex);
+            throw new RuntimeException(msg, ex);
+        }
+    }
+
 }
