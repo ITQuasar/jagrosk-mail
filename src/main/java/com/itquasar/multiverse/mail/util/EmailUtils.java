@@ -144,9 +144,9 @@ public class EmailUtils {
                         new ImmutableRecipients(
                                 replayAll
                                         ? join(email.getEnvelope().getReplyTo(), email.getEnvelope().getFrom())
-                                        : FunctionUtils.iterableToSet(email.getEnvelope().getReplyTo()),
-                                FunctionUtils.iterableToSet(replayAll ? email.getEnvelope().getCc() : Constants.NO_ONES_LIST),
-                                FunctionUtils.iterableToSet(replayAll ? email.getEnvelope().getBcc() : Constants.NO_ONES_LIST)
+                                        : FunctionUtils.toSet(email.getEnvelope().getReplyTo()),
+                                FunctionUtils.toSet(replayAll ? email.getEnvelope().getCc() : Constants.NO_ONES_LIST),
+                                FunctionUtils.toSet(replayAll ? email.getEnvelope().getBcc() : Constants.NO_ONES_LIST)
                         ),
                         subject
                 ),

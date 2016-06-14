@@ -103,7 +103,7 @@ public final class FunctionUtils {
         }
     }
 
-    public static <T> Set<T> iterableToSet(Iterable<T> iterable) {
+    public static <T> Set<T> toSet(Iterable<T> iterable) {
         Set<T> set = new HashSet<>();
         for (T t : iterable) {
             set.add(t);
