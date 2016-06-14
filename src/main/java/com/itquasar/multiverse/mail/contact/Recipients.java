@@ -7,7 +7,6 @@ package com.itquasar.multiverse.mail.contact;
 
 import com.itquasar.multiverse.mail.message.envelope.Envelope;
 import com.itquasar.multiverse.mail.util.Constants;
-import java.util.List;
 
 /**
  *
@@ -24,7 +23,7 @@ public interface Recipients extends Constants {
     }
 
     static Recipients copyToAndBcc(Envelope envelope) {
-        return new ImmutableRecipients(envelope.getTo(), NO_ONES, envelope.getBcc());
+        return new ImmutableRecipients(envelope.getTo(), NO_ONES_LIST, envelope.getBcc());
     }
 
     static Recipients copyToAndCcAndBcc(Envelope envelope) {
@@ -32,21 +31,21 @@ public interface Recipients extends Constants {
     }
 
     static Recipients copyCc(Envelope envelope) {
-        return new ImmutableRecipients(NO_ONES, envelope.getCc());
+        return new ImmutableRecipients(NO_ONES_LIST, envelope.getCc());
     }
 
     static Recipients copyCcAndBcc(Envelope envelope) {
-        return new ImmutableRecipients(NO_ONES, envelope.getCc(), envelope.getBcc());
+        return new ImmutableRecipients(NO_ONES_LIST, envelope.getCc(), envelope.getBcc());
     }
 
     static Recipients copyBcc(Envelope envelope) {
-        return new ImmutableRecipients(NO_ONES, NO_ONES, envelope.getBcc());
+        return new ImmutableRecipients(NO_ONES_LIST, NO_ONES_LIST, envelope.getBcc());
     }
 
-    List<Contact> getTo();
+    Iterable<Contact> getTo();
 
-    List<Contact> getCc();
+    Iterable<Contact> getCc();
 
-    List<Contact> getBcc();
+    Iterable<Contact> getBcc();
 
 }

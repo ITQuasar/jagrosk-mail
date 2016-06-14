@@ -5,47 +5,43 @@
  */
 package com.itquasar.multiverse.mail.contact;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class ImmutableRecipients implements Recipients {
+public class ImmutableRecipients extends AbstractRecipients {
 
-    private final List<Contact> to;
-    private final List<Contact> cc;
-    private final List<Contact> bcc;
+    private final Set<Contact> to;
+    private final Set<Contact> cc;
+    private final Set<Contact> bcc;
 
-    public ImmutableRecipients(List<Contact> to) {
-        this(to, NO_ONES);
+    public ImmutableRecipients(Set<Contact> to) {
+        this(to, NO_ONES_SET);
     }
 
-    public ImmutableRecipients(List<Contact> to, List<Contact> cc) {
-        this(to, cc, NO_ONES);
+    public ImmutableRecipients(Set<Contact> to, Set<Contact> cc) {
+        this(to, cc, NO_ONES_SET);
     }
 
-    public ImmutableRecipients(List<Contact> to, List<Contact> cc, List<Contact> bcc) {
-        this.to = to;
-        this.cc = cc;
-        this.bcc = bcc;
+    public ImmutableRecipients(Set<Contact> to, Set<Contact> cc, Set<Contact> bcc) {
+        this.to = Collections.unmodifiableSet(to);
+        this.cc = Collections.unmodifiableSet(cc);
+        this.bcc = Collections.unmodifiableSet(bcc);
     }
 
-    public List<Contact> getTo() {
+    public Set<Contact> getTo() {
         return to;
     }
 
-    public List<Contact> getCc() {
+    public Set<Contact> getCc() {
         return cc;
     }
 
-    public List<Contact> getBcc() {
+    public Set<Contact> getBcc() {
         return bcc;
-    }
-
-    @Override
-    public String toString() {
-        return "Recipients{" + "to=" + to + ", cc=" + cc + ", bcc=" + bcc + '}';
     }
 
 }
