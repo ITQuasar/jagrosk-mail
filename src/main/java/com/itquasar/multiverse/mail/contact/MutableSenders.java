@@ -20,12 +20,16 @@ public class MutableSenders extends AbstractSenders {
     private Set<Contact> from;
     private Set<Contact> replyTo;
 
+    public MutableSenders() {
+        this(null, null, null);
+    }
+
     public MutableSenders(Contact from) {
         this(FunctionUtils.toSet(from));
     }
 
     public MutableSenders(Set<Contact> from) {
-        this(from, new HashSet<>());
+        this(from, null);
     }
 
     public MutableSenders(Set<Contact> from, Set<Contact> replyTo) {
@@ -33,9 +37,9 @@ public class MutableSenders extends AbstractSenders {
     }
 
     public MutableSenders(Contact sender, Set<Contact> from, Set<Contact> replyTo) {
-        this.sender = sender;
-        this.from = from;
-        this.replyTo = replyTo;
+        this.sender = sender == null ? NO_ONE : sender;
+        this.from = from == null ? new HashSet<>() : from;
+        this.replyTo = replyTo == null ? new HashSet<>() : replyTo;
     }
 
     @Override

@@ -18,18 +18,22 @@ public class MutableRecipients extends AbstractRecipients {
     private Set<Contact> cc;
     private Set<Contact> bcc;
 
+    public MutableRecipients() {
+        this(null);
+    }
+
     public MutableRecipients(Set<Contact> to) {
-        this(to, new HashSet<>());
+        this(to, null);
     }
 
     public MutableRecipients(Set<Contact> to, Set<Contact> cc) {
-        this(to, cc, new HashSet<>());
+        this(to, cc, null);
     }
 
     public MutableRecipients(Set<Contact> to, Set<Contact> cc, Set<Contact> bcc) {
-        this.to = to;
-        this.cc = cc;
-        this.bcc = bcc;
+        this.to = to == null ? new HashSet<>() : to;
+        this.cc = cc == null ? new HashSet<>() : cc;
+        this.bcc = bcc == null ? new HashSet<>() : bcc;
     }
 
     public Set<Contact> getTo() {
