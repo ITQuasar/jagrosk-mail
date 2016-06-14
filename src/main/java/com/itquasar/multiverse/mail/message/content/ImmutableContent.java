@@ -21,7 +21,7 @@ import java.util.List;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class ImmutableContent implements Content {
+public class ImmutableContent extends AbstractContent {
 
     private final Part<String> textContent;
     private final Part<String> htmlContent;
@@ -34,6 +34,15 @@ public class ImmutableContent implements Content {
 
     public ImmutableContent(Part<String> textContent) {
         this(textContent, null, null);
+    }
+
+    public ImmutableContent(String text, String html) {
+        this(new SinglePart<>(MimeTypes.TEXT_PLAIN, text),
+                new SinglePart<>(MimeTypes.TEXT_HTML, html));
+    }
+
+    public ImmutableContent(Part<String> textPart, Part<String> htmlPart) {
+        this(textPart, htmlPart, null, null);
     }
 
     public ImmutableContent(Part<String> htmlContent, List<Inline<?>> htmlImages) {
@@ -59,29 +68,11 @@ public class ImmutableContent implements Content {
 
     /**
      *
-     * @return The content from the first text/plain part
-     */
-    @Override
-    public String getTextContent() {
-        return textContent.getContent();
-    }
-
-    /**
-     *
      * @return The first text/plain part
      */
     @Override
     public Part<String> getTextPart() {
         return textContent;
-    }
-
-    /**
-     *
-     * @return The content from the first text/html part
-     */
-    @Override
-    public String getHtmlContent() {
-        return htmlContent.getContent();
     }
 
     /**
@@ -101,40 +92,6 @@ public class ImmutableContent implements Content {
     @Override
     public List<Attachment<?>> getAttachments() {
         return attachments;
-    }
-
-    /**
-     *
-     * @return {@code true} if plain text part has content
-     * ({@link Part#hasContent()}) and the string content is not empty
-     * ({@link String#isEmpty()}).
-     */
-    @Override
-    public boolean hasTextPlain() {
-        return this.textContent.hasContent()
-                && !this.textContent.getContent().isEmpty();
-    }
-
-    /**
-     *
-     * @return {@code true} if html text part has content
-     * ({@link Part#hasContent()}) and the string content is not empty
-     * ({@link String#isEmpty()}).
-     */
-    @Override
-    public boolean hasTextHtml() {
-        return this.htmlContent.hasContent()
-                && !this.htmlContent.getContent().isEmpty();
-    }
-
-    @Override
-    public boolean hasImages() {
-        return !this.htmlImages.isEmpty();
-    }
-
-    @Override
-    public String toString() {
-        return "Content{" + "textContent=" + textContent + ", htmlContent=" + htmlContent + ", htmlImages=" + htmlImages + ", attachments=" + attachments + '}';
     }
 
 }

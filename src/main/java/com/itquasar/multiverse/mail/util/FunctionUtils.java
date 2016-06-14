@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +38,11 @@ public final class FunctionUtils {
             logger.error("Error while acessing a value", e);
         }
         return defaultOnNull(value, defaultValue);
+    }
+
+    public static <T> T doubleDefaultOnNull(Object valueToTest, Supplier<T> supplier, T defaultValue) {
+        return valueToTest == null ? defaultValue
+                : defaultOnNull(supplier.get(), defaultValue);
     }
 
     public static <T> T defaultOnNull(T valueToTest, T defaultValue) {
