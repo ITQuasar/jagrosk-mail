@@ -7,6 +7,7 @@ package com.itquasar.multiverse.mail.message;
 
 import com.itquasar.multiverse.mail.message.content.Content;
 import com.itquasar.multiverse.mail.message.envelope.Envelope;
+import com.itquasar.multiverse.mail.util.EmailUtils;
 import javax.mail.Message;
 import javax.mail.Session;
 
@@ -18,21 +19,23 @@ public interface Email {
 
     /**
      *
-     * @return The message content.
-     */
-    Content getContent();
-
-    /**
-     *
      * @return The message envelope.
      */
     Envelope getEnvelope();
 
     /**
      *
+     * @return The message content.
+     */
+    Content getContent();
+
+    /**
+     *
      * @return The size of wrapped message or -1 when no message wrapped.
      */
-    int getSize();
+    default int getSize() {
+        return -1;
+    }
 
 //    /**
 //     * Create an email using this message, the content supplied and {@code from}
@@ -60,6 +63,8 @@ public interface Email {
 //     * @return A new ImmutableEmail instance.
 //     */
 //    Email forward(Contact from, Content content, Contact... to);
-    Message toMessage(Session session);
+    default Message toMessage(Session session) {
+        return EmailUtils.toMessage(this, session);
+    }
 
 }

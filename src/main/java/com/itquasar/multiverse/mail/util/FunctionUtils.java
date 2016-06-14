@@ -57,6 +57,10 @@ public final class FunctionUtils {
         return defaultOnNull(valueToTest, Collections.EMPTY_LIST);
     }
 
+    public static <T> Set<T> emptyOnNull(Set<T> valueToTest) {
+        return defaultOnNull(valueToTest, Collections.EMPTY_SET);
+    }
+
     public static void throwExceptionOnNullArgument(Object argument, String argumentName) {
         if (argument == null) {
             throw new NullArgumentException(argumentName);
@@ -69,6 +73,10 @@ public final class FunctionUtils {
         } else {
             return Arrays.asList(array);
         }
+    }
+
+    public static <T> Set<T> safeArrayToSet(T[] array) {
+        return new HashSet<>(safeArrayToList(array));
     }
 
     public static <T> List<T> toList(T... values) {
@@ -93,6 +101,14 @@ public final class FunctionUtils {
             LOGGER.error(msg, ex);
             throw new RuntimeException(msg, ex);
         }
+    }
+
+    public static <T> Set<T> iterableToSet(Iterable<T> iterable) {
+        Set<T> set = new HashSet<>();
+        for (T t : iterable) {
+            set.add(t);
+        }
+        return set;
     }
 
 }

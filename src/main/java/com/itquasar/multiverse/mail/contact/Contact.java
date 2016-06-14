@@ -8,8 +8,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.mail.internet.InternetAddress;
@@ -18,7 +21,7 @@ import javax.mail.internet.InternetAddress;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class Contact implements Comparable<Contact> {
+public class Contact implements Comparable<Contact>, Constants {
 
     public static String listToRFC822String(Contact... contacts) {
         return listToRFC822String(Arrays.asList(contacts));
@@ -41,14 +44,14 @@ public class Contact implements Comparable<Contact> {
         return new Contact(address.getPersonal(), address.getAddress());
     }
 
-    public static List<Contact> fromStrings(String... addresses) {
+    public static Set<Contact> fromStrings(String... addresses) {
         addresses = FunctionUtils.defaultOnNull(addresses, Constants.EMPTY_STRING_ARRAY);
-        return Stream.of(addresses).map((s) -> new Contact(s)).collect(Collectors.toList());
+        return Stream.of(addresses).map((s) -> new Contact(s)).collect(Collectors.toSet());
     }
 
-    public static List<Contact> fromInternetAddresses(InternetAddress... addresses) {
+    public static Set<Contact> fromInternetAddresses(InternetAddress... addresses) {
         addresses = FunctionUtils.defaultOnNull(addresses, Constants.NO_ADDRESSES);
-        List<Contact> contacts = new LinkedList<>();
+        Set<Contact> contacts = new HashSet<>();
         for (InternetAddress address : addresses) {
             contacts.add(fromInternetAddress(address));
         }
@@ -62,13 +65,14 @@ public class Contact implements Comparable<Contact> {
                 : Constants.NO_ADDRESSES;
     }
 
-    public static InternetAddress[] toInternetAddresses(List<Contact> emailContacts) {
+    public static InternetAddress[] toInternetAddresses(Iterable<Contact> emailContacts) {
         emailContacts = FunctionUtils.defaultOnNull(emailContacts, Collections.EMPTY_LIST);
-        InternetAddress[] addresses = new InternetAddress[emailContacts.size()];
-        for (int i = 0; i < addresses.length; i++) {
-            addresses[i] = emailContacts.get(i).toInternetAddress();
+        List<InternetAddress> list = new LinkedList<>();
+        Iterator<Contact> iterator = emailContacts.iterator();
+        while (iterator.hasNext()) {
+            list.add(iterator.next().toInternetAddress());
         }
-        return addresses;
+        return list.toArray(NO_INTERNET_ADDRESS_ARRAY);
     }
 
     private final String name;

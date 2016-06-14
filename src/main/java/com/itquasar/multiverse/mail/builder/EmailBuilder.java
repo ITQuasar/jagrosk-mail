@@ -3,6 +3,7 @@ package com.itquasar.multiverse.mail.builder;
 import com.itquasar.multiverse.mail.contact.Contact;
 import com.itquasar.multiverse.mail.message.Email;
 import com.itquasar.multiverse.mail.message.ImmutableEmail;
+import com.itquasar.multiverse.mail.message.TemplatedSubjectAndContent;
 import com.itquasar.multiverse.mail.message.content.ImmutableContent;
 import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.mail.part.Attachment;
@@ -14,7 +15,7 @@ import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import com.itquasar.multiverse.mail.message.TemplatedSubjectAndContent;
+import java.util.Set;
 
 /**
  * This class builds an Email in a fluid manner. After setting all data as you
@@ -36,12 +37,12 @@ public class EmailBuilder {
         return new EmailBuilder();
     }
 
-    private List<Contact> from = Constants.NO_ONES_LIST;
-    private List<Contact> replyTo = Constants.NO_ONES_LIST;
+    private Set<Contact> from = Constants.NO_ONES_SET;
+    private Set<Contact> replyTo = Constants.NO_ONES_SET;
 
-    private List<Contact> to = Constants.NO_ONES_LIST;
-    private List<Contact> cc = Constants.NO_ONES_LIST;
-    private List<Contact> bcc = Constants.NO_ONES_LIST;
+    private Set<Contact> to = Constants.NO_ONES_SET;
+    private Set<Contact> cc = Constants.NO_ONES_SET;
+    private Set<Contact> bcc = Constants.NO_ONES_SET;
 
     private String subject = Constants.EMPTY_STRING;
     private String textContent = Constants.EMPTY_STRING;
@@ -59,7 +60,7 @@ public class EmailBuilder {
      * @return The same builder instance.
      */
     public EmailBuilder from(Contact... contacts) {
-        this.from = FunctionUtils.safeArrayToList(contacts);
+        this.from = FunctionUtils.safeArrayToSet(contacts);
         return this;
     }
 
@@ -79,7 +80,7 @@ public class EmailBuilder {
      * @return The same builder instance.
      */
     public EmailBuilder replyTo(Contact... contacts) {
-        this.replyTo = FunctionUtils.safeArrayToList(contacts);
+        this.replyTo = FunctionUtils.safeArrayToSet(contacts);
         return this;
     }
 
@@ -99,7 +100,7 @@ public class EmailBuilder {
      * @return The same builder instance.
      */
     public EmailBuilder to(Contact... contacts) {
-        this.to = FunctionUtils.safeArrayToList(contacts);
+        this.to = FunctionUtils.safeArrayToSet(contacts);
         return this;
     }
 
@@ -119,7 +120,7 @@ public class EmailBuilder {
      * @return The same builder instance.
      */
     public EmailBuilder cc(Contact... contacts) {
-        this.cc = FunctionUtils.safeArrayToList(contacts);
+        this.cc = FunctionUtils.safeArrayToSet(contacts);
         return this;
     }
 
@@ -139,7 +140,7 @@ public class EmailBuilder {
      * @return The same builder instance.
      */
     public EmailBuilder bcc(Contact... contacts) {
-        this.bcc = FunctionUtils.safeArrayToList(contacts);
+        this.bcc = FunctionUtils.safeArrayToSet(contacts);
         return this;
     }
 
@@ -164,8 +165,8 @@ public class EmailBuilder {
     }
 
     /**
-     * Sets the content using the given {@link TemplatedSubjectAndContent}, that set
-     * subject, text and html message, according to implementation;
+     * Sets the content using the given {@link TemplatedSubjectAndContent}, that
+     * set subject, text and html message, according to implementation;
      *
      * @param content
      * @return The same builder instance.

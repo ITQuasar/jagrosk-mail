@@ -1,15 +1,16 @@
 package com.itquasar.multiverse.mail.util;
 
-import com.itquasar.multiverse.mail.message.content.Content;
-import com.itquasar.multiverse.mail.message.Email;
-import com.itquasar.multiverse.mail.message.envelope.Envelope;
 import com.itquasar.multiverse.mail.contact.Contact;
 import com.itquasar.multiverse.mail.contact.ImmutableRecipients;
 import com.itquasar.multiverse.mail.contact.Recipients;
 import com.itquasar.multiverse.mail.contact.Senders;
 import com.itquasar.multiverse.mail.exception.EmailException;
+import com.itquasar.multiverse.mail.message.Email;
 import com.itquasar.multiverse.mail.message.ImmutableEmail;
+import com.itquasar.multiverse.mail.message.TemplatedSubjectAndContent;
+import com.itquasar.multiverse.mail.message.content.Content;
 import com.itquasar.multiverse.mail.message.content.ImmutableContent;
+import com.itquasar.multiverse.mail.message.envelope.Envelope;
 import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.mail.part.MimeTypes;
 import static com.itquasar.multiverse.mail.part.MimeTypes.MULTIPART_ALTERNATIVE;
@@ -20,13 +21,13 @@ import com.itquasar.multiverse.mail.part.SinglePart;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import com.itquasar.multiverse.mail.message.TemplatedSubjectAndContent;
 
 /**
  *
@@ -142,10 +143,10 @@ public class EmailUtils {
                         senders,
                         new ImmutableRecipients(
                                 replayAll
-                                        ? join(email.getEnvelope().getReplyTo(), email.getEnvelope().getFrom(), true)
-                                        : email.getEnvelope().getReplyTo(),
-                                replayAll ? email.getEnvelope().getCc() : Constants.NO_ONES_LIST,
-                                replayAll ? email.getEnvelope().getBcc() : Constants.NO_ONES_LIST
+                                        ? join(email.getEnvelope().getReplyTo(), email.getEnvelope().getFrom())
+                                        : FunctionUtils.iterableToSet(email.getEnvelope().getReplyTo()),
+                                FunctionUtils.iterableToSet(replayAll ? email.getEnvelope().getCc() : Constants.NO_ONES_LIST),
+                                FunctionUtils.iterableToSet(replayAll ? email.getEnvelope().getBcc() : Constants.NO_ONES_LIST)
                         ),
                         subject
                 ),
@@ -188,6 +189,17 @@ public class EmailUtils {
                         email.getContent().getAttachments()
                 )
         );
+    }
+
+    private static <T> Set<T> join(Iterable<T> list1, Iterable<T> list2) {
+        Set<T> newSet = new HashSet<>();
+        for (T t : list1) {
+            newSet.add(t);
+        }
+        for (T t : list2) {
+            newSet.add(t);
+        }
+        return newSet;
     }
 
     private static <T> List<T> join(List<T> list1, List<T> list2) {

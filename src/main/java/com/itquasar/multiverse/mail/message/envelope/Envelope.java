@@ -5,14 +5,13 @@
  */
 package com.itquasar.multiverse.mail.message.envelope;
 
+import com.itquasar.multiverse.mail.contact.Contact;
 import com.itquasar.multiverse.mail.contact.Recipients;
 import com.itquasar.multiverse.mail.contact.Senders;
-import com.itquasar.multiverse.mail.contact.Contact;
 import com.itquasar.multiverse.mail.util.Constants;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,23 +28,23 @@ public interface Envelope extends Constants {
         return getSenders().getSender();
     }
 
-    default List<Contact> getFrom() {
+    default Iterable<Contact> getFrom() {
         return getSenders().getFrom();
     }
 
-    default List<Contact> getReplyTo() {
+    default Iterable<Contact> getReplyTo() {
         return getSenders().getReplyTo();
     }
 
-    default List<Contact> getTo() {
+    default Iterable<Contact> getTo() {
         return getRecipients().getTo();
     }
 
-    default List<Contact> getCc() {
+    default Iterable<Contact> getCc() {
         return getRecipients().getCc();
     }
 
-    default List<Contact> getBcc() {
+    default Iterable<Contact> getBcc() {
         return getRecipients().getBcc();
     }
 

@@ -49,6 +49,8 @@ public interface Constants {
     List<Attachment<?>> NO_ATTACHMENTS = Collections.emptyList();
     Part[] NO_PARTS_ARRAY = new Part[0];
 
+    InternetAddress[] NO_INTERNET_ADDRESS_ARRAY = new InternetAddress[0];
+
     interface LoggerMailListener {
 
         LoggerConnectionListener CONNECTION = new LoggerConnectionListener();

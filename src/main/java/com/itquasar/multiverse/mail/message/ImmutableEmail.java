@@ -1,16 +1,13 @@
 package com.itquasar.multiverse.mail.message;
 
-import com.itquasar.multiverse.mail.message.content.Content;
-import com.itquasar.multiverse.mail.message.Email;
-import com.itquasar.multiverse.mail.message.envelope.Envelope;
 import com.itquasar.multiverse.mail.exception.EmailException;
+import com.itquasar.multiverse.mail.message.content.Content;
 import com.itquasar.multiverse.mail.message.content.LazyContent;
+import com.itquasar.multiverse.mail.message.envelope.Envelope;
 import com.itquasar.multiverse.mail.message.envelope.LazyEnvelope;
-import com.itquasar.multiverse.mail.util.EmailUtils;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.UUID;
 import javax.mail.Message;
-import javax.mail.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,18 +65,9 @@ public class ImmutableEmail implements Email {
         return content;
     }
 
-    /**
-     *
-     * @return The size of wrapped message or -1 when no message wrapped.
-     */
     @Override
     public int getSize() {
         return FunctionUtils.defaultOnNullOrException(() -> message.getSize(), -1, LOGGER);
-    }
-
-    @Override
-    public Message toMessage(Session session) {
-        return EmailUtils.toMessage(this, session);
     }
 
     @Override
