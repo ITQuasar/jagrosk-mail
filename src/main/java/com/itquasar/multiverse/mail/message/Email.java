@@ -29,40 +29,6 @@ public interface Email {
      */
     Content getContent();
 
-    /**
-     *
-     * @return The size of wrapped message or -1 when no message wrapped.
-     */
-    default int getSize() {
-        return -1;
-    }
-
-//    /**
-//     * Create an email using this message, the content supplied and {@code from}
-//     * supplied as from ad {@code replyTo}
-//     *
-//     * @param from
-//     * @param content
-//     * @return A new ImmutableEmail instance.
-//     */
-//    Email reply(Contact from, Content content);
-//
-//    Email replyAll(Contact from, Content content);
-//
-//    default Email reply(Contact from, Content content, boolean replyAll) {
-//        return replyAll ? replyAll(from, content) : reply(from, content);
-//    }
-//     /**
-//     * Create an email using this message, the content supplied adding all
-//     * attachments to it, {@code from} supplied as from ad {@code replyTo} and
-//     * {@code to} as recipients
-//     *
-//     * @param from
-//     * @param content
-//     * @param to
-//     * @return A new ImmutableEmail instance.
-//     */
-//    Email forward(Contact from, Content content, Contact... to);
     default Message toMessage(Session session) {
         return EmailUtils.toMessage(this, session);
     }
