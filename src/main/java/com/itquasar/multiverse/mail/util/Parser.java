@@ -5,11 +5,13 @@ import com.itquasar.multiverse.mail.message.content.ImmutableContent;
 import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.mail.part.Attachment;
 import com.itquasar.multiverse.mail.part.Disposition;
+import com.itquasar.multiverse.mail.part.HtmlPart;
 import com.itquasar.multiverse.mail.part.Inline;
 import com.itquasar.multiverse.mail.part.MimeTypes;
 import com.itquasar.multiverse.mail.part.Multipart;
 import com.itquasar.multiverse.mail.part.Part;
 import com.itquasar.multiverse.mail.part.SinglePart;
+import com.itquasar.multiverse.mail.part.TextPart;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -222,7 +224,7 @@ public class Parser {
                     .filter((p) -> p.hasContent())
                     .collect(Collectors.toList());
             LOGGER.debug("...message content parsed.");
-            return new ImmutableContent(textPart, htmlPart, images, attachsFiltered);
+            return new ImmutableContent(TextPart.fromPart(textPart), HtmlPart.fromPart(htmlPart), images, attachsFiltered);
         } catch (MessagingException | IOException ex) {
             LOGGER.error("Error parsing message content.", ex);
             throw new EmailException("Could not build content from Message", ex);

@@ -6,10 +6,9 @@
 package com.itquasar.multiverse.mail.message.content;
 
 import com.itquasar.multiverse.mail.part.Attachment;
+import com.itquasar.multiverse.mail.part.HtmlPart;
 import com.itquasar.multiverse.mail.part.Inline;
-import com.itquasar.multiverse.mail.part.MimeTypes;
-import com.itquasar.multiverse.mail.part.Part;
-import com.itquasar.multiverse.mail.part.SinglePart;
+import com.itquasar.multiverse.mail.part.TextPart;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,8 +18,8 @@ import java.util.List;
  */
 public class MutableContent extends AbstractContent {
 
-    private Part<String> textPart;
-    private Part<String> htmlPart;
+    private TextPart textPart;
+    private HtmlPart htmlPart;
     private List<Inline<?>> htmlImages;
     private List<Attachment<?>> attachments;
 
@@ -29,32 +28,31 @@ public class MutableContent extends AbstractContent {
     }
 
     public MutableContent(String textContent) {
-        this(new SinglePart(MimeTypes.TEXT_PLAIN, textContent));
+        this(new TextPart(textContent));
     }
 
-    public MutableContent(Part<String> textContent) {
+    public MutableContent(TextPart textContent) {
         this(textContent, null, null);
     }
 
     public MutableContent(String text, String html) {
-        this(new SinglePart<>(MimeTypes.TEXT_PLAIN, text),
-                new SinglePart<>(MimeTypes.TEXT_HTML, html));
+        this(new TextPart(text), new HtmlPart(html));
     }
 
-    public MutableContent(Part<String> textPart, Part<String> htmlPart) {
+    public MutableContent(TextPart textPart, HtmlPart htmlPart) {
         this(textPart, htmlPart, null, null);
     }
 
-    public MutableContent(Part<String> htmlContent, List<Inline<?>> htmlImages) {
+    public MutableContent(HtmlPart htmlContent, List<Inline<?>> htmlImages) {
         this(null, htmlContent, htmlImages);
     }
 
-    public MutableContent(Part<String> textContent, Part<String> htmlContent,
+    public MutableContent(TextPart textContent, HtmlPart htmlContent,
             List<Inline<?>> htmlImages) {
         this(textContent, htmlContent, htmlImages, null);
     }
 
-    public MutableContent(Part<String> textPart, Part<String> htmlPart, List<Inline<?>> htmlImages, List<Attachment<?>> attachments) {
+    public MutableContent(TextPart textPart, HtmlPart htmlPart, List<Inline<?>> htmlImages, List<Attachment<?>> attachments) {
         this.textPart = textPart == null ? EMPTY_TEXT_PART : textPart;
         this.htmlPart = htmlPart == null ? EMPTY_HTML_PART : htmlPart;
         this.htmlImages = htmlImages == null ? new LinkedList<>() : htmlImages;
@@ -62,12 +60,12 @@ public class MutableContent extends AbstractContent {
     }
 
     @Override
-    public Part<String> getTextPart() {
+    public TextPart getTextPart() {
         return textPart;
     }
 
     @Override
-    public Part<String> getHtmlPart() {
+    public HtmlPart getHtmlPart() {
         return htmlPart;
     }
 
@@ -81,11 +79,11 @@ public class MutableContent extends AbstractContent {
         return attachments;
     }
 
-    public void setTextPart(Part<String> textPart) {
+    public void setTextPart(TextPart textPart) {
         this.textPart = textPart;
     }
 
-    public void setHtmlPart(Part<String> htmlPart) {
+    public void setHtmlPart(HtmlPart htmlPart) {
         this.htmlPart = htmlPart;
     }
 

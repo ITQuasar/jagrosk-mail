@@ -12,12 +12,12 @@ import com.itquasar.multiverse.mail.message.content.Content;
 import com.itquasar.multiverse.mail.message.content.ImmutableContent;
 import com.itquasar.multiverse.mail.message.envelope.Envelope;
 import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
-import com.itquasar.multiverse.mail.part.MimeTypes;
+import com.itquasar.multiverse.mail.part.HtmlPart;
 import static com.itquasar.multiverse.mail.part.MimeTypes.MULTIPART_ALTERNATIVE;
 import static com.itquasar.multiverse.mail.part.MimeTypes.MULTIPART_MIXED;
 import static com.itquasar.multiverse.mail.part.MimeTypes.MULTIPART_RELATED;
 import com.itquasar.multiverse.mail.part.Part;
-import com.itquasar.multiverse.mail.part.SinglePart;
+import com.itquasar.multiverse.mail.part.TextPart;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -151,12 +151,10 @@ public class EmailUtils {
                         subject
                 ),
                 new ImmutableContent(
-                        new SinglePart<>(
-                                MimeTypes.TEXT_PLAIN,
+                        new TextPart(
                                 content.getTextContent() + quoteText(email.getContent().getTextContent())
                         ),
-                        new SinglePart<>(
-                                MimeTypes.TEXT_HTML,
+                        new HtmlPart(
                                 content.getHtmlContent() + quoteHtml(email.getContent().getHtmlContent())
                         ),
                         join(email.getContent().getHtmlImages(), content.getHtmlImages()),
@@ -177,12 +175,10 @@ public class EmailUtils {
                         subject
                 ),
                 new ImmutableContent(
-                        new SinglePart<>(
-                                MimeTypes.TEXT_PLAIN,
+                        new TextPart(
                                 content.getTextContent() + quoteText(email.getContent().getTextContent())
                         ),
-                        new SinglePart<>(
-                                MimeTypes.TEXT_HTML,
+                        new HtmlPart(
                                 content.getHtmlContent() + quoteHtml(email.getContent().getHtmlContent())
                         ),
                         join(email.getContent().getHtmlImages(), content.getHtmlImages()),

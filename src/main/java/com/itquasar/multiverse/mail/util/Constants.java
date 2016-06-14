@@ -8,8 +8,10 @@ import com.itquasar.multiverse.mail.contact.Senders;
 import com.itquasar.multiverse.mail.part.Attachment;
 import com.itquasar.multiverse.mail.part.Disposition;
 import com.itquasar.multiverse.mail.part.GenericPart;
+import com.itquasar.multiverse.mail.part.HtmlPart;
 import com.itquasar.multiverse.mail.part.Inline;
 import com.itquasar.multiverse.mail.part.Part;
+import com.itquasar.multiverse.mail.part.TextPart;
 import com.itquasar.multiverse.mail.server.listener.LoggerConnectionListener;
 import com.itquasar.multiverse.mail.server.listener.LoggerFolderListenner;
 import com.itquasar.multiverse.mail.server.listener.LoggerMessageChangedListener;
@@ -41,8 +43,8 @@ public interface Constants {
     Recipients NO_RECIPIENTS = new ImmutableRecipients(NO_ONES_SET);
 
     Part<Object> EMPTY_PART = new GenericPart<>(EMPTY_STRING, Disposition.NONE, EMPTY_STRING, null);
-    Part<String> EMPTY_TEXT_PART = new GenericPart<>("text/plain", Disposition.NONE, EMPTY_STRING, null);
-    Part<String> EMPTY_HTML_PART = new GenericPart<>("text/html", Disposition.NONE, EMPTY_STRING, null);
+    TextPart EMPTY_TEXT_PART = new TextPart(EMPTY_STRING, Disposition.NONE, null);
+    HtmlPart EMPTY_HTML_PART = new HtmlPart(EMPTY_STRING, Disposition.NONE, null);
 
     List<Part<?>> NO_PARTS = Collections.emptyList();
     List<Inline<?>> NO_INLINES = Collections.emptyList();

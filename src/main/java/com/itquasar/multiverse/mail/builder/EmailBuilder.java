@@ -7,9 +7,9 @@ import com.itquasar.multiverse.mail.message.TemplatedSubjectAndContent;
 import com.itquasar.multiverse.mail.message.content.ImmutableContent;
 import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.mail.part.Attachment;
+import com.itquasar.multiverse.mail.part.HtmlPart;
 import com.itquasar.multiverse.mail.part.Inline;
-import com.itquasar.multiverse.mail.part.MimeTypes;
-import com.itquasar.multiverse.mail.part.SinglePart;
+import com.itquasar.multiverse.mail.part.TextPart;
 import com.itquasar.multiverse.mail.util.Constants;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.Collections;
@@ -276,8 +276,8 @@ public class EmailBuilder {
         return new ImmutableEmail(
                 new ImmutableEnvelope(from, replyTo, to, cc, bcc, subject),
                 new ImmutableContent(
-                        new SinglePart<String>(MimeTypes.TEXT_PLAIN, textContent),
-                        new SinglePart<String>(MimeTypes.TEXT_HTML, htmlContent),
+                        new TextPart(textContent),
+                        new HtmlPart(htmlContent),
                         htmlImages, attachments
                 )
         );

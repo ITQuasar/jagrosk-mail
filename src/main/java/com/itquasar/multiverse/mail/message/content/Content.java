@@ -1,8 +1,10 @@
 package com.itquasar.multiverse.mail.message.content;
 
 import com.itquasar.multiverse.mail.part.Attachment;
+import com.itquasar.multiverse.mail.part.HtmlPart;
 import com.itquasar.multiverse.mail.part.Inline;
 import com.itquasar.multiverse.mail.part.Part;
+import com.itquasar.multiverse.mail.part.TextPart;
 import com.itquasar.multiverse.mail.util.Constants;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.List;
@@ -19,7 +21,7 @@ public interface Content extends Constants {
      *
      * @return The first text/html part
      */
-    Part<String> getHtmlPart();
+    HtmlPart getHtmlPart();
 
     /**
      *
@@ -35,7 +37,7 @@ public interface Content extends Constants {
      *
      * @return The first text/plain part
      */
-    Part<String> getTextPart();
+    TextPart getTextPart();
 
     /**
      *

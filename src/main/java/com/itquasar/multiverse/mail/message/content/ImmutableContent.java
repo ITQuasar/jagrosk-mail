@@ -1,10 +1,10 @@
 package com.itquasar.multiverse.mail.message.content;
 
 import com.itquasar.multiverse.mail.part.Attachment;
+import com.itquasar.multiverse.mail.part.HtmlPart;
 import com.itquasar.multiverse.mail.part.Inline;
-import com.itquasar.multiverse.mail.part.MimeTypes;
 import com.itquasar.multiverse.mail.part.Part;
-import com.itquasar.multiverse.mail.part.SinglePart;
+import com.itquasar.multiverse.mail.part.TextPart;
 import com.itquasar.multiverse.mail.util.Constants;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.Collections;
@@ -23,41 +23,44 @@ import java.util.List;
  */
 public class ImmutableContent extends AbstractContent {
 
-    private final Part<String> textContent;
-    private final Part<String> htmlContent;
+    private final TextPart tetxtPart;
+    private final HtmlPart htmlPart;
     private final List<Inline<?>> htmlImages;
     private final List<Attachment<?>> attachments;
 
-    public ImmutableContent(String textContent) {
-        this(new SinglePart(MimeTypes.TEXT_PLAIN, textContent));
+    public ImmutableContent() {
+        this(null, null, null, null);
     }
 
-    public ImmutableContent(Part<String> textContent) {
+    public ImmutableContent(String textContent) {
+        this(new TextPart(textContent));
+    }
+
+    public ImmutableContent(TextPart textContent) {
         this(textContent, null, null);
     }
 
     public ImmutableContent(String text, String html) {
-        this(new SinglePart<>(MimeTypes.TEXT_PLAIN, text),
-                new SinglePart<>(MimeTypes.TEXT_HTML, html));
+        this(new TextPart(text), new HtmlPart(html));
     }
 
-    public ImmutableContent(Part<String> textPart, Part<String> htmlPart) {
+    public ImmutableContent(TextPart textPart, HtmlPart htmlPart) {
         this(textPart, htmlPart, null, null);
     }
 
-    public ImmutableContent(Part<String> htmlContent, List<Inline<?>> htmlImages) {
+    public ImmutableContent(HtmlPart htmlContent, List<Inline<?>> htmlImages) {
         this(null, htmlContent, htmlImages);
     }
 
-    public ImmutableContent(Part<String> textContent, Part<String> htmlContent,
+    public ImmutableContent(TextPart textContent, HtmlPart htmlContent,
             List<Inline<?>> htmlImages) {
         this(textContent, htmlContent, htmlImages, null);
     }
 
-    public ImmutableContent(Part<String> textContent, Part<String> htmlContent,
+    public ImmutableContent(TextPart textContent, HtmlPart htmlContent,
             List<Inline<?>> htmlImages, List<Attachment<?>> attachments) {
-        this.textContent = FunctionUtils.defaultOnNull(textContent, Constants.EMPTY_TEXT_PART);
-        this.htmlContent = FunctionUtils.defaultOnNull(htmlContent, Constants.EMPTY_HTML_PART);
+        this.tetxtPart = FunctionUtils.defaultOnNull(textContent, Constants.EMPTY_TEXT_PART);
+        this.htmlPart = FunctionUtils.defaultOnNull(htmlContent, Constants.EMPTY_HTML_PART);
         this.htmlImages = Collections.unmodifiableList(
                 FunctionUtils.defaultOnNull(htmlImages, Constants.NO_INLINES)
         );
@@ -71,8 +74,8 @@ public class ImmutableContent extends AbstractContent {
      * @return The first text/plain part
      */
     @Override
-    public Part<String> getTextPart() {
-        return textContent;
+    public TextPart getTextPart() {
+        return tetxtPart;
     }
 
     /**
@@ -80,8 +83,8 @@ public class ImmutableContent extends AbstractContent {
      * @return The first text/html part
      */
     @Override
-    public Part<String> getHtmlPart() {
-        return htmlContent;
+    public HtmlPart getHtmlPart() {
+        return htmlPart;
     }
 
     @Override
