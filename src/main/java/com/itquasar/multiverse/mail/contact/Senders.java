@@ -11,7 +11,6 @@ import com.itquasar.multiverse.mail.util.Constants;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-// FIXME: use Sets instead of Lists
 public interface Senders extends Constants {
 
     Contact getSender();

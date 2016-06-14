@@ -7,6 +7,7 @@ package com.itquasar.multiverse.mail.contact;
 
 import static com.itquasar.multiverse.mail.util.Constants.NO_ONE;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -24,7 +25,7 @@ public class MutableSenders extends AbstractSenders {
     }
 
     public MutableSenders(Set<Contact> from) {
-        this(from, NO_ONES_SET);
+        this(from, new HashSet<>());
     }
 
     public MutableSenders(Set<Contact> from, Set<Contact> replyTo) {

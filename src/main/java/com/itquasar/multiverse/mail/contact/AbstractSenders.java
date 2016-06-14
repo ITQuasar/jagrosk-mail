@@ -5,11 +5,19 @@
  */
 package com.itquasar.multiverse.mail.contact;
 
+import java.util.Set;
+
 /**
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
 public abstract class AbstractSenders implements Senders {
+
+    @Override
+    public abstract Set<Contact> getReplyTo();
+
+    @Override
+    public abstract Set<Contact> getFrom();
 
     @Override
     public String toString() {
