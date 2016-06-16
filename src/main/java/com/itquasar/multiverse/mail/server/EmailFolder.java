@@ -63,7 +63,7 @@ public class EmailFolder {
 
     public List<ParsedEmail> receive() {
         try {
-            return filterMessgesToEmails(folder.getMessages(), null);
+            return filterMessagesToEmails(folder.getMessages(), null);
         } catch (MessagingException ex) {
             throw ServerUtils.logErrorAndGetNewException("Error searching messages from folder " + name, ex, LOGGER);
         }
@@ -71,7 +71,7 @@ public class EmailFolder {
 
     public List<ParsedEmail> receive(SearchTerm filter) {
         try {
-            return filterMessgesToEmails(folder.search(filter), null);
+            return filterMessagesToEmails(folder.search(filter), null);
         } catch (MessagingException ex) {
             throw ServerUtils.logErrorAndGetNewException("Error searching messages from folder " + name, ex, LOGGER);
         }
@@ -79,13 +79,13 @@ public class EmailFolder {
 
     public List<ParsedEmail> receive(Predicate<ParsedEmail> filter) {
         try {
-            return filterMessgesToEmails(folder.getMessages(), filter);
+            return filterMessagesToEmails(folder.getMessages(), filter);
         } catch (MessagingException ex) {
             throw ServerUtils.logErrorAndGetNewException("Error filtering messages from folder " + name, ex, LOGGER);
         }
     }
 
-    private List<ParsedEmail> filterMessgesToEmails(Message[] messages, Predicate<ParsedEmail> filter) {
+    private List<ParsedEmail> filterMessagesToEmails(Message[] messages, Predicate<ParsedEmail> filter) {
         Stream<ParsedEmail> emailStream = Arrays.asList(messages)
                 .stream()
                 .map((Message msg) -> new ImmutableParsedEmail(msg));
