@@ -1,7 +1,7 @@
 package com.itquasar.multiverse.mail.server;
 
-import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import com.itquasar.multiverse.mail.exception.EmailServerException;
+import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import com.itquasar.multiverse.mail.util.Constants;
 import com.itquasar.multiverse.mail.util.ServerUtils;
 import javax.mail.Message;
@@ -153,6 +153,15 @@ public class EmailServer implements Constants {
     }
 
     /**
+     * Calls {@link #openInboxForReadAndWrite(boolean)} passing {@code true}.
+     *
+     * @return
+     */
+    public EmailFolder openInboxForReadAndWrite() {
+        return openInboxForReadAndWrite(true);
+    }
+
+    /**
      * Open and return the given folder.
      *
      * @param name Folder name.
@@ -164,6 +173,17 @@ public class EmailServer implements Constants {
     public EmailFolder openFolderForReadAndWrite(String name, boolean readAndWrite) {
         ServerUtils.serviceConnectedOrError(getStore());
         return new EmailFolder(getStore(), name, readAndWrite, this);
+    }
+
+    /**
+     * Calls {@link #openFolderForReadAndWrite(String, boolean) } passing
+     * {@code name} and {@code true}.
+     *
+     * @param name Folder name.
+     * @return
+     */
+    public EmailFolder openFolderForReadAndWrite(String name) {
+        return openFolderForReadAndWrite(name, true);
     }
 
     /**
