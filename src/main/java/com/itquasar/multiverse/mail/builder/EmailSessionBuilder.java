@@ -172,22 +172,26 @@ public class EmailSessionBuilder {
         return setSessionParemeter(template, Boolean.toString(value), null);
     }
 
+    private EmailSessionBuilder setSessionParemeter(MailProperties template, String value) {
+        return setSessionParemeter(template, value, null);
+    }
+
     private EmailSessionBuilder setSessionParemeter(MailProperties template, boolean value, Protocol protocol) {
         return setSessionParemeter(template, Boolean.toString(value), protocol);
     }
 
-    private EmailSessionBuilder setSessionParemeter(MailProperties template, String value) {
-        return setSessionParemeter(template, value, null);
+    private EmailSessionBuilder setSessionParemeter(MailProperties template, int value, Protocol protocol) {
+        return setSessionParemeter(template, Integer.toString(value), protocol);
     }
 
     private EmailSessionBuilder setSessionParemeter(MailProperties template, String value, Protocol protocol) {
         sessionProperties.put(template.apply(value, protocol), value);
         return this;
     }
+
     ////////////////////////////////////////////////////////////////////////////
     // DEBUG
     ////////////////////////////////////////////////////////////////////////////
-
     /**
      * Enables JavaMail API debug mode.
      *
@@ -258,6 +262,28 @@ public class EmailSessionBuilder {
      */
     public EmailSessionBuilder sendServer(String sendServer) {
         return setSessionParemeter(HOST, sendServer, sendProtocol);
+    }
+
+    /**
+     * Sets the port for the receive server.
+     *
+     * @param port Port number
+     * @return The same instance on which this function was called
+     * ({@code  this}).
+     */
+    public EmailSessionBuilder receivePort(int port) {
+        return setSessionParemeter(PORT, port, receiveProtocol);
+    }
+
+    /**
+     * Sets the port for the send server.
+     *
+     * @param port Port number
+     * @return The same instance on which this function was called
+     * ({@code  this}).
+     */
+    public EmailSessionBuilder sendPort(int port) {
+        return setSessionParemeter(PORT, port, sendProtocol);
     }
 
     ////////////////////////////////////////////////////////////////////////////
