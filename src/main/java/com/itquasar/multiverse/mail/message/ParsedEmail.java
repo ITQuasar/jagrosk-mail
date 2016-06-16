@@ -5,6 +5,8 @@
  */
 package com.itquasar.multiverse.mail.message;
 
+import javax.mail.Message;
+
 /**
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
@@ -19,4 +21,5 @@ public interface ParsedEmail extends Email {
         return -1;
     }
 
+    Message unwrap();
 }
