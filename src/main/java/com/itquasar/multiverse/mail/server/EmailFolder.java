@@ -4,11 +4,9 @@ import com.itquasar.multiverse.mail.message.ImmutableParsedEmail;
 import com.itquasar.multiverse.mail.message.ParsedEmail;
 import com.itquasar.multiverse.mail.util.Constants;
 import com.itquasar.multiverse.mail.util.ServerUtils;
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -86,13 +84,15 @@ public class EmailFolder {
     }
 
     private List<ParsedEmail> filterMessagesToEmails(Message[] messages, Predicate<ParsedEmail> filter) {
-        Stream<ParsedEmail> emailStream = Arrays.asList(messages)
-                .stream()
-                .map((Message msg) -> new ImmutableParsedEmail(msg));
-        if (filter != null) {
-            emailStream.filter(filter);
+        List<ParsedEmail> emails = new LinkedList<>();
+        Predicate<ParsedEmail> predicate = filter == null ? (msg) -> true : filter;
+        for (Message message : messages) {
+            ParsedEmail email = new ImmutableParsedEmail(message);
+            if (predicate.test(email)) {
+                emails.add(email);
+            }
         }
-        return emailStream.collect(Collectors.toList());
+        return emails;
     }
 
     public Folder getMessageFolder() {
