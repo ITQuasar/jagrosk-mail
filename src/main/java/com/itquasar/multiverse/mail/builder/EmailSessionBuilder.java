@@ -1,8 +1,8 @@
 package com.itquasar.multiverse.mail.builder;
 
+import static com.itquasar.multiverse.mail.builder.EmailSessionBuilder.MailProperties.*;
 import com.itquasar.multiverse.mail.server.Credentials;
 import com.itquasar.multiverse.mail.server.Protocol;
-import static com.itquasar.multiverse.mail.builder.EmailSessionBuilder.MailProperties.*;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.Properties;
 import javax.mail.Authenticator;
@@ -246,7 +246,7 @@ public class EmailSessionBuilder {
      * ({@code  this}).
      */
     public EmailSessionBuilder receiveServer(String receiveServer) {
-        return setSessionParemeter(HOST, receiveServer);
+        return setSessionParemeter(HOST, receiveServer, receiveProtocol);
     }
 
     /**
@@ -257,7 +257,7 @@ public class EmailSessionBuilder {
      * ({@code  this}).
      */
     public EmailSessionBuilder sendServer(String sendServer) {
-        return setSessionParemeter(HOST, sendServer);
+        return setSessionParemeter(HOST, sendServer, sendProtocol);
     }
 
     ////////////////////////////////////////////////////////////////////////////
