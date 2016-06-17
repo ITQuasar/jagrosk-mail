@@ -12,6 +12,7 @@ import com.itquasar.multiverse.mail.message.content.Content;
 import com.itquasar.multiverse.mail.message.content.ImmutableContent;
 import com.itquasar.multiverse.mail.message.envelope.Envelope;
 import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
+import com.itquasar.multiverse.mail.message.flag.EmailFlag;
 import com.itquasar.multiverse.mail.part.HtmlPart;
 import static com.itquasar.multiverse.mail.part.MimeTypes.MULTIPART_ALTERNATIVE;
 import static com.itquasar.multiverse.mail.part.MimeTypes.MULTIPART_MIXED;
@@ -22,6 +23,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import javax.mail.Flags;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -117,6 +119,18 @@ public class EmailUtils {
             } else if (content.hasTextPlain()) {
                 message.setText(content.getTextContent(), null, "plain");
             }
+
+            // Flags support
+            Flags flags = new Flags();
+            for (EmailFlag emailFlags : email.getFlags()) {
+                if (emailFlags.isSystemFlag()) {
+                    flags.add(emailFlags.getJavaMailFlag());
+                } else {
+                    flags.add(emailFlags.getName());
+                }
+            }
+            message.setFlags(flags, true);
+
             message.saveChanges();
         } catch (MessagingException ex) {
             throw new EmailException("Error generating Message from Email.", ex);

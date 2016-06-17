@@ -5,8 +5,13 @@
  */
 package com.itquasar.multiverse.mail.message;
 
+import com.itquasar.multiverse.mail.message.flag.EmailFlag;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
+import java.util.HashSet;
+import java.util.Set;
+import javax.mail.Flags;
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -24,4 +29,29 @@ public interface ParsedEmail extends Email {
     }
 
     Message unwrap();
+
+    /**
+     *
+     * @return All flags found on the parsed message (unwrapped), or empty
+     * iterable.
+     */
+    @Override
+    default public Iterable<EmailFlag> getFlags() {
+        Set<EmailFlag> flags = new HashSet<>();
+        Flags javaApiFlags;
+        try {
+            javaApiFlags = unwrap().getFlags();
+        } catch (MessagingException ex) {
+            LoggerFactory.getLogger(this.getClass()).error("Error getting Flags from java mail Message");
+            javaApiFlags = new Flags();
+        }
+        for (Flags.Flag flag : javaApiFlags.getSystemFlags()) {
+            flags.add(EmailFlag.of(flag));
+        }
+        for (String flag : javaApiFlags.getUserFlags()) {
+            flags.add(EmailFlag.of(flag));
+        }
+        return flags;
+    }
+
 }

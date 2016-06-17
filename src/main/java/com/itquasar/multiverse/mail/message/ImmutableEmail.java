@@ -2,6 +2,8 @@ package com.itquasar.multiverse.mail.message;
 
 import com.itquasar.multiverse.mail.message.content.Content;
 import com.itquasar.multiverse.mail.message.envelope.Envelope;
+import com.itquasar.multiverse.mail.message.flag.EmailFlag;
+import java.util.Collections;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +20,16 @@ public class ImmutableEmail implements Email {
 
     private final Envelope envelope;
     private final Content content;
+    private final Iterable<EmailFlag> flags;
 
     public ImmutableEmail(Envelope envelope, Content content) {
+        this(envelope, content, Collections.EMPTY_SET);
+    }
+
+    public ImmutableEmail(Envelope envelope, Content content, Iterable<EmailFlag> flags) {
         this.envelope = envelope;
         this.content = content;
+        this.flags = flags;
     }
 
     /**
@@ -40,6 +48,11 @@ public class ImmutableEmail implements Email {
     @Override
     public Content getContent() {
         return content;
+    }
+
+    @Override
+    public Iterable<EmailFlag> getFlags() {
+        return flags;
     }
 
     @Override
