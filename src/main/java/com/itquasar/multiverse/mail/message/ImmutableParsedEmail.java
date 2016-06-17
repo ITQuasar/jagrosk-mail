@@ -5,7 +5,6 @@ import com.itquasar.multiverse.mail.message.content.Content;
 import com.itquasar.multiverse.mail.message.content.LazyContent;
 import com.itquasar.multiverse.mail.message.envelope.Envelope;
 import com.itquasar.multiverse.mail.message.envelope.LazyEnvelope;
-import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.UUID;
 import javax.mail.Message;
 import org.slf4j.Logger;
@@ -57,11 +56,6 @@ public class ImmutableParsedEmail implements ParsedEmail {
     @Override
     public Content getContent() {
         return email.getContent();
-    }
-
-    @Override
-    public int getSize() {
-        return FunctionUtils.defaultOnNullOrException(() -> message.getSize(), -1, LOGGER);
     }
 
     @Override

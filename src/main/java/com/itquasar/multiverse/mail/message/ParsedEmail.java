@@ -5,7 +5,9 @@
  */
 package com.itquasar.multiverse.mail.message;
 
+import com.itquasar.multiverse.mail.util.FunctionUtils;
 import javax.mail.Message;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -18,7 +20,7 @@ public interface ParsedEmail extends Email {
      * @return The size of wrapped message or -1 when no message wrapped.
      */
     default int getSize() {
-        return -1;
+        return FunctionUtils.defaultOnNullOrException(() -> unwrap().getSize(), -1, LoggerFactory.getLogger(this.getClass()));
     }
 
     Message unwrap();
