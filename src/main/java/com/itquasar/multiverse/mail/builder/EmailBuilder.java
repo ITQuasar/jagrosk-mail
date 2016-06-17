@@ -305,7 +305,8 @@ public class EmailBuilder {
                         new TextPart(textContent),
                         new HtmlPart(htmlContent),
                         htmlImages, attachments
-                )
+                ),
+                flags
         );
     }
 
