@@ -1,7 +1,7 @@
 package com.itquasar.multiverse.mail.server;
 
 import com.itquasar.multiverse.mail.exception.EmailServerException;
-import com.itquasar.multiverse.mail.message.ImmutableEmail;
+import com.itquasar.multiverse.mail.message.BuildedEmail;
 import com.itquasar.multiverse.mail.util.Constants;
 import com.itquasar.multiverse.mail.util.ServerUtils;
 import javax.mail.Message;
@@ -192,7 +192,7 @@ public class EmailServer implements Constants {
      * @param email The email to send.
      * @throws EmailServerException
      */
-    public void send(ImmutableEmail email) {
+    public void send(BuildedEmail email) {
         send(email.toMessage(session));
     }
 
@@ -203,7 +203,7 @@ public class EmailServer implements Constants {
      * @param interceptor The interceptor to allow or deny send email.
      * @throws EmailServerException
      */
-    public void send(ImmutableEmail email, Interceptor<ImmutableEmail> interceptor) {
+    public void send(BuildedEmail email, Interceptor<BuildedEmail> interceptor) {
         send(email.toMessage(session), interceptor.allow(email));
     }
 

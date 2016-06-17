@@ -8,9 +8,6 @@ package com.itquasar.multiverse.mail.message;
 import com.itquasar.multiverse.mail.message.content.Content;
 import com.itquasar.multiverse.mail.message.envelope.Envelope;
 import com.itquasar.multiverse.mail.message.flag.EmailFlag;
-import com.itquasar.multiverse.mail.util.EmailUtils;
-import javax.mail.Message;
-import javax.mail.Session;
 
 /**
  *
@@ -29,10 +26,6 @@ public interface Email {
      * @return The message content.
      */
     Content getContent();
-
-    default Message toMessage(Session session) {
-        return EmailUtils.toMessage(this, session);
-    }
 
     Iterable<EmailFlag> getFlags();
 

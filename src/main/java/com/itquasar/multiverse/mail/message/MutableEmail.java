@@ -16,7 +16,7 @@ import java.util.HashSet;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class MutableEmail implements Email {
+public class MutableEmail implements BuildedEmail {
 
     private Envelope envelope;
     private Content content;

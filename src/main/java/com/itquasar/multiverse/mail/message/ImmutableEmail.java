@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class ImmutableEmail implements Email {
+public class ImmutableEmail implements BuildedEmail {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImmutableEmail.class);
 
