@@ -1,6 +1,7 @@
 package com.itquasar.multiverse.mail.builder;
 
 import com.itquasar.multiverse.mail.contact.Contact;
+import com.itquasar.multiverse.mail.message.BuildedEmail;
 import com.itquasar.multiverse.mail.message.Email;
 import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import com.itquasar.multiverse.mail.message.TemplatedSubjectAndContent;
@@ -298,7 +299,7 @@ public class EmailBuilder {
      *
      * @return An {@link ImmutableEmail}.
      */
-    public Email build() {
+    public BuildedEmail build() {
         return new ImmutableEmail(
                 new ImmutableEnvelope(from, replyTo, to, cc, bcc, subject),
                 new ImmutableContent(
