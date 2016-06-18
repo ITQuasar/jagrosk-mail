@@ -7,7 +7,7 @@ package com.itquasar.multiverse.mail.message;
 
 import com.itquasar.multiverse.mail.message.content.Content;
 import com.itquasar.multiverse.mail.message.envelope.Envelope;
-import com.itquasar.multiverse.mail.message.flag.EmailFlag;
+import com.itquasar.multiverse.mail.message.flag.EmailFlags;
 
 /**
  *
@@ -27,6 +27,6 @@ public interface Email {
      */
     Content getContent();
 
-    Iterable<EmailFlag> getFlags();
+    EmailFlags getFlags();
 
 }

@@ -7,6 +7,7 @@ import com.itquasar.multiverse.mail.message.TemplatedSubjectAndContent;
 import com.itquasar.multiverse.mail.message.content.ImmutableContent;
 import com.itquasar.multiverse.mail.message.envelope.ImmutableEnvelope;
 import com.itquasar.multiverse.mail.message.flag.EmailFlag;
+import com.itquasar.multiverse.mail.message.flag.EmailFlags;
 import com.itquasar.multiverse.mail.part.Attachment;
 import com.itquasar.multiverse.mail.part.HtmlPart;
 import com.itquasar.multiverse.mail.part.Inline;
@@ -14,7 +15,6 @@ import com.itquasar.multiverse.mail.part.TextPart;
 import com.itquasar.multiverse.mail.util.Constants;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -51,7 +51,7 @@ public class EmailBuilder {
     private String htmlContent = Constants.EMPTY_STRING;
     private List<Inline<?>> htmlImages = Collections.emptyList();
 
-    private Set<EmailFlag> flags = new HashSet<>();
+    private EmailFlags flags = new EmailFlags();
 
     private List<Attachment<?>> attachments = new LinkedList<>();
 
@@ -278,7 +278,7 @@ public class EmailBuilder {
      * @return The same builder instance.
      */
     public EmailBuilder flag(String flag) {
-        this.flags.add(EmailFlag.of(flag));
+        this.flags.set(EmailFlag.of(flag));
         return this;
     }
 
@@ -289,7 +289,7 @@ public class EmailBuilder {
      * @return The same builder instance.
      */
     public EmailBuilder flag(EmailFlag flag) {
-        this.flags.add(flag);
+        this.flags.set(flag);
         return this;
     }
 

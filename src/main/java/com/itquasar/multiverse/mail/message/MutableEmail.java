@@ -9,8 +9,7 @@ import com.itquasar.multiverse.mail.message.content.Content;
 import com.itquasar.multiverse.mail.message.content.MutableContent;
 import com.itquasar.multiverse.mail.message.envelope.Envelope;
 import com.itquasar.multiverse.mail.message.envelope.MutableEnvelope;
-import com.itquasar.multiverse.mail.message.flag.EmailFlag;
-import java.util.HashSet;
+import com.itquasar.multiverse.mail.message.flag.EmailFlags;
 
 /**
  *
@@ -20,7 +19,7 @@ public class MutableEmail implements BuildedEmail {
 
     private Envelope envelope;
     private Content content;
-    private Iterable<EmailFlag> flags;
+    private EmailFlags flags;
 
     public MutableEmail() {
         this(null, null);
@@ -30,10 +29,10 @@ public class MutableEmail implements BuildedEmail {
         this(envelope, content, null);
     }
 
-    public MutableEmail(Envelope envelope, Content content, Iterable<EmailFlag> flags) {
+    public MutableEmail(Envelope envelope, Content content, EmailFlags flags) {
         this.envelope = envelope == null ? new MutableEnvelope() : envelope;
         this.content = content == null ? new MutableContent() : content;
-        this.flags = flags == null ? new HashSet<>() : flags;
+        this.flags = flags == null ? new EmailFlags() : flags;
     }
 
     @Override
@@ -47,12 +46,8 @@ public class MutableEmail implements BuildedEmail {
     }
 
     @Override
-    public Iterable<EmailFlag> getFlags() {
+    public EmailFlags getFlags() {
         return flags;
-    }
-
-    public void setFlags(Iterable<EmailFlag> flags) {
-        this.flags = flags;
     }
 
 }

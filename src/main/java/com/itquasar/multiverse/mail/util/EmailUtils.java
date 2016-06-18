@@ -120,23 +120,27 @@ public class EmailUtils {
                 message.setText(content.getTextContent(), null, "plain");
             }
 
-            // Flags support
-            Flags flags = new Flags();
-            for (EmailFlag emailFlags : email.getFlags()) {
-                if (emailFlags.isSystemFlag()) {
-                    flags.add(emailFlags.getJavaMailFlag());
-                } else {
-                    flags.add(emailFlags.getName());
-                }
-            }
-            message.setFlags(flags, true);
-
+            // set given flags to true
+            FunctionUtils.tryOrThrow(
+                    (emailFlags) -> {
+                        Flags flags = new Flags();
+                        for (EmailFlag flag : emailFlags) {
+                            if (flag.isSystemFlag()) {
+                                flags.add(flag.getJavaMailFlag());
+                            } else {
+                                flags.add(flag.getName());
+                            }
+                        }
+                        return flags;
+                    },
+                    email.getFlags(),
+                    "Error setting message flags."
+            );
             message.saveChanges();
         } catch (MessagingException ex) {
             throw new EmailException("Error generating Message from Email.", ex);
         }
         return message;
-
     }
 
     public static Email reply(Email email, Senders senders, TemplatedSubjectAndContent content) {

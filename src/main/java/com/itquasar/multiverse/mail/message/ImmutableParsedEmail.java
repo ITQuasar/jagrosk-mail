@@ -5,6 +5,8 @@ import com.itquasar.multiverse.mail.message.content.Content;
 import com.itquasar.multiverse.mail.message.content.LazyContent;
 import com.itquasar.multiverse.mail.message.envelope.Envelope;
 import com.itquasar.multiverse.mail.message.envelope.LazyEnvelope;
+import com.itquasar.multiverse.mail.message.flag.EmailFlags;
+import com.itquasar.multiverse.mail.message.flag.WrappedEmailFlags;
 import java.util.UUID;
 import javax.mail.Message;
 import org.slf4j.Logger;
@@ -22,6 +24,7 @@ public class ImmutableParsedEmail implements ParsedEmail {
 
     private Message message;
     private final ImmutableEmail email;
+    private final EmailFlags flags;
 
     /**
      * Build an {@link Email} based on the given {@link Message}.
@@ -35,6 +38,7 @@ public class ImmutableParsedEmail implements ParsedEmail {
                     new LazyEnvelope(message),
                     new LazyContent(message)
             );
+            this.flags = new WrappedEmailFlags(message);
         } catch (Exception ex) {
             throw new EmailException("Could not initialize Email from Message.", ex);
         }
@@ -61,6 +65,11 @@ public class ImmutableParsedEmail implements ParsedEmail {
     @Override
     public Message unwrap() {
         return message;
+    }
+
+    @Override
+    public EmailFlags getFlags() {
+        return flags;
     }
 
     @Override
