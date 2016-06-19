@@ -10,8 +10,8 @@ import com.itquasar.multiverse.mail.contact.ImmutableSenders;
 import com.itquasar.multiverse.mail.contact.Senders;
 import com.itquasar.multiverse.mail.util.Constants;
 import com.itquasar.multiverse.mail.util.FunctionUtils;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -20,34 +20,38 @@ import java.util.List;
 public class SendersBuilder implements Constants {
 
     private Contact sender = NO_ONE;
-    private List<Contact> from = new ArrayList<>();
-    private List<Contact> replyTo = new ArrayList<>();
+    private Set<Contact> from = new HashSet<>();
+    private Set<Contact> replyTo = new HashSet<>();
 
     public SendersBuilder() {
     }
 
-    public SendersBuilder sender(Contact contact) {
+    public SendersBuilder sender(String senderEmail) {
+        return sender(new Contact(senderEmail));
+    }
+
+    public SendersBuilder sender(Contact senderContact) {
         this.sender = sender;
         return this;
     }
 
-    public SendersBuilder from(Contact... from) {
-        this.from = FunctionUtils.toList(from);
+    public SendersBuilder from(String... fromEmails) {
+        this.from = Contact.fromStrings(fromEmails);
         return this;
     }
 
-    public SendersBuilder addFrom(Contact... from) {
-        this.from.addAll(FunctionUtils.toList(from));
+    public SendersBuilder from(Contact... fromContacts) {
+        this.from = FunctionUtils.toSet(fromContacts);
         return this;
     }
 
-    public SendersBuilder replyTo(Contact... replyTo) {
-        this.replyTo = FunctionUtils.toList(replyTo);
+    public SendersBuilder replyTo(String... replyToEmails) {
+        this.replyTo = Contact.fromStrings(replyToEmails);
         return this;
     }
 
-    public SendersBuilder addReplyTo(Contact... replyTo) {
-        this.replyTo.addAll(FunctionUtils.toList(replyTo));
+    public SendersBuilder replyTo(Contact... replyToContacts) {
+        this.replyTo = FunctionUtils.toSet(replyToContacts);
         return this;
     }
 
