@@ -6,6 +6,7 @@
 package com.itquasar.multiverse.mail.message.flag;
 
 import com.itquasar.multiverse.mail.util.FunctionUtils;
+import java.util.Objects;
 import javax.mail.Flags;
 import javax.mail.Message;
 
@@ -19,19 +20,39 @@ public class WrappedEmailFlags extends EmailFlags {
 
     public WrappedEmailFlags(Message message) {
         super();
-        this.message = message;
+        this.message = FunctionUtils.tryOrThrow(
+                (msg) -> {
+                    for (Flags.Flag flag : msg.getFlags().getSystemFlags()) {
+                        super.set(EmailFlag.of(flag));
+                    }
+                    for (String flag : msg.getFlags().getUserFlags()) {
+                        super.set(EmailFlag.of(flag));
+                    }
+                    return message;
+                },
+                message,
+                "Error reading message flags"
+        );
     }
 
     @Override
     public EmailFlags clear() {
+        super.clear();
+        this.clearMessageFlags();
+        return this;
+    }
+
+    private EmailFlags clearMessageFlags() {
         return FunctionUtils.tryOrThrow((x) -> {
             message.setFlags(message.getFlags(), false);
+            message.saveChanges();
             return this;
         }, "Error clearing message flags");
     }
 
     @Override
     public EmailFlags unset(EmailFlag flag) {
+        super.unset(flag);
         return FunctionUtils.tryOrThrow(
                 (f) -> {
                     Flags flags = message.getFlags();
@@ -40,8 +61,9 @@ public class WrappedEmailFlags extends EmailFlags {
                     } else {
                         flags.remove(f.getName());
                     }
-                    this.clear();
+                    this.clearMessageFlags();
                     message.setFlags(flags, true);
+                    message.saveChanges();
                     return this;
                 },
                 flag,
@@ -51,6 +73,7 @@ public class WrappedEmailFlags extends EmailFlags {
 
     @Override
     public EmailFlags set(EmailFlag flag) {
+        super.set(flag);
         return FunctionUtils.tryOrThrow(
                 (f) -> {
                     Flags flags = message.getFlags();
@@ -59,14 +82,44 @@ public class WrappedEmailFlags extends EmailFlags {
                     } else {
                         flags.add(f.getName());
                     }
-                    this.clear();
+                    this.clearMessageFlags();
                     message.setFlags(flags, true);
+                    message.saveChanges();
                     return this;
                 },
                 flag,
                 "Error setting flag on message"
         );
+    }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 19 * hash + Objects.hashCode(this.message);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final WrappedEmailFlags other = (WrappedEmailFlags) obj;
+        if (!Objects.equals(this.message, other.message)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Wrapped" + super.toString();
     }
 
 }

@@ -11,19 +11,27 @@ import javax.mail.Flags;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public enum SystemEmailFlags implements EmailFlag {
+public class SystemEmailFlags implements EmailFlag {
 
-    ANSWERED(Flags.Flag.ANSWERED),
-    DELETED(Flags.Flag.DELETED),
-    DRAFT(Flags.Flag.DRAFT),
-    FLAGGED(Flags.Flag.FLAGGED),
-    RECENT(Flags.Flag.RECENT),
-    SEEN(Flags.Flag.SEEN),
-    USER(Flags.Flag.USER);
+    public static final SystemEmailFlags ANSWERED = new SystemEmailFlags("ANSWERED", Flags.Flag.ANSWERED);
+    public static final SystemEmailFlags DELETED = new SystemEmailFlags("DELETED", Flags.Flag.DELETED);
+    public static final SystemEmailFlags DRAFT = new SystemEmailFlags("DRAFT", Flags.Flag.DRAFT);
+    public static final SystemEmailFlags FLAGGED = new SystemEmailFlags("FLAGGED", Flags.Flag.FLAGGED);
+    public static final SystemEmailFlags RECENT = new SystemEmailFlags("RECENT", Flags.Flag.RECENT);
+    public static final SystemEmailFlags SEEN = new SystemEmailFlags("SEEN", Flags.Flag.SEEN);
+    public static final SystemEmailFlags USER = new SystemEmailFlags("USER", Flags.Flag.USER);
 
+    public static SystemEmailFlags[] values() {
+        return new SystemEmailFlags[]{
+            ANSWERED, DELETED, DRAFT, FLAGGED, RECENT, SEEN, USER
+        };
+    }
+
+    final String name;
     final Flags.Flag javaMailFlag;
 
-    private SystemEmailFlags(Flags.Flag javaMailFlag) {
+    private SystemEmailFlags(String name, Flags.Flag javaMailFlag) {
+        this.name = name;
         this.javaMailFlag = javaMailFlag;
     }
 
@@ -34,7 +42,7 @@ public enum SystemEmailFlags implements EmailFlag {
 
     @Override
     public String getName() {
-        return this.name();
+        return this.name;
     }
 
     @Override

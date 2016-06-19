@@ -74,7 +74,7 @@ public class ImmutableParsedEmail implements ParsedEmail {
 
     @Override
     public String toString() {
-        return "Email{" + "uuid=" + uuid + ", envelope=" + getEnvelope() + ", content=" + getContent() + '}';
+        return "Email{" + "uuid=" + uuid + ", envelope=" + getEnvelope() + ", content=" + getContent() + ", flags=" + flags + '}';
     }
 
 }

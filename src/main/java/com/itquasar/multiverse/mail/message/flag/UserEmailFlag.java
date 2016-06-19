@@ -13,6 +13,10 @@ import java.util.Objects;
  */
 public class UserEmailFlag implements EmailFlag {
 
+    public static UserEmailFlag of(String name) {
+        return new UserEmailFlag(name);
+    }
+
     final String name;
 
     public UserEmailFlag(String name) {

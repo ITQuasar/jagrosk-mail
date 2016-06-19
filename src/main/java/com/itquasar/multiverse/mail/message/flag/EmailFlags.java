@@ -6,9 +6,9 @@
 package com.itquasar.multiverse.mail.message.flag;
 
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  *
@@ -16,14 +16,14 @@ import java.util.Objects;
  */
 public class EmailFlags implements Iterable<EmailFlag> {
 
-    private final List<EmailFlag> flags;
+    private final Set<EmailFlag> flags;
 
     public EmailFlags() {
         this(null);
     }
 
-    public EmailFlags(List<EmailFlag> flags) {
-        this.flags = flags == null ? new LinkedList<>() : flags;
+    public EmailFlags(Set<EmailFlag> flags) {
+        this.flags = flags == null ? new TreeSet<>() : flags;
     }
 
     public EmailFlags set(EmailFlag flag) {
@@ -73,7 +73,17 @@ public class EmailFlags implements Iterable<EmailFlag> {
 
     @Override
     public String toString() {
-        return "EmailFlags{" + "flags=" + flags + '}';
+        return "EmailFlags{" + flagsToString() + '}';
+    }
+
+    private String flagsToString() {
+        Iterator<EmailFlag> iterator = iterator();
+        StringBuilder buffy = new StringBuilder();
+        buffy.append((iterator.hasNext() ? iterator.next() : ""));
+        while (iterator.hasNext()) {
+            buffy.append(",").append(iterator.next());
+        }
+        return buffy.toString();
     }
 
 }
