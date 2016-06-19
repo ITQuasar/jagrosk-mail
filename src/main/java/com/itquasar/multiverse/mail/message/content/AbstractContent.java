@@ -13,6 +13,6 @@ public abstract class AbstractContent implements Content {
 
     @Override
     public String toString() {
-        return "Content{" + "textContent=" + getTextContent() + ", htmlContent=" + getHtmlContent() + ", htmlImages=" + getHtmlImages() + ", attachments=" + getAttachments() + '}';
+        return "Content{" + "textContent=" + hasTextPlain() + ", htmlContent=" + hasTextHtml() + ", htmlImages=" + hasImages() + ", attachments=" + hasAttachments() + '}';
     }
 }

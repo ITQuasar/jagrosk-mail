@@ -12,7 +12,7 @@ import javax.mail.Message;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class LazyContent implements Content {
+public class LazyContent extends AbstractContent {
 
     private final Message message;
     private Content content;

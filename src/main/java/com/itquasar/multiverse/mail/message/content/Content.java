@@ -76,4 +76,8 @@ public interface Content extends Constants {
                 && !getTextPart().getContent().isEmpty();
     }
 
+    default boolean hasAttachments() {
+        return getAttachments() != null && !getAttachments().isEmpty();
+    }
+
 }
