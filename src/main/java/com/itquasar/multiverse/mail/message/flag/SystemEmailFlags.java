@@ -42,4 +42,9 @@ public enum SystemEmailFlags implements EmailFlag {
         return javaMailFlag;
     }
 
+    @Override
+    public String toString() {
+        return BLACK_FLAG + getName();
+    }
+
 }

@@ -8,6 +8,7 @@ package com.itquasar.multiverse.mail.message.flag;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -43,6 +44,36 @@ public class EmailFlags implements Iterable<EmailFlag> {
     @Override
     public Iterator<EmailFlag> iterator() {
         return this.flags.iterator();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 67 * hash + Objects.hashCode(this.flags);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final EmailFlags other = (EmailFlags) obj;
+        if (!Objects.equals(this.flags, other.flags)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "EmailFlags{" + "flags=" + flags + '}';
     }
 
 }

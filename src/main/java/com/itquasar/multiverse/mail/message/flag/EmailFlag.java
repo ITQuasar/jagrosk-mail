@@ -13,7 +13,10 @@ import javax.mail.Flags;
  */
 public interface EmailFlag {
 
-    public static EmailFlag of(Flags.Flag flag) {
+    static String BLACK_FLAG = "\u2691";
+    static String WHITE_FLAG = "\u2690";
+
+    static EmailFlag of(Flags.Flag flag) {
         for (EmailFlag emailFlag : SystemEmailFlags.values()) {
             if (emailFlag.getJavaMailFlag().equals(flag)) {
                 return emailFlag;
@@ -22,7 +25,7 @@ public interface EmailFlag {
         throw new Error("Unknow flag!");
     }
 
-    public static EmailFlag of(String flag) {
+    static EmailFlag of(String flag) {
         for (EmailFlag emailFlag : SystemEmailFlags.values()) {
             if (emailFlag.getName().equals(flag)) {
                 return emailFlag;
