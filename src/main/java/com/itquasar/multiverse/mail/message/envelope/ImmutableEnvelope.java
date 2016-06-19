@@ -16,7 +16,7 @@ import javax.mail.internet.InternetAddress;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class ImmutableEnvelope implements Envelope {
+public class ImmutableEnvelope extends AbstractEnvelope {
 
     private final Senders senders;
     private final Recipients recipients;

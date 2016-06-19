@@ -16,7 +16,7 @@ import java.util.Optional;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class MutableEnvelope implements Envelope {
+public class MutableEnvelope extends AbstractEnvelope {
 
     private Senders senders;
     private Recipients recipients;

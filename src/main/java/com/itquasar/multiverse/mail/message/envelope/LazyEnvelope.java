@@ -11,7 +11,7 @@ import javax.mail.Message;
  *
  * @author Guilherme I F L Weizenmann <guilherme at itquasar.com>
  */
-public class LazyEnvelope implements Envelope {
+public class LazyEnvelope extends AbstractEnvelope {
 
     private ImmutableEnvelope envelope = null;
     private final Message message;
