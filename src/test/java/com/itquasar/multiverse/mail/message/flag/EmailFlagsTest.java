@@ -18,7 +18,7 @@ public class EmailFlagsTest {
 
     @Test
     public void test() {
-        EmailFlag del = SystemEmailFlags.DELETED;
+        EmailFlag del = SystemEmailFlag.DELETED;
         EmailFlag bah = UserEmailFlag.of("BAH");
 
         EmailFlags flags = new EmailFlags();

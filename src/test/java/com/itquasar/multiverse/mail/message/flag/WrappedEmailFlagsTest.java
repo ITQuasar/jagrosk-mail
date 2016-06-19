@@ -27,8 +27,8 @@ public class WrappedEmailFlagsTest {
         Message message = new MimeMessage(Session.getDefaultInstance(new Properties()));
         message.setFlag(Flags.Flag.ANSWERED, true);
 
-        EmailFlag ans = SystemEmailFlags.ANSWERED;
-        EmailFlag del = SystemEmailFlags.DELETED;
+        EmailFlag ans = SystemEmailFlag.ANSWERED;
+        EmailFlag del = SystemEmailFlag.DELETED;
         EmailFlag bah = UserEmailFlag.of("BAH");
 
         EmailFlags flags = new WrappedEmailFlags(message);

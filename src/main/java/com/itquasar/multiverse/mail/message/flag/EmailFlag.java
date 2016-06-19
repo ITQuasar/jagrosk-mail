@@ -17,7 +17,7 @@ public interface EmailFlag extends Comparable<EmailFlag> {
     static String WHITE_FLAG = "\u2690";
 
     static EmailFlag of(Flags.Flag flag) {
-        for (EmailFlag emailFlag : SystemEmailFlags.values()) {
+        for (EmailFlag emailFlag : SystemEmailFlag.values()) {
             if (emailFlag.getJavaMailFlag().equals(flag)) {
                 return emailFlag;
             }
@@ -26,7 +26,7 @@ public interface EmailFlag extends Comparable<EmailFlag> {
     }
 
     static EmailFlag of(String flag) {
-        for (EmailFlag emailFlag : SystemEmailFlags.values()) {
+        for (EmailFlag emailFlag : SystemEmailFlag.values()) {
             if (emailFlag.getName().equals(flag)) {
                 return emailFlag;
             }
