@@ -33,7 +33,8 @@ public final class ClientUtils {
         bodyPart.setContentID(part.getContentId().getId());
         bodyPart.setFileName(part.getName());
         bodyPart.setContent(part.getContent(), part.getMimeType().getMimeType());
-        bodyPart.setDisposition(part.getDisposition().value());
+        String disposition = part.getDisposition().value();
+        bodyPart.setDisposition(disposition.isEmpty() ? null : disposition);
         return bodyPart;
     }
 
