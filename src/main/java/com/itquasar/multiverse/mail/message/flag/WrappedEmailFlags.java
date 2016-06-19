@@ -35,19 +35,18 @@ public class WrappedEmailFlags extends EmailFlags {
         );
     }
 
+    private EmailFlags clearMessageFlags() {
+        return FunctionUtils.tryOrThrow((x) -> {
+            message.setFlags(message.getFlags(), false);
+            return this;
+        }, "Error clearing message flags");
+    }
+
     @Override
     public EmailFlags clear() {
         super.clear();
         this.clearMessageFlags();
         return this;
-    }
-
-    private EmailFlags clearMessageFlags() {
-        return FunctionUtils.tryOrThrow((x) -> {
-            message.setFlags(message.getFlags(), false);
-            message.saveChanges();
-            return this;
-        }, "Error clearing message flags");
     }
 
     @Override
@@ -63,7 +62,6 @@ public class WrappedEmailFlags extends EmailFlags {
                     }
                     this.clearMessageFlags();
                     message.setFlags(flags, true);
-                    message.saveChanges();
                     return this;
                 },
                 flag,
@@ -84,7 +82,6 @@ public class WrappedEmailFlags extends EmailFlags {
                     }
                     this.clearMessageFlags();
                     message.setFlags(flags, true);
-                    message.saveChanges();
                     return this;
                 },
                 flag,
