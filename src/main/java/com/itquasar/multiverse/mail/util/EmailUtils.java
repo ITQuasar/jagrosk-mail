@@ -5,6 +5,7 @@ import com.itquasar.multiverse.mail.contact.ImmutableRecipients;
 import com.itquasar.multiverse.mail.contact.Recipients;
 import com.itquasar.multiverse.mail.contact.Senders;
 import com.itquasar.multiverse.mail.exception.EmailException;
+import com.itquasar.multiverse.mail.message.BuildedEmail;
 import com.itquasar.multiverse.mail.message.Email;
 import com.itquasar.multiverse.mail.message.ImmutableEmail;
 import com.itquasar.multiverse.mail.message.TemplatedSubjectAndContent;
@@ -143,15 +144,15 @@ public class EmailUtils {
         return message;
     }
 
-    public static Email reply(Email email, Senders senders, TemplatedSubjectAndContent content) {
+    public static BuildedEmail reply(Email email, Senders senders, TemplatedSubjectAndContent content) {
         return reply(email, senders, content, false);
     }
 
-    public static Email replyAll(Email email, Senders senders, TemplatedSubjectAndContent content, boolean replayAll) {
+    public static BuildedEmail replyAll(Email email, Senders senders, TemplatedSubjectAndContent content, boolean replayAll) {
         return reply(email, senders, content, true);
     }
 
-    public static Email reply(Email email, Senders senders, TemplatedSubjectAndContent content, boolean replayAll) {
+    public static BuildedEmail reply(Email email, Senders senders, TemplatedSubjectAndContent content, boolean replayAll) {
         String subject = email.getEnvelope().getSubject();
         if (!subject.startsWith("Re:")) {
             subject = "Re: " + subject;
@@ -181,7 +182,7 @@ public class EmailUtils {
         );
     }
 
-    public static Email forward(Email email, Senders senders, TemplatedSubjectAndContent content, Recipients recipients) {
+    public static BuildedEmail forward(Email email, Senders senders, TemplatedSubjectAndContent content, Recipients recipients) {
         String subject = email.getEnvelope().getSubject();
         if (!subject.startsWith("Fwd:")) {
             subject = "Fwd: " + subject;
